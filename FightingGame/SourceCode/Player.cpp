@@ -3,7 +3,9 @@
 Player::Player(std::string path, SDL_Renderer* renderer)
 :path_(path), gRenderer(renderer), frame(0), flipType(SDL_FLIP_NONE),
 posX((640 - 75) / 2), posY((480 - 96) / 2)
-{}
+{
+	objTexture = NULL;
+}
 
 Player::~Player()
 {
@@ -42,37 +44,43 @@ void Player::doActions(SDL_Event e)
 
 	if (currentKeyStates[SDL_SCANCODE_LEFT])
 	{
-		posX -= 3;
+		if (posX>3)
+			posX -= 3;
 		flipType = SDL_FLIP_HORIZONTAL;
 	}
 	if (currentKeyStates[SDL_SCANCODE_RIGHT])
 	{
-		posX += 3;
+		if (posX<3065)
+			posX += 3;
 		flipType = SDL_FLIP_NONE;
 	}
 	if (currentKeyStates[SDL_SCANCODE_UP])
 	{
-		posY -= 2;
+		if (((480 - 92) / 2) < posY)
+			posY -= 2;
 	}
 	if (currentKeyStates[SDL_SCANCODE_DOWN])
 	{
-		posY += 2;
+		if (posY<360)
+			posY += 2;
 	}
 
 	if (e.type == SDL_KEYDOWN)
 		frame++;
-		
-
-	//Render current frame
-	SDL_Rect* currentClip = &walkingClips[frame / 4];
-	render(posX, posY, currentClip, 0, NULL, flipType, gRenderer);
-
 
 	//Cycle animation
 	if (frame / 4 >= WALKING_ANIMATION_FRAMES)
 	{
 		frame = 0;
 	}
+}
+
+void Player::renderPlayer()
+{
+	//Render current frame
+	SDL_Rect* currentClip = &walkingClips[frame / 4];
+	render(posX, posY, currentClip, 0, NULL, flipType, gRenderer);
+
 }
 
 int Player::getX()

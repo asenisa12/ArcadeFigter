@@ -2,7 +2,9 @@
 
 BackGround::BackGround(std::string path, SDL_Renderer* gRenderer)
 	:path_(path), gRenderer_(gRenderer)
-{}
+{
+	objTexture = NULL;
+}
 
 bool BackGround::loadMedia(){
 	bool success = true;

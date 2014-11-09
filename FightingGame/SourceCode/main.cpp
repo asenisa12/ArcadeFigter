@@ -15,10 +15,10 @@ int main(int argc, char* argv[])
 	}
 	else
 	{	
-		BackGround backGround("Textures/texture.png", mainGame.getRenderer());
+		BackGround backGround("Textures/Level1.png", mainGame.getRenderer());
 		Player player1("Textures/Ferris2.png", mainGame.getRenderer());
 
-		if (!player1.loadMedia() && !backGround.loadMedia())
+		if (!player1.loadMedia() || !backGround.loadMedia())
 		{
 			printf("Can't load media!");
 		}
@@ -42,15 +42,29 @@ int main(int argc, char* argv[])
 				SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(mainGame.getRenderer());
 
+
 				player1.doActions(e);
-				camera.y = (player1.getY() + 92) / 2 - 480 / 2;
-				camera.x = (player1.getX()+75)/2- 640/2;
+
+				camera.y = 0;
+				camera.x = (player1.getX())-640/2;
+
+				if (camera.x < 0)
+				{
+					camera.x = 0;
+				}
+				if (camera.x >3065- camera.w)
+				{
+					camera.x = 3065 - camera.w;
+				}
+
 				backGround.renderBack(&camera);
+
+				player1.renderPlayer();
 				//Update screen
 				SDL_RenderPresent(mainGame.getRenderer());
 			}
 		}
 	}
-	system("pause");
+	//system("pause");
 	return 0;
 }
