@@ -9,7 +9,6 @@ GameBase mainGame(640, 480);
 
 int main(int argc, char* argv[])
 {
-
 	if (!mainGame.init()){
 		printf("Can't init!");
 	}
@@ -24,9 +23,7 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			SDL_Rect camera;
-			camera.w = 640;
-			camera.h = 480;
+			SDL_Rect camera = { 0, 0, 640, 480 };
 			SDL_Event e;
 			bool quit = false;
 
@@ -41,25 +38,13 @@ int main(int argc, char* argv[])
 				}
 				SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(mainGame.getRenderer());
-
-
+				
 				player1.doActions(e);
-
-				camera.y = 0;
 				camera.x = (player1.getX())-640/2;
 
-				if (camera.x < 0)
-				{
-					camera.x = 0;
-				}
-				if (camera.x >3065- camera.w)
-				{
-					camera.x = 3065 - camera.w;
-				}
-
 				backGround.renderBack(&camera);
-
 				player1.renderPlayer();
+				
 				//Update screen
 				SDL_RenderPresent(mainGame.getRenderer());
 			}

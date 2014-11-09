@@ -18,8 +18,18 @@ bool BackGround::loadMedia(){
 	return success;
 }
 
-void BackGround::renderBack(SDL_Rect *clip){
-	render(0, 0, clip, 0, NULL, SDL_FLIP_NONE, gRenderer_);
+void BackGround::renderBack(SDL_Rect *camera){
+
+	if (camera->x < 0)
+	{
+		camera->x = 0;
+	}
+	if (camera->x >3065 - camera->w)
+	{
+		camera->x = 3065 - camera->w;
+	}
+
+	render(0, 0, camera, 0, NULL, SDL_FLIP_NONE, gRenderer_);
 }
 
 BackGround::~BackGround()
