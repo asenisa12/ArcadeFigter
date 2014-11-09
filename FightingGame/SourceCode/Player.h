@@ -18,6 +18,8 @@ public:
 	~Player();
 	bool loadMedia();
 	void doActions(SDL_Event e);
+	int getX();
+	int getY();
 };
 
 #endif

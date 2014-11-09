@@ -11,12 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SourceCode\BackGround.cpp" />
     <ClCompile Include="SourceCode\GameBase.cpp" />
     <ClCompile Include="SourceCode\GameObject.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SourceCode\BackGround.h" />
     <ClInclude Include="SourceCode\GameBase.h" />
     <ClInclude Include="SourceCode\GameObject.h" />
     <ClInclude Include="SourceCode\Player.h" />

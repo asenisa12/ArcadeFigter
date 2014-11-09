@@ -63,19 +63,24 @@ void Player::doActions(SDL_Event e)
 		frame++;
 		
 
-
-	SDL_RenderClear(gRenderer);
-
 	//Render current frame
 	SDL_Rect* currentClip = &walkingClips[frame / 4];
 	render(posX, posY, currentClip, 0, NULL, flipType, gRenderer);
 
-	//Update screen
-	SDL_RenderPresent(gRenderer);
 
 	//Cycle animation
 	if (frame / 4 >= WALKING_ANIMATION_FRAMES)
 	{
 		frame = 0;
 	}
+}
+
+int Player::getX()
+{
+	return posX;
+}
+
+int Player::getY()
+{
+	return posY;
 }
