@@ -7,6 +7,7 @@ class Player : public GameObject
 {	
 	SDL_RendererFlip flipType;
 	int posX, posY;
+	int textureW, textureH;
 	int frame;
 	static const int WALKING_ANIMATION_FRAMES = 7;
 

@@ -19,7 +19,7 @@ public:
 	void setBlendMode(SDL_BlendMode blend);
 	void setAlpha(Uint8 alpha);
 	void GameObject::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip,
-		SDL_Renderer* gRenderer);
+		SDL_Renderer* gRenderer,int w, int h);
 	int getWidth();
 	int getHeight();
 };

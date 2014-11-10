@@ -49,17 +49,17 @@ void GameObject::setAlpha(Uint8 alpha)
 }
 
 void GameObject::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip,
-	SDL_Renderer* gRenderer)
+	SDL_Renderer* gRenderer,int w, int h)
 {
 	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+	SDL_Rect renderQuad = { x, y, w, h };
 
 	//Set clip rendering dimensions
-	if (clip != NULL)
+	/*if (clip != NULL)
 	{
 		renderQuad.w = clip->w;
 		renderQuad.h = clip->h;
-	}
+	}*/
 
 	//Render to screen
 	SDL_RenderCopyEx(gRenderer, objTexture, clip, &renderQuad, angle, center, flip);

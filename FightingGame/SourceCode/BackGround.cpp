@@ -29,7 +29,7 @@ void BackGround::renderBack(SDL_Rect *camera){
 		camera->x = 3065 - camera->w;
 	}
 
-	render(0, 0, camera, 0, NULL, SDL_FLIP_NONE, gRenderer_);
+	render(0, 0, camera, 0, NULL, SDL_FLIP_NONE, gRenderer_,camera->w,camera->h);
 }
 
 BackGround::~BackGround()

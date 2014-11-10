@@ -1,8 +1,8 @@
 #include "Player.h"
 
 Player::Player(std::string path, SDL_Renderer* renderer)
-:path_(path), gRenderer(renderer), frame(0), flipType(SDL_FLIP_NONE),
-posX((640 - 75) / 2), posY((480 - 96) / 2)
+	:path_(path), gRenderer(renderer), frame(0), flipType(SDL_FLIP_NONE),
+	posX((640 - 75) / 2), posY((480 - 96) / 2), textureH(150), textureW(90)
 {
 	objTexture = NULL;
 }
@@ -16,7 +16,7 @@ bool Player::loadMedia()
 {
 	bool success = true;
 
-	if (!LoadFromFile(path_.c_str(),gRenderer))
+	if (!LoadFromFile(path_.c_str(), gRenderer))
 	{
 		printf("Failed to load walking animation texture!\n");
 		success = false;
@@ -44,42 +44,52 @@ void Player::doActions(SDL_Event e)
 
 	if (currentKeyStates[SDL_SCANCODE_LEFT])
 	{
-		if (posX>3)
+		if (posX > 3)
 			posX -= 3;
 		flipType = SDL_FLIP_HORIZONTAL;
 	}
 	if (currentKeyStates[SDL_SCANCODE_RIGHT])
 	{
-		if (posX<3065)
+		if (posX < 3065)
 			posX += 3;
 		flipType = SDL_FLIP_NONE;
 	}
 	if (currentKeyStates[SDL_SCANCODE_UP])
 	{
-		if (((480 - 92) / 2) < posY)
+		if (((480 - textureH) / 2) < posY){
 			posY -= 2;
+			textureH--;
+			textureW--;
+		}
+
 	}
 	if (currentKeyStates[SDL_SCANCODE_DOWN])
 	{
-		if (posY<360)
+		if (posY < 266){
 			posY += 2;
+			textureH++;
+			textureW++;
+		}
 	}
 
 	if (e.type == SDL_KEYDOWN)
 		frame++;
+
+
 
 	//Cycle animation
 	if (frame / 4 >= WALKING_ANIMATION_FRAMES)
 	{
 		frame = 0;
 	}
+
 }
 
 void Player::renderPlayer()
 {
 	//Render current frame
 	SDL_Rect* currentClip = &walkingClips[frame / 4];
-	render(posX, posY, currentClip, 0, NULL, flipType, gRenderer);
+	render(posX, posY, currentClip, 0, NULL, flipType, gRenderer, textureW, textureH);
 
 }
 
