@@ -46,6 +46,7 @@ void Player::doActions(SDL_Event e)
 	{
 		if (posX > 3)
 			posX -= 3;
+		printf("%d\n", posX);
 		flipType = SDL_FLIP_HORIZONTAL;
 	}
 	if (currentKeyStates[SDL_SCANCODE_RIGHT])
@@ -91,6 +92,11 @@ void Player::renderPlayer()
 	SDL_Rect* currentClip = &walkingClips[frame / 4];
 	render(posX, posY, currentClip, 0, NULL, flipType, gRenderer, textureW, textureH);
 
+}
+
+void Player::changePosX(int changedX)
+{
+	posX = changedX;
 }
 
 int Player::getX()

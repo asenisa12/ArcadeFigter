@@ -20,6 +20,7 @@ public:
 	bool loadMedia();
 	void doActions(SDL_Event e);
 	void renderPlayer();
+	void changePosX(int changedX);
 	int getX();
 	int getY();
 };

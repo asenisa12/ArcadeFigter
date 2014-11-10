@@ -23,6 +23,7 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
+			int camera_pos = 1;
 			SDL_Rect camera = { 0, 0, 640, 480 };
 			SDL_Event e;
 			bool quit = false;
@@ -40,9 +41,13 @@ int main(int argc, char* argv[])
 				SDL_RenderClear(mainGame.getRenderer());
 				
 				player1.doActions(e);
-				camera.x = (player1.getX())-640/2;
-
-				backGround.renderBack(&camera);
+				
+				if (player1.getX() > 580){
+					camera_pos++;
+					camera.x += 640;
+					player1.changePosX(player1.getX() - 580);
+				}
+				backGround.renderBack(&camera, player1.getX());
 				player1.renderPlayer();
 				
 				//Update screen

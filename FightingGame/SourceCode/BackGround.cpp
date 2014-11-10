@@ -1,7 +1,7 @@
 #include "BackGround.h"
 
 BackGround::BackGround(std::string path, SDL_Renderer* gRenderer)
-	:path_(path), gRenderer_(gRenderer)
+	:path_(path), gRenderer_(gRenderer), camera_pos(1)
 {
 	objTexture = NULL;
 }
@@ -18,7 +18,9 @@ bool BackGround::loadMedia(){
 	return success;
 }
 
-void BackGround::renderBack(SDL_Rect *camera){
+void BackGround::renderBack(SDL_Rect *camera, int playerX){
+
+	
 
 	if (camera->x < 0)
 	{
@@ -29,7 +31,7 @@ void BackGround::renderBack(SDL_Rect *camera){
 		camera->x = 3065 - camera->w;
 	}
 
-	render(0, 0, camera, 0, NULL, SDL_FLIP_NONE, gRenderer_,camera->w,camera->h);
+	render(0, 0, camera, 0, NULL, SDL_FLIP_NONE, gRenderer_, camera->w, camera->h);
 }
 
 BackGround::~BackGround()
