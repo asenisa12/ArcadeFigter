@@ -1,11 +1,15 @@
 #include <iostream>
+#include <SDL.h>
 #include "Player.h"
 #include "GameBase.h"
-#include <SDL.h>
 #include "GameObject.h"
 #include "BackGround.h"
 
-GameBase mainGame(640, 480);
+static const int SCREEN_WIDTH = 640;
+static const int SCREEN_HEIGHT = 480;
+
+
+GameBase mainGame(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main(int argc, char* argv[])
 {
@@ -15,7 +19,7 @@ int main(int argc, char* argv[])
 	else
 	{	
 		BackGround backGround("Textures/Level1.png", mainGame.getRenderer());
-		Player player1("Textures/Ferris2.png", mainGame.getRenderer());
+		Player player1("Textures/Ferris2.png", mainGame.getRenderer(),SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		if (!player1.loadMedia() || !backGround.loadMedia())
 		{
@@ -24,7 +28,7 @@ int main(int argc, char* argv[])
 		else
 		{
 			int camera_pos = 1;
-			SDL_Rect camera = { 0, 0, 640, 480 };
+			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 			SDL_Event e;
 			bool quit = false;
 
@@ -42,7 +46,7 @@ int main(int argc, char* argv[])
 				
 				player1.doActions(e);
 				
-				if (player1.getX() > 580){
+				if (player1.getX() > 580 && camera_pos < 5){
 					camera_pos++;
 					camera.x += 640;
 					player1.changePosX(player1.getX() - 580);

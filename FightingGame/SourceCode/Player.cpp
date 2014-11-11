@@ -1,9 +1,11 @@
 #include "Player.h"
 
-Player::Player(std::string path, SDL_Renderer* renderer)
-	:path_(path), gRenderer(renderer), frame(0), flipType(SDL_FLIP_NONE),
-	posX((640 - 75) / 2), posY((480 - 96) / 2), textureH(150), textureW(90)
+Player::Player(std::string path, SDL_Renderer* renderer,int screenW, int screenH)
+	:path_(path), gRenderer(renderer), frame(0), flipType(SDL_FLIP_NONE), 
+	screenH_(screenH), screenW_(screenW) 
 {
+	
+	movSpeed = 4;
 	objTexture = NULL;
 }
 
@@ -14,6 +16,12 @@ Player::~Player()
 
 bool Player::loadMedia()
 {
+
+	textureH = screenH_*(0.26); 
+	textureW = screenW_*(0.17);
+	posX = (screenW_ - textureW) / 2; 
+	posY = screenH_*(0.43);
+	printf("%d", posY);
 	bool success = true;
 
 	if (!LoadFromFile(path_.c_str(), gRenderer))
@@ -45,31 +53,33 @@ void Player::doActions(SDL_Event e)
 	if (currentKeyStates[SDL_SCANCODE_LEFT])
 	{
 		if (posX > 3)
-			posX -= 3;
-		printf("%d\n", posX);
+			posX -= movSpeed;
 		flipType = SDL_FLIP_HORIZONTAL;
 	}
 	if (currentKeyStates[SDL_SCANCODE_RIGHT])
 	{
-		if (posX < 3065)
-			posX += 3;
+		if (posX < (screenW_*(0.92)))
+			posX += movSpeed;
 		flipType = SDL_FLIP_NONE;
 	}
 	if (currentKeyStates[SDL_SCANCODE_UP])
 	{
-		if (((480 - textureH) / 2) < posY){
+		if (posY > (screenH_*(0.42))){
 			posY -= 2;
 			textureH--;
 			textureW--;
+			movSpeed -= 0.05;
 		}
 
 	}
 	if (currentKeyStates[SDL_SCANCODE_DOWN])
 	{
-		if (posY < 266){
+		printf("%d\n", posY);
+		if (posY < (screenH_*(0.54))){
 			posY += 2;
 			textureH++;
 			textureW++;
+			movSpeed += 0.05;
 		}
 	}
 
