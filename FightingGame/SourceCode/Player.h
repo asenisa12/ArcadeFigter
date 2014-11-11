@@ -6,6 +6,7 @@
 class Player : public GameObject
 {	
 	SDL_RendererFlip flipType;
+	int camera_pos;
 	int posX, posY;
 	double textureW, textureH;
 	int frame;
@@ -20,7 +21,7 @@ public:
 	Player(std::string path, SDL_Renderer* renderer, int screenH, int screenW);
 	~Player();
 	bool loadMedia();
-	void doActions(SDL_Event e);
+	void doActions(SDL_Event e, SDL_Rect* camera);
 	void renderPlayer();
 	void changePosX(int changedX);
 	int getX();

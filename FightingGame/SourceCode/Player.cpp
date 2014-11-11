@@ -4,8 +4,8 @@ Player::Player(std::string path, SDL_Renderer* renderer,int screenW, int screenH
 	:path_(path), gRenderer(renderer), frame(0), flipType(SDL_FLIP_NONE), 
 	screenH_(screenH), screenW_(screenW) 
 {
-	
-	movSpeed = 4;
+	camera_pos = 1;
+	movSpeed =screenW_*0.00625;
 	objTexture = NULL;
 }
 
@@ -45,7 +45,7 @@ bool Player::loadMedia()
 	return success;
 }
 
-void Player::doActions(SDL_Event e)
+void Player::doActions(SDL_Event e, SDL_Rect* camera)
 {
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
@@ -92,6 +92,13 @@ void Player::doActions(SDL_Event e)
 	if (frame / 4 >= WALKING_ANIMATION_FRAMES)
 	{
 		frame = 0;
+	}
+
+
+	if (posX > screenW_*(0.90) && camera_pos < 5){
+		camera_pos++;
+		camera->x += 640;
+		posX = posX - screenW_*(0.90);
 	}
 
 }

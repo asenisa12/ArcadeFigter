@@ -27,7 +27,6 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			int camera_pos = 1;
 			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 			SDL_Event e;
 			bool quit = false;
@@ -44,13 +43,8 @@ int main(int argc, char* argv[])
 				SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(mainGame.getRenderer());
 				
-				player1.doActions(e);
+				player1.doActions(e, &camera);
 				
-				if (player1.getX() > 580 && camera_pos < 5){
-					camera_pos++;
-					camera.x += 640;
-					player1.changePosX(player1.getX() - 580);
-				}
 				backGround.renderBack(&camera, player1.getX());
 				player1.renderPlayer();
 				
