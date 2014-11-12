@@ -6,6 +6,7 @@
 class Player : public GameObject
 {	
 	SDL_RendererFlip flipType;
+	int add;
 	int camera_pos;
 	int posX, posY;
 	double textureW, textureH;
@@ -13,8 +14,10 @@ class Player : public GameObject
 	int screenH_, screenW_;
 	double movSpeed;
 	static const int WALKING_ANIMATION_FRAMES = 7;
+	static const int PUNCH_ANIMATION_FRAMES = 5;
 
-	SDL_Rect walkingClips[WALKING_ANIMATION_FRAMES];
+	SDL_Rect* currentClip;
+	SDL_Rect Clips[PUNCH_ANIMATION_FRAMES+WALKING_ANIMATION_FRAMES];
 	SDL_Renderer* gRenderer;
 	std::string path_;
 public:
