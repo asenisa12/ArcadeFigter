@@ -44,7 +44,7 @@ bool Player::loadMedia()
 		}
 		x = 0;
 		y = 92;
-		for (int i = WALKING_ANIMATION_FRAMES; i < PUNCH_ANIMATION_FRAMES; i++)
+		for (int i = WALKING_ANIMATION_FRAMES; i < PUNCH_ANIMATION_FRAMES + WALKING_ANIMATION_FRAMES; i++)
 		{
 			Clips[i].x = x;
 			Clips[i].y = y;
@@ -63,14 +63,19 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 		frame++;
 	
 	if (currentKeyStates[SDL_SCANCODE_SPACE]){
-		if (frame<WALKING_ANIMATION_FRAMES ||
-			sframe / 4 >= PUNCH_ANIMATION_FRAMES+WALKING_ANIMATION_FRAMES)
+		if (frame/4 < WALKING_ANIMATION_FRAMES ||
+			frame / 4 >= PUNCH_ANIMATION_FRAMES+WALKING_ANIMATION_FRAMES)
 		{
-			frame = WALKING_ANIMATION_FRAMES;
+			frame = WALKING_ANIMATION_FRAMES*4;
 		}
 	}
 	else
 	{
+
+		if (frame/4 >= WALKING_ANIMATION_FRAMES )
+		{
+			frame = 0;
+		}
 
 		if (currentKeyStates[SDL_SCANCODE_LEFT])
 		{
