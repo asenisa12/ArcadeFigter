@@ -13,8 +13,8 @@ class Player : public GameObject
 	int frame;
 	int screenH_, screenW_;
 	double movSpeed;
-	static const int WALKING_ANIMATION_FRAMES = 7;
-	static const int PUNCH_ANIMATION_FRAMES = 5;
+	static const int WALKING_ANIMATION_FRAMES = 12;
+	static const int PUNCH_ANIMATION_FRAMES = 11;
 
 	SDL_Rect* currentClip;
 	SDL_Rect Clips[PUNCH_ANIMATION_FRAMES+WALKING_ANIMATION_FRAMES];

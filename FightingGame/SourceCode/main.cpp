@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 	else
 	{	
 		BackGround backGround("Textures/Level1.png", mainGame.getRenderer());
-		Player player1("Textures/Ferris2.png", mainGame.getRenderer(),SCREEN_WIDTH, SCREEN_HEIGHT);
+		Player player1("Textures/Mustafa1.png", mainGame.getRenderer(),SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		if (!player1.loadMedia() || !backGround.loadMedia())
 		{

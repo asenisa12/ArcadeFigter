@@ -37,18 +37,18 @@ bool Player::loadMedia()
 		{
 			Clips[i].x = x;
 			Clips[i].y = y;
-			Clips[i].w = 75;
-			Clips[i].h = 92;
-			x += 75;
+			Clips[i].w = 100;
+			Clips[i].h = 100;
+			x += 100;
 		}
 		x = 0;
-		y = 92;
+		y = 300;
 		for (int i = WALKING_ANIMATION_FRAMES; i < PUNCH_ANIMATION_FRAMES + WALKING_ANIMATION_FRAMES; i++)
 		{
 			Clips[i].x = x;
 			Clips[i].y = y;
 			Clips[i].w = 100;
-			Clips[i].h = 92;
+			Clips[i].h = 100;
 			x += 100;
 		}
 	}
@@ -59,7 +59,9 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 	int lastclip;
-	
+	if (e.type == SDL_KEYUP)
+		frame = 0;
+
 	if (currentKeyStates[SDL_SCANCODE_SPACE]){
 		lastclip = PUNCH_ANIMATION_FRAMES + WALKING_ANIMATION_FRAMES;
 		if (frame/4 < WALKING_ANIMATION_FRAMES ||
@@ -74,9 +76,9 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 		lastclip = WALKING_ANIMATION_FRAMES;
 		if (e.type == SDL_KEYDOWN)
 			frame++;
-		if (frame/4 >= lastclip )
+		if (frame/3 >= lastclip )
 		{
-			frame = 0;
+			frame = 4;
 		}
 
 		if (currentKeyStates[SDL_SCANCODE_LEFT])
