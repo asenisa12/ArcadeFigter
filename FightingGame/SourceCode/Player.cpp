@@ -17,7 +17,6 @@ Player::~Player()
 
 bool Player::loadMedia()
 {
-
 	/*textureH = screenH_*(0.26); 
 	textureW = screenW_*(0.17);*/
 	posX = (screenW_ - textureW) / 2; 
@@ -59,20 +58,23 @@ bool Player::loadMedia()
 void Player::doActions(SDL_Event e, SDL_Rect* camera)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-	if (e.type == SDL_KEYDOWN)
-		frame++;
+	int lastclip;
 	
 	if (currentKeyStates[SDL_SCANCODE_SPACE]){
+		lastclip = PUNCH_ANIMATION_FRAMES + WALKING_ANIMATION_FRAMES;
 		if (frame/4 < WALKING_ANIMATION_FRAMES ||
-			frame / 4 >= PUNCH_ANIMATION_FRAMES+WALKING_ANIMATION_FRAMES)
+			frame / 4 >= lastclip)
 		{
 			frame = WALKING_ANIMATION_FRAMES*4;
 		}
+		frame++;
 	}
 	else
 	{
-
-		if (frame/4 >= WALKING_ANIMATION_FRAMES )
+		lastclip = WALKING_ANIMATION_FRAMES;
+		if (e.type == SDL_KEYDOWN)
+			frame++;
+		if (frame/4 >= lastclip )
 		{
 			frame = 0;
 		}
@@ -83,13 +85,13 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 				posX -= movSpeed;
 			flipType = SDL_FLIP_HORIZONTAL;
 		}
-		if (currentKeyStates[SDL_SCANCODE_RIGHT])
+		 else if (currentKeyStates[SDL_SCANCODE_RIGHT])
 		{
 			if (posX < (screenW_*(0.92)))
 				posX += movSpeed;
 			flipType = SDL_FLIP_NONE;
 		}
-		if (currentKeyStates[SDL_SCANCODE_UP])
+		else if (currentKeyStates[SDL_SCANCODE_UP])
 		{
 			if (posY > (screenH_*(0.42))){
 				posY -= 2;
@@ -98,7 +100,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 			}
 
 		}
-		if (currentKeyStates[SDL_SCANCODE_DOWN])
+		else if (currentKeyStates[SDL_SCANCODE_DOWN])
 		{
 			//printf("%d\n", posY);
 			if (posY < (screenH_*(0.54))){
@@ -110,8 +112,6 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 
 		//Cycle animation
 	}
-	//printf("%d\n", add);
-
 
 
 	if (posX > screenW_*(0.90) && camera_pos < 5){
