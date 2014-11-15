@@ -33,18 +33,14 @@ bool Player::loadMedia()
 	{
 		int x = 0;
 		int y = 0;
-		for (int i = 0; i < WALKING_ANIMATION_FRAMES; i++)
+		for (int i = 0; i < PUNCH_ANIMATION_FRAMES_END; i++)
 		{
-			Clips[i].x = x;
-			Clips[i].y = y;
-			Clips[i].w = 100;
-			Clips[i].h = 100;
-			x += 100;
-		}
-		x = 0;
-		y = 300;
-		for (int i = WALKING_ANIMATION_FRAMES; i < PUNCH_ANIMATION_FRAMES + WALKING_ANIMATION_FRAMES; i++)
-		{
+
+			if (i == WALKING_ANIMATION_FRAMES_END ||
+				i==JUMPING_ANIMATION_FRAMES_END || i == RUNING_ANIMATION_FRAMES_END){
+				x = 0;
+				y += 100;
+			}
 			Clips[i].x = x;
 			Clips[i].y = y;
 			Clips[i].w = 100;
@@ -62,38 +58,77 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 	if (e.type == SDL_KEYUP)
 		frame = 0;
 
-	if (currentKeyStates[SDL_SCANCODE_SPACE]){
-		lastclip = PUNCH_ANIMATION_FRAMES + WALKING_ANIMATION_FRAMES;
-		if (frame/4 < WALKING_ANIMATION_FRAMES ||
+	if (currentKeyStates[SDL_SCANCODE_Q]){
+		lastclip = PUNCH_ANIMATION_FRAMES_END;
+		if (frame/4 < JUMPING_ANIMATION_FRAMES_END ||
 			frame / 4 >= lastclip)
 		{
-			frame = WALKING_ANIMATION_FRAMES*4;
+			frame =JUMPING_ANIMATION_FRAMES_END*4;
 		}
 		frame++;
 	}
 	else
 	{
-		lastclip = WALKING_ANIMATION_FRAMES;
-		if (e.type == SDL_KEYDOWN)
-			frame++;
-		if (frame/3 >= lastclip )
+		lastclip = WALKING_ANIMATION_FRAMES_END;
+		int firstclip;
+		if (currentKeyStates[SDL_SCANCODE_LSHIFT])
 		{
-			frame = 4;
-		}
+			firstclip = WALKING_ANIMATION_FRAMES_END * 4 +1;
+			lastclip = RUNING_ANIMATION_FRAMES_END;
+			if (frame / 4 < WALKING_ANIMATION_FRAMES_END){
+				frame = firstclip;
+			}
+			movSpeed = 10;
+			frame++;
+		}//jumping
+		else if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping){
+			firstclip = RUNING_ANIMATION_FRAMES_END * 4;
+			lastclip = JUMPING_ANIMATION_FRAMES_END;
+			if (frame / 4 < RUNING_ANIMATION_FRAMES_END)
+			{
+				frame = firstclip;
+				jumping = true;
+			}
 
+			if (jumping)
+			{
+				jumpH++;
+				if (jumpH <= 20){
+					posY -= 10;
+				}
+				else
+				{
+					if (jumpH == 40){
+						jumping = false;
+						jumpH = 0;
+					}
+					posY += 10;
+				}
+
+			}
+			if (jumpH % 3 == 0)
+				frame++;
+		}
+		else
+		{
+			if (e.type == SDL_KEYDOWN && !jumping)
+				frame++;
+			firstclip = 5;
+		}
+			
 		if (currentKeyStates[SDL_SCANCODE_LEFT])
 		{
 			if (posX > 3)
 				posX -= movSpeed;
 			flipType = SDL_FLIP_HORIZONTAL;
 		}
-		 else if (currentKeyStates[SDL_SCANCODE_RIGHT])
+		else if (currentKeyStates[SDL_SCANCODE_RIGHT])
 		{
 			if (posX < (screenW_*(0.92)))
 				posX += movSpeed;
 			flipType = SDL_FLIP_NONE;
 		}
-		else if (currentKeyStates[SDL_SCANCODE_UP])
+		else if (currentKeyStates[SDL_SCANCODE_UP] && !jumping)
 		{
 			if (posY > (screenH_*(0.42))){
 				posY -= 2;
@@ -102,7 +137,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 			}
 
 		}
-		else if (currentKeyStates[SDL_SCANCODE_DOWN])
+		else if (currentKeyStates[SDL_SCANCODE_DOWN] && !jumping)
 		{
 			//printf("%d\n", posY);
 			if (posY < (screenH_*(0.54))){
@@ -112,7 +147,12 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 			}
 		}
 
-		//Cycle animation
+		if (frame/4 >= lastclip )
+		{
+			frame = firstclip;
+		}
+		movSpeed = 3;
+	//Cycle animation
 	}
 
 

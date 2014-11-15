@@ -13,11 +13,15 @@ class Player : public GameObject
 	int frame;
 	int screenH_, screenW_;
 	double movSpeed;
-	static const int WALKING_ANIMATION_FRAMES = 12;
-	static const int PUNCH_ANIMATION_FRAMES = 11;
+	bool jumping;
+	int jumpH;
+	static const int WALKING_ANIMATION_FRAMES_END = 12;
+	static const int RUNING_ANIMATION_FRAMES_END = 21;
+	static const int JUMPING_ANIMATION_FRAMES_END = 25;
+	static const int PUNCH_ANIMATION_FRAMES_END = 36;
 
 	SDL_Rect* currentClip;
-	SDL_Rect Clips[PUNCH_ANIMATION_FRAMES+WALKING_ANIMATION_FRAMES];
+	SDL_Rect Clips[PUNCH_ANIMATION_FRAMES_END];
 	SDL_Renderer* gRenderer;
 	std::string path_;
 public:
