@@ -69,20 +69,11 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 		}
 		frame++;
 	}
-	else if (currentKeyStates[SDL_SCANCODE_LSHIFT])
-	{
-		firstclip = WALKING_ANIMATION_FRAMES_END * 4 +1;
-		lastclip = RUNING_ANIMATION_FRAMES_END;
-		if (frame / 4 < WALKING_ANIMATION_FRAMES_END){
-			frame = firstclip;
-		}
-		movSpeed = 10;
-		frame++;
-	}//jumping
-	else if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping){
+	else//jumping 
+		if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping){
 		firstclip = RUNING_ANIMATION_FRAMES_END * 4;
 		lastclip = JUMPING_ANIMATION_FRAMES_END;
-		if (frame / 4 < RUNING_ANIMATION_FRAMES_END)
+		if (frame / 4 < RUNING_ANIMATION_FRAMES_END || !jumping)
 		{
 			frame = firstclip;
 			jumping = true;
@@ -109,15 +100,30 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 	}
 	else
 	{
-		lastclip = WALKING_ANIMATION_FRAMES_END;
-		firstclip = 5;
+		if (currentKeyStates[SDL_SCANCODE_LSHIFT])
+		{
+			firstclip = WALKING_ANIMATION_FRAMES_END * 4 + 1;
+			lastclip = RUNING_ANIMATION_FRAMES_END;
+			if (frame / 4 < WALKING_ANIMATION_FRAMES_END){
+				frame = firstclip;
+			}
+			movSpeed = 10;
+		}
+		else
+		{
+			lastclip = WALKING_ANIMATION_FRAMES_END;
+			firstclip = 5;
+		}
 		if (currentKeyStates[SDL_SCANCODE_LEFT] || (currentKeyStates[SDL_SCANCODE_RIGHT])
-			|| currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_UP])
+			|| currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_UP]){
 			frame++;
+		}
+		else
+		{
+			frame = 0;
+		}
 
 	}
-	
-	
 			
 	if (currentKeyStates[SDL_SCANCODE_LEFT])
 	{
