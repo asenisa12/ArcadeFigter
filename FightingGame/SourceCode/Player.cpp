@@ -55,105 +55,106 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 	int lastclip;
-	if (e.type == SDL_KEYUP)
+	/*if ((e.type != SDL_KEYDOWN && e.type != SDL_KEYUP) && !jumping)
 		frame = 0;
-
+*/
+	int firstclip;
 	if (currentKeyStates[SDL_SCANCODE_Q]){
 		lastclip = PUNCH_ANIMATION_FRAMES_END;
+		firstclip =JUMPING_ANIMATION_FRAMES_END*4;
 		if (frame/4 < JUMPING_ANIMATION_FRAMES_END ||
 			frame / 4 >= lastclip)
 		{
-			frame =JUMPING_ANIMATION_FRAMES_END*4;
+			frame = firstclip;
 		}
 		frame++;
+	}
+	else if (currentKeyStates[SDL_SCANCODE_LSHIFT])
+	{
+		firstclip = WALKING_ANIMATION_FRAMES_END * 4 +1;
+		lastclip = RUNING_ANIMATION_FRAMES_END;
+		if (frame / 4 < WALKING_ANIMATION_FRAMES_END){
+			frame = firstclip;
+		}
+		movSpeed = 10;
+		frame++;
+	}//jumping
+	else if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping){
+		firstclip = RUNING_ANIMATION_FRAMES_END * 4;
+		lastclip = JUMPING_ANIMATION_FRAMES_END;
+		if (frame / 4 < RUNING_ANIMATION_FRAMES_END)
+		{
+			frame = firstclip;
+			jumping = true;
+		}
+
+		if (jumping)
+		{
+			jumpH++;
+			if (jumpH <= 20){
+				posY -= 10;
+			}
+			else
+			{
+				if (jumpH == 40){
+					jumping = false;
+					jumpH = 0;
+				}
+				posY += 10;
+			}
+
+		}
+		if (jumpH % 3 == 0)
+			frame++;
 	}
 	else
 	{
 		lastclip = WALKING_ANIMATION_FRAMES_END;
-		int firstclip;
-		if (currentKeyStates[SDL_SCANCODE_LSHIFT])
-		{
-			firstclip = WALKING_ANIMATION_FRAMES_END * 4 +1;
-			lastclip = RUNING_ANIMATION_FRAMES_END;
-			if (frame / 4 < WALKING_ANIMATION_FRAMES_END){
-				frame = firstclip;
-			}
-			movSpeed = 10;
+		firstclip = 5;
+		if (currentKeyStates[SDL_SCANCODE_LEFT] || (currentKeyStates[SDL_SCANCODE_RIGHT])
+			|| currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_UP])
 			frame++;
-		}//jumping
-		else if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping){
-			firstclip = RUNING_ANIMATION_FRAMES_END * 4;
-			lastclip = JUMPING_ANIMATION_FRAMES_END;
-			if (frame / 4 < RUNING_ANIMATION_FRAMES_END)
-			{
-				frame = firstclip;
-				jumping = true;
-			}
 
-			if (jumping)
-			{
-				jumpH++;
-				if (jumpH <= 20){
-					posY -= 10;
-				}
-				else
-				{
-					if (jumpH == 40){
-						jumping = false;
-						jumpH = 0;
-					}
-					posY += 10;
-				}
-
-			}
-			if (jumpH % 3 == 0)
-				frame++;
-		}
-		else
-		{
-			if (e.type == SDL_KEYDOWN && !jumping)
-				frame++;
-			firstclip = 5;
-		}
-			
-		if (currentKeyStates[SDL_SCANCODE_LEFT])
-		{
-			if (posX > 3)
-				posX -= movSpeed;
-			flipType = SDL_FLIP_HORIZONTAL;
-		}
-		else if (currentKeyStates[SDL_SCANCODE_RIGHT])
-		{
-			if (posX < (screenW_*(0.92)))
-				posX += movSpeed;
-			flipType = SDL_FLIP_NONE;
-		}
-		else if (currentKeyStates[SDL_SCANCODE_UP] && !jumping)
-		{
-			if (posY > (screenH_*(0.42))){
-				posY -= 2;
-				add--;
-				movSpeed -= 0.05;
-			}
-
-		}
-		else if (currentKeyStates[SDL_SCANCODE_DOWN] && !jumping)
-		{
-			//printf("%d\n", posY);
-			if (posY < (screenH_*(0.54))){
-				posY += 2;
-				add++;
-				movSpeed += 0.05;
-			}
-		}
-
-		if (frame/4 >= lastclip )
-		{
-			frame = firstclip;
-		}
-		movSpeed = 3;
-	//Cycle animation
 	}
+	
+	
+			
+	if (currentKeyStates[SDL_SCANCODE_LEFT])
+	{
+		if (posX > 3)
+			posX -= movSpeed;
+		flipType = SDL_FLIP_HORIZONTAL;
+	}
+	else if (currentKeyStates[SDL_SCANCODE_RIGHT])
+	{
+		if (posX < (screenW_*(0.92)))
+			posX += movSpeed;
+		flipType = SDL_FLIP_NONE;
+	}
+	else if (currentKeyStates[SDL_SCANCODE_UP] && !jumping)
+	{
+		if (posY > (screenH_*(0.42))){
+			posY -= 2;
+			add--;
+			movSpeed -= 0.05;
+		}
+	}
+	else if (currentKeyStates[SDL_SCANCODE_DOWN] && !jumping)
+	{
+		if (posY < (screenH_*(0.54))){
+			posY += 2;
+			add++;
+			movSpeed += 0.05;
+		}
+	}
+
+	if (frame/4 >= lastclip )
+	{
+		frame = firstclip;
+	}
+	movSpeed = 3;
+	//Cycle animation
+
 
 
 	if (posX > screenW_*(0.90) && camera_pos < 5){

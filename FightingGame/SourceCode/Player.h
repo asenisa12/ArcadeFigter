@@ -28,6 +28,7 @@ public:
 	Player(std::string path, SDL_Renderer* renderer, int screenH, int screenW);
 	~Player();
 	bool loadMedia();
+	//implements key presses
 	void doActions(SDL_Event e, SDL_Rect* camera);
 	void renderPlayer();
 	void changePosX(int changedX);
