@@ -55,9 +55,6 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 	int lastclip;
-	/*if ((e.type != SDL_KEYDOWN && e.type != SDL_KEYUP) && !jumping)
-		frame = 0;
-*/
 	int firstclip;
 	if (currentKeyStates[SDL_SCANCODE_Q]){
 		lastclip = PUNCH_ANIMATION_FRAMES_END;
