@@ -17,12 +17,10 @@ GameBase::~GameBase()
 
 bool GameBase::init()
 {
-	bool success = true;
-
 	if (SDL_Init(SDL_INIT_VIDEO)<0)
 	{
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-		success = false;
+		return false;
 	}
 	else
 	{
@@ -37,7 +35,7 @@ bool GameBase::init()
 		if (gWindow_ == NULL)
 		{
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
-			success = false;
+			return false;
 		}
 		else
 		{
@@ -47,7 +45,7 @@ bool GameBase::init()
 			if (gRenderer_ == NULL)
 			{
 				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-				success = false;
+				return false;
 			}
 			else
 			{
@@ -59,13 +57,13 @@ bool GameBase::init()
 				if (!(IMG_Init(imgFlags)&IMG_INIT_PNG ))
 				{
 					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-					success = false;
+					return false;
 				}
 			}
 		}
 	}
 
-	return success;
+	return true;
 }
 
 SDL_Renderer* GameBase::getRenderer(){

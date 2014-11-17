@@ -19,7 +19,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\BackGround.h" />
+    <ClInclude Include="SourceCode\Enemy1.h" />
     <ClInclude Include="SourceCode\GameBase.h" />
+    <ClInclude Include="SourceCode\GameHeaders.h" />
     <ClInclude Include="SourceCode\GameObject.h" />
     <ClInclude Include="SourceCode\Player.h" />
   </ItemGroup>

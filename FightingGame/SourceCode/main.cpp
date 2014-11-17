@@ -1,9 +1,4 @@
-#include <iostream>
-#include <SDL.h>
-#include "Player.h"
-#include "GameBase.h"
-#include "GameObject.h"
-#include "BackGround.h"
+#include "GameHeaders.h"
 
 static const int SCREEN_WIDTH = 640;
 static const int SCREEN_HEIGHT = 480;
@@ -21,6 +16,7 @@ int main(int argc, char* argv[])
 		BackGround backGround("Textures/Level1.png", mainGame.getRenderer());
 		Player player1("Textures/Mustafa1.png", mainGame.getRenderer(),SCREEN_WIDTH, SCREEN_HEIGHT);
 
+		
 		if (!player1.loadMedia() || !backGround.loadMedia())
 		{
 			printf("Can't load media!");
@@ -31,6 +27,7 @@ int main(int argc, char* argv[])
 			SDL_Event e;
 			bool quit = false;
 
+			//game loop
 			while (!quit)
 			{
 				while (SDL_PollEvent(&e) != 0)
@@ -47,7 +44,6 @@ int main(int argc, char* argv[])
 				
 				backGround.renderBack(&camera, player1.getX());
 				player1.renderPlayer();
-				
 				//Update screen
 				SDL_RenderPresent(mainGame.getRenderer());
 			}

@@ -15,15 +15,24 @@ class Player : public GameObject
 	double movSpeed;
 	bool jumping;
 	int jumpH;
+	int firstclip;
+	int lastclip;
 	static const int WALKING_ANIMATION_FRAMES_END = 12;
 	static const int RUNING_ANIMATION_FRAMES_END = 21;
 	static const int JUMPING_ANIMATION_FRAMES_END = 25;
 	static const int PUNCH_ANIMATION_FRAMES_END = 36;
 
+	static const int CLIP_H = 100;
+	static const int CLIP_W = 100;
+
 	SDL_Rect* currentClip;
 	SDL_Rect Clips[PUNCH_ANIMATION_FRAMES_END];
 	SDL_Renderer* gRenderer;
 	std::string path_;
+
+	bool punch(const Uint8* currentKeyStates);
+	bool jump(const Uint8* currentKeyStates);
+	bool run(const Uint8* currentKeyStates);
 public:
 	Player(std::string path, SDL_Renderer* renderer, int screenH, int screenW);
 	~Player();

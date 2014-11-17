@@ -22,12 +22,10 @@ bool Player::loadMedia()
 	posX = (screenW_ - textureW) / 2; 
 	posY = screenH_*(0.43);
 
-	bool success = true;
-
 	if (!LoadFromFile(path_.c_str(), gRenderer))
 	{
 		printf("Failed to load walking animation texture!\n");
-		success = false;
+		return false;
 	}
 	else
 	{
@@ -39,35 +37,38 @@ bool Player::loadMedia()
 			if (i == WALKING_ANIMATION_FRAMES_END ||
 				i==JUMPING_ANIMATION_FRAMES_END || i == RUNING_ANIMATION_FRAMES_END){
 				x = 0;
-				y += 100;
+				y += CLIP_H;
 			}
 			Clips[i].x = x;
 			Clips[i].y = y;
-			Clips[i].w = 100;
-			Clips[i].h = 100;
-			x += 100;
+			Clips[i].w = CLIP_W;
+			Clips[i].h = CLIP_H;
+			x += CLIP_W;
 		}
 	}
-	return success;
+	return true;
 }
-
-void Player::doActions(SDL_Event e, SDL_Rect* camera)
+bool Player::punch(const Uint8* currentKeyStates)
 {
-	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-	int lastclip;
-	int firstclip;
-	if (currentKeyStates[SDL_SCANCODE_Q]){
+	if (currentKeyStates[SDL_SCANCODE_Q])
+	{
 		lastclip = PUNCH_ANIMATION_FRAMES_END;
-		firstclip =JUMPING_ANIMATION_FRAMES_END*4;
-		if (frame/4 < JUMPING_ANIMATION_FRAMES_END ||
+		firstclip = JUMPING_ANIMATION_FRAMES_END * 4;
+		if (frame / 4 < JUMPING_ANIMATION_FRAMES_END ||
 			frame / 4 >= lastclip)
 		{
 			frame = firstclip;
 		}
 		frame++;
+		return true;
 	}
-	else//jumping 
-		if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping){
+	return false;
+}
+
+bool Player::jump(const Uint8* currentKeyStates)
+{
+	if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping)
+	{
 		firstclip = RUNING_ANIMATION_FRAMES_END * 4;
 		lastclip = JUMPING_ANIMATION_FRAMES_END;
 		if (frame / 4 < RUNING_ANIMATION_FRAMES_END || !jumping)
@@ -94,32 +95,50 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 		}
 		if (jumpH % 3 == 0)
 			frame++;
+		return true;
 	}
-	else
-	{
-		if (currentKeyStates[SDL_SCANCODE_LSHIFT])
-		{
-			firstclip = WALKING_ANIMATION_FRAMES_END * 4 + 1;
-			lastclip = RUNING_ANIMATION_FRAMES_END;
-			if (frame / 4 < WALKING_ANIMATION_FRAMES_END){
-				frame = firstclip;
-			}
-			movSpeed = 10;
-		}
-		else
-		{
-			lastclip = WALKING_ANIMATION_FRAMES_END;
-			firstclip = 5;
-		}
-		if (currentKeyStates[SDL_SCANCODE_LEFT] || (currentKeyStates[SDL_SCANCODE_RIGHT])
-			|| currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_UP]){
-			frame++;
-		}
-		else
-		{
-			frame = 0;
-		}
+	return false;
+}
 
+bool Player::run(const Uint8* currentKeyStates)
+{
+	if (currentKeyStates[SDL_SCANCODE_LSHIFT])
+	{
+		firstclip = WALKING_ANIMATION_FRAMES_END * 4 + 1;
+		lastclip = RUNING_ANIMATION_FRAMES_END;
+		if (frame / 4 < WALKING_ANIMATION_FRAMES_END){
+			frame = firstclip;
+		}
+		movSpeed = 10;
+		return true;
+	}
+	return false;
+}
+
+void Player::doActions(SDL_Event e, SDL_Rect* camera)
+{
+	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+	if (!jump(currentKeyStates))
+	{
+		if (!punch(currentKeyStates))
+		{
+			if (!run(currentKeyStates))
+			{
+				lastclip = WALKING_ANIMATION_FRAMES_END;
+				firstclip = 5;
+			}
+			if (currentKeyStates[SDL_SCANCODE_LEFT] || (currentKeyStates[SDL_SCANCODE_RIGHT])
+				|| currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_UP])
+			{
+				frame++;
+			}
+			else
+			{
+				frame = 0;
+			}
+
+		}
 	}
 			
 	if (currentKeyStates[SDL_SCANCODE_LEFT])
@@ -144,7 +163,8 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 	}
 	else if (currentKeyStates[SDL_SCANCODE_DOWN] && !jumping)
 	{
-		if (posY < (screenH_*(0.54))){
+		if (posY < (screenH_*(0.54)))
+		{
 			posY += 2;
 			add++;
 			movSpeed += 0.05;
@@ -162,7 +182,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 
 	if (posX > screenW_*(0.90) && camera_pos < 5){
 		camera_pos++;
-		camera->x += 640;
+		camera->x += screenW_;
 		posX = posX - screenW_*(0.90);
 	}
 

@@ -7,6 +7,8 @@
 
 class BackGround :public GameObject
 {
+	static const int MAP_W = 3065;
+
 	int camera_pos;
 	std::string path_;
 	SDL_Renderer* gRenderer_;
