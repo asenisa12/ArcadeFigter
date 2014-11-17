@@ -66,6 +66,7 @@ bool GameBase::init()
 	return true;
 }
 
+
 SDL_Renderer* GameBase::getRenderer(){
 	return gRenderer_;
 }

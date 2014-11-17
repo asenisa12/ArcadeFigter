@@ -2,9 +2,30 @@
 
 static const int SCREEN_WIDTH = 640;
 static const int SCREEN_HEIGHT = 480;
-
+SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+SDL_Event gameEvent;
 
 GameBase mainGame(SCREEN_WIDTH, SCREEN_HEIGHT);
+BackGround backGround("Textures/Level1.png");
+Player player1("Textures/Mustafa1.png",SCREEN_WIDTH, SCREEN_HEIGHT);
+
+void update()
+{
+	player1.doActions(gameEvent, &camera);
+}
+
+void render()
+{
+	SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(mainGame.getRenderer());
+
+	backGround.renderBack(&camera, player1.getX(), mainGame.getRenderer());
+	player1.renderPlayer(mainGame.getRenderer());
+
+	SDL_RenderPresent(mainGame.getRenderer());
+}
+
+void getInput();
 
 int main(int argc, char* argv[])
 {
@@ -13,39 +34,33 @@ int main(int argc, char* argv[])
 	}
 	else
 	{	
-		BackGround backGround("Textures/Level1.png", mainGame.getRenderer());
-		Player player1("Textures/Mustafa1.png", mainGame.getRenderer(),SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		
-		if (!player1.loadMedia() || !backGround.loadMedia())
+		if (!player1.loadMedia(mainGame.getRenderer()) || !backGround.loadMedia(mainGame.getRenderer()))
 		{
 			printf("Can't load media!");
 		}
 		else
 		{
-			SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-			SDL_Event e;
+			
+			
 			bool quit = false;
 
 			//game loop
 			while (!quit)
 			{
-				while (SDL_PollEvent(&e) != 0)
+				while (SDL_PollEvent(&gameEvent) != 0)
 				{
-					if (e.type == SDL_QUIT)
+					if (gameEvent.type == SDL_QUIT)
 					{
 						quit = true;
 					}
 				}
-				SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
-				SDL_RenderClear(mainGame.getRenderer());
-				
-				player1.doActions(e, &camera);
-				
-				backGround.renderBack(&camera, player1.getX());
-				player1.renderPlayer();
-				//Update screen
-				SDL_RenderPresent(mainGame.getRenderer());
+				//update
+				update();
+
+				//render
+				render();
 			}
 		}
 	}

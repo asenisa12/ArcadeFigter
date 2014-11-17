@@ -1,11 +1,12 @@
 #include "Player.h"
 
-Player::Player(std::string path, SDL_Renderer* renderer,int screenW, int screenH)
-	:path_(path), gRenderer(renderer), frame(0), flipType(SDL_FLIP_NONE), 
+Player::Player(std::string path,int screenW, int screenH)
+	:path_(path), frame(0), flipType(SDL_FLIP_NONE), 
 	screenH_(screenH), screenW_(screenW) 
 {
 	int add = 0;
 	camera_pos = 1;
+	//movement speed == 0.625% from screen w
 	movSpeed =screenW_*0.00625;
 	objTexture = NULL;
 }
@@ -15,7 +16,7 @@ Player::~Player()
 	free();
 }
 
-bool Player::loadMedia()
+bool Player::loadMedia(SDL_Renderer* gRenderer)
 {
 	/*textureH = screenH_*(0.26); 
 	textureW = screenW_*(0.17);*/
@@ -118,10 +119,10 @@ bool Player::run(const Uint8* currentKeyStates)
 void Player::doActions(SDL_Event e, SDL_Rect* camera)
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-
+	bool punching = false;
 	if (!jump(currentKeyStates))
 	{
-		if (!punch(currentKeyStates))
+		if (!(punching = punch(currentKeyStates)))
 		{
 			if (!run(currentKeyStates))
 			{
@@ -141,20 +142,22 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 		}
 	}
 			
-	if (currentKeyStates[SDL_SCANCODE_LEFT])
+	if (currentKeyStates[SDL_SCANCODE_LEFT] && !punching)
 	{
 		if (posX > 3)
 			posX -= movSpeed;
 		flipType = SDL_FLIP_HORIZONTAL;
 	}
-	else if (currentKeyStates[SDL_SCANCODE_RIGHT])
+	else if (currentKeyStates[SDL_SCANCODE_RIGHT] && !punching)
 	{
+		//max x = 92% from screen w
 		if (posX < (screenW_*(0.92)))
 			posX += movSpeed;
 		flipType = SDL_FLIP_NONE;
 	}
 	else if (currentKeyStates[SDL_SCANCODE_UP] && !jumping)
 	{
+		//max y = 42% form screen h
 		if (posY > (screenH_*(0.42))){
 			posY -= 2;
 			add--;
@@ -163,6 +166,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 	}
 	else if (currentKeyStates[SDL_SCANCODE_DOWN] && !jumping)
 	{
+		//min y = 54% form screen h
 		if (posY < (screenH_*(0.54)))
 		{
 			posY += 2;
@@ -179,7 +183,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 	//Cycle animation
 
 
-
+	//last x position on screen = 90% from screen W 
 	if (posX > screenW_*(0.90) && camera_pos < 5){
 		camera_pos++;
 		camera->x += screenW_;
@@ -187,11 +191,13 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 	}
 
 	currentClip = &Clips[frame / 4];
+	//the height or width of the texture = clip w or h * 0.3% or 0.32% 
+	//+ additional x or y pos if the charracter gets closer or away
 	textureW = (currentClip->w * (0.0030) *screenW_) + add;
 	textureH = (currentClip->h * (0.0032) *screenH_) + add;
 }
 
-void Player::renderPlayer()
+void Player::renderPlayer(SDL_Renderer* gRenderer)
 {
 	//Render current frame
 	render(posX, posY, currentClip, 0, NULL, flipType, gRenderer, textureW, textureH);
