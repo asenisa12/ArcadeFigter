@@ -32,13 +32,13 @@ class Player : public GameObject
 	
 	std::string path_;
 
-	bool punch();
-	bool jump();
-	bool run();
-	bool moveRight(bool punching);
-	bool moveLeft(bool punching);
-	bool moveUp();
-	bool moveDown();
+	void punch();
+	void jump();
+	void run();
+	void moveRight();
+	void moveLeft();
+	void moveUp();
+	void moveDown();
 	bool checkKeys();
 
 	void resizeClips();
