@@ -198,7 +198,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 			lastclip = WALKING_ANIMATION_FRAMES_END;
 			firstclip = 5;
 		}
-
+		//checks if the moving kes are pressed
 		if (checkKeys())
 		{
 			frame++;
