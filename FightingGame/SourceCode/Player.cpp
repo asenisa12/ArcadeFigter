@@ -108,10 +108,10 @@ void Player::run()
 void Player::moveRight()
 {
 	
-		//max x = 92% from screen w
-		if (posX < (screenW_*(0.92)))
-			posX += movSpeed;
-		flipType = SDL_FLIP_NONE;
+	//max x = 92% from screen w
+	if (posX < (screenW_*(0.92)))
+		posX += movSpeed;
+	flipType = SDL_FLIP_NONE;
 }
 
 void Player::moveLeft()
