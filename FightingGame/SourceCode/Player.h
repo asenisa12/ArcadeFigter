@@ -39,6 +39,11 @@ class Player : public GameObject
 	bool moveLeft(bool punching);
 	bool moveUp();
 	bool moveDown();
+	bool checkKeys();
+
+	void resizeClips();
+	void manageCameraPos(SDL_Rect* camera);
+
 public:
 	Player(std::string path, int screenH, int screenW);
 	~Player();

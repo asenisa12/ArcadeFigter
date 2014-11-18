@@ -172,6 +172,34 @@ bool Player::moveDown()
 	return false;
 }
 
+bool Player::checkKeys()
+{
+	if (currentKeyStates[SDL_SCANCODE_LEFT] || (currentKeyStates[SDL_SCANCODE_RIGHT])
+		|| currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_UP])
+		return true;
+	return false;
+	
+}
+
+void Player::manageCameraPos(SDL_Rect* camera)
+{
+	//last x position on screen = 90% from screen W 
+	if (posX > screenW_*(0.90) && camera_pos < 5){
+		camera_pos++;
+		camera->x += screenW_;
+		posX = posX - screenW_*(0.90);
+	}
+}
+
+void Player::resizeClips()
+{
+	currentClip = &Clips[frame / 4];
+	//the height or width of the texture = clip w or h * 0.3% or 0.32% 
+	//+ additional x or y pos if the charracter gets closer or away
+	textureW = (currentClip->w * (0.0030) *screenW_) + add;
+	textureH = (currentClip->h * (0.0032) *screenH_) + add;
+}
+
 void Player::doActions(SDL_Event e, SDL_Rect* camera)
 {
 	currentKeyStates = SDL_GetKeyboardState(NULL);
@@ -185,8 +213,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 				lastclip = WALKING_ANIMATION_FRAMES_END;
 				firstclip = 5;
 			}
-			if (currentKeyStates[SDL_SCANCODE_LEFT] || (currentKeyStates[SDL_SCANCODE_RIGHT])
-				|| currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_UP])
+			if (checkKeys())
 			{
 				frame++;
 			}
@@ -209,27 +236,15 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 		}
 	}
 	
-
+	//Cycle animation
 	if (frame/4 >= lastclip )
 	{
 		frame = firstclip;
 	}
 	movSpeed = 3;
-	//Cycle animation
 
-
-	//last x position on screen = 90% from screen W 
-	if (posX > screenW_*(0.90) && camera_pos < 5){
-		camera_pos++;
-		camera->x += screenW_;
-		posX = posX - screenW_*(0.90);
-	}
-
-	currentClip = &Clips[frame / 4];
-	//the height or width of the texture = clip w or h * 0.3% or 0.32% 
-	//+ additional x or y pos if the charracter gets closer or away
-	textureW = (currentClip->w * (0.0030) *screenW_) + add;
-	textureH = (currentClip->h * (0.0032) *screenH_) + add;
+	manageCameraPos(camera);
+	resizeClips();
 }
 
 void Player::renderPlayer(SDL_Renderer* gRenderer)
