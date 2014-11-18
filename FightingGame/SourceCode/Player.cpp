@@ -49,7 +49,7 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 	}
 	return true;
 }
-bool Player::punch(const Uint8* currentKeyStates)
+bool Player::punch()
 {
 	if (currentKeyStates[SDL_SCANCODE_Q])
 	{
@@ -66,7 +66,7 @@ bool Player::punch(const Uint8* currentKeyStates)
 	return false;
 }
 
-bool Player::jump(const Uint8* currentKeyStates)
+bool Player::jump()
 {
 	if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping)
 	{
@@ -101,7 +101,7 @@ bool Player::jump(const Uint8* currentKeyStates)
 	return false;
 }
 
-bool Player::run(const Uint8* currentKeyStates)
+bool Player::run()
 {
 	if (currentKeyStates[SDL_SCANCODE_LSHIFT])
 	{
@@ -116,15 +116,71 @@ bool Player::run(const Uint8* currentKeyStates)
 	return false;
 }
 
+bool Player::moveRight(bool punching)
+{
+	if (currentKeyStates[SDL_SCANCODE_RIGHT] && !punching)
+	{
+		//max x = 92% from screen w
+		if (posX < (screenW_*(0.92)))
+			posX += movSpeed;
+		flipType = SDL_FLIP_NONE;
+		return true;
+	}
+	return false;
+}
+
+bool Player::moveLeft(bool punching)
+{
+	if (currentKeyStates[SDL_SCANCODE_LEFT] && !punching)
+	{
+		if (posX > 3)
+			posX -= movSpeed;
+		flipType = SDL_FLIP_HORIZONTAL;
+		return true;
+	}
+	return false;
+}
+
+bool Player::moveUp()
+{
+	if (currentKeyStates[SDL_SCANCODE_UP] && !jumping)
+	{
+		//max y = 42% form screen h
+		if (posY > (screenH_*(0.42))){
+			posY -= 2;
+			add--;
+			movSpeed -= 0.05;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool Player::moveDown()
+{
+	if (currentKeyStates[SDL_SCANCODE_DOWN] && !jumping)
+	{
+		//min y = 54% form screen h
+		if (posY < (screenH_*(0.54)))
+		{
+			posY += 2;
+			add++;
+			movSpeed += 0.05;
+		}
+		return true;
+	}
+	return false;
+}
+
 void Player::doActions(SDL_Event e, SDL_Rect* camera)
 {
-	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+	currentKeyStates = SDL_GetKeyboardState(NULL);
 	bool punching = false;
-	if (!jump(currentKeyStates))
+	if (!jump())
 	{
-		if (!(punching = punch(currentKeyStates)))
+		if (!(punching = punch()))
 		{
-			if (!run(currentKeyStates))
+			if (!run())
 			{
 				lastclip = WALKING_ANIMATION_FRAMES_END;
 				firstclip = 5;
@@ -142,38 +198,17 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 		}
 	}
 			
-	if (currentKeyStates[SDL_SCANCODE_LEFT] && !punching)
+	if (!moveRight(punching))
 	{
-		if (posX > 3)
-			posX -= movSpeed;
-		flipType = SDL_FLIP_HORIZONTAL;
-	}
-	else if (currentKeyStates[SDL_SCANCODE_RIGHT] && !punching)
-	{
-		//max x = 92% from screen w
-		if (posX < (screenW_*(0.92)))
-			posX += movSpeed;
-		flipType = SDL_FLIP_NONE;
-	}
-	else if (currentKeyStates[SDL_SCANCODE_UP] && !jumping)
-	{
-		//max y = 42% form screen h
-		if (posY > (screenH_*(0.42))){
-			posY -= 2;
-			add--;
-			movSpeed -= 0.05;
-		}
-	}
-	else if (currentKeyStates[SDL_SCANCODE_DOWN] && !jumping)
-	{
-		//min y = 54% form screen h
-		if (posY < (screenH_*(0.54)))
+		if (!moveLeft(punching))
 		{
-			posY += 2;
-			add++;
-			movSpeed += 0.05;
+			if (!moveUp())
+			{
+				moveDown();
+			}
 		}
 	}
+	
 
 	if (frame/4 >= lastclip )
 	{

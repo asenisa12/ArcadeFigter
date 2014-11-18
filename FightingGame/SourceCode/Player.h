@@ -16,6 +16,7 @@ class Player : public GameObject
 	double textureW, textureH;
 	double movSpeed;
 	bool jumping;
+	const Uint8* currentKeyStates;
 
 	static const int WALKING_ANIMATION_FRAMES_END = 12;
 	static const int RUNING_ANIMATION_FRAMES_END = 21;
@@ -31,9 +32,13 @@ class Player : public GameObject
 	
 	std::string path_;
 
-	bool punch(const Uint8* currentKeyStates);
-	bool jump(const Uint8* currentKeyStates);
-	bool run(const Uint8* currentKeyStates);
+	bool punch();
+	bool jump();
+	bool run();
+	bool moveRight(bool punching);
+	bool moveLeft(bool punching);
+	bool moveUp();
+	bool moveDown();
 public:
 	Player(std::string path, int screenH, int screenW);
 	~Player();

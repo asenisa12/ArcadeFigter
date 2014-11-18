@@ -22,46 +22,42 @@ bool GameBase::init()
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		return false;
 	}
-	else
-	{
 		//sets texture filtering to linear
-		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"1"))
-		{
-			printf("Warning: Linear texture filtering not enabled!");
-		}
-
-		gWindow_ = SDL_CreateWindow("Game DEMO", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			windowHeight, windowWidth, SDL_WINDOW_SHOWN);
-		if (gWindow_ == NULL)
-		{
-			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
-			return false;
-		}
-		else
-		{
-			gRenderer_ = SDL_CreateRenderer(gWindow_, -1, 
-				SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
-
-			if (gRenderer_ == NULL)
-			{
-				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-				return false;
-			}
-			else
-			{
-				//Initialize renderer color
-				SDL_SetRenderDrawColor(gRenderer_, 0xff, 0xff, 0xff, 0xff);
-
-				//Initialize PNG loading
-				int imgFlags = IMG_INIT_PNG;
-				if (!(IMG_Init(imgFlags)&IMG_INIT_PNG ))
-				{
-					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-					return false;
-				}
-			}
-		}
+	if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"1"))
+	{
+		printf("Warning: Linear texture filtering not enabled!");
 	}
+
+	gWindow_ = SDL_CreateWindow("Game DEMO", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		windowHeight, windowWidth, SDL_WINDOW_SHOWN);
+	if (gWindow_ == NULL)
+	{
+		printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
+		return false;
+	}
+	
+	gRenderer_ = SDL_CreateRenderer(gWindow_, -1, 
+		SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
+
+	if (gRenderer_ == NULL)
+	{
+		printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+		return false;
+	}
+
+	//Initialize renderer color
+	SDL_SetRenderDrawColor(gRenderer_, 0xff, 0xff, 0xff, 0xff);
+
+	//Initialize PNG loading
+	int imgFlags = IMG_INIT_PNG;
+	if (!(IMG_Init(imgFlags)&IMG_INIT_PNG ))
+	{
+		printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+		return false;
+	}
+
+
+
 
 	return true;
 }
