@@ -5,4 +5,5 @@
 #include "GameBase.h"
 #include "GameObject.h"
 #include "BackGround.h"
+#include "GameButton.h"
 #include <string>

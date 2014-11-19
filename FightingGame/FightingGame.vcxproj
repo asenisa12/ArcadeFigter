@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="SourceCode\BackGround.cpp" />
     <ClCompile Include="SourceCode\GameBase.cpp" />
+    <ClCompile Include="SourceCode\GameButton.cpp" />
     <ClCompile Include="SourceCode\GameObject.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\Player.cpp" />
@@ -22,6 +23,7 @@
     <ClInclude Include="SourceCode\Enemy1.h" />
     <ClInclude Include="SourceCode\GameBase.h" />
     <ClInclude Include="SourceCode\GameHeaders.h" />
+    <ClInclude Include="SourceCode\GameButton.h" />
     <ClInclude Include="SourceCode\GameObject.h" />
     <ClInclude Include="SourceCode\Player.h" />
   </ItemGroup>

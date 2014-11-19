@@ -28,25 +28,23 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 		printf("Failed to load walking animation texture!\n");
 		return false;
 	}
-	else
+	int x = 0;
+	int y = 0;
+	for (int i = 0; i < PUNCH_ANIMATION_FRAMES_END; i++)
 	{
-		int x = 0;
-		int y = 0;
-		for (int i = 0; i < PUNCH_ANIMATION_FRAMES_END; i++)
-		{
 
-			if (i == WALKING_ANIMATION_FRAMES_END ||
-				i==JUMPING_ANIMATION_FRAMES_END || i == RUNING_ANIMATION_FRAMES_END){
-				x = 0;
-				y += CLIP_H;
-			}
-			Clips[i].x = x;
-			Clips[i].y = y;
-			Clips[i].w = CLIP_W;
-			Clips[i].h = CLIP_H;
-			x += CLIP_W;
+		if (i == WALKING_ANIMATION_FRAMES_END ||
+			i==JUMPING_ANIMATION_FRAMES_END || i == RUNING_ANIMATION_FRAMES_END){
+			x = 0;
+			y += CLIP_H;
 		}
+		Clips[i].x = x;
+		Clips[i].y = y;
+		Clips[i].w = CLIP_W;
+		Clips[i].h = CLIP_H;
+		x += CLIP_W;
 	}
+
 	return true;
 }
 void Player::punch()
