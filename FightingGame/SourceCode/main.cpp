@@ -1,45 +1,23 @@
-#include "GameHeaders.h"
+#include "MainGameHeader.h"
 
-static const int SCREEN_WIDTH = 640;
-static const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
-bool started;
 SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 SDL_Event gameEvent;
 
 GameBase mainGame(SCREEN_WIDTH, SCREEN_HEIGHT);
+
 BackGround backGroundLevel1("Textures/Level1.png");
-Player player1("Textures/Mustafa1.png",SCREEN_WIDTH, SCREEN_HEIGHT);
-GameButton startButton(SCREEN_WIDTH, SCREEN_HEIGHT);
+BackGround backGroundMenu("Textures/MenuBackground.png");
+Player player1("Textures/Mustafa1.png", SCREEN_WIDTH, SCREEN_HEIGHT);
+GameButton startButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT/5);
+GameButton exitButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH/5, SCREEN_HEIGHT/1.5);
 
-void update()
-{
-	int a = SCREEN_WIDTH;
-	player1.doActions(gameEvent, &camera);
-	if (!started)
-	{
-		started = startButton.isPressed(&gameEvent);
-	}
-}
+bool started;
+bool quit = false;
 
-void render()
-{
-	SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderClear(mainGame.getRenderer());
 
-	if (started){
-		backGroundLevel1.renderBack(&camera, player1.getX(), mainGame.getRenderer());
-		player1.renderPlayer(mainGame.getRenderer());
-	}
-	else
-	{
-		startButton.renderButton(mainGame.getRenderer());
-	}
-
-	SDL_RenderPresent(mainGame.getRenderer());
-}
-
-void getInput();
 
 int main(int argc, char* argv[])
 {
@@ -50,8 +28,7 @@ int main(int argc, char* argv[])
 	{	
 
 		
-		if (!player1.loadMedia(mainGame.getRenderer()) || !backGroundLevel1.loadMedia(mainGame.getRenderer()) ||
-			!startButton.loadMedia("Textures/buttons.png",mainGame.getRenderer()))
+		if (!loadMedia())
 		{
 			printf("Can't load media!");
 		}
@@ -59,7 +36,6 @@ int main(int argc, char* argv[])
 		{
 			
 			started = false;
-			bool quit = false;
 
 			//game loop
 			while (!quit)

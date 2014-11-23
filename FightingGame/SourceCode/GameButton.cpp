@@ -1,8 +1,8 @@
 #include "GameButton.h"
 
-GameButton::GameButton(int screenW, int screenH)
+GameButton::GameButton(int screenW, int screenH, int posX, int posY)
 	:width(screenW / 6), height(screenH / 6), 
-	posX(screenW / 3 - width), posY(screenH / 3 - height), framesToEnd(0)
+	posX_(posX), posY_(posY), framesToEnd(0)
 {}
 
 bool GameButton::loadMedia(std::string path, SDL_Renderer* gRender)
@@ -38,22 +38,22 @@ bool GameButton::isPressed(SDL_Event* Event)
 		bool inside = true;
 
 		//Mouse is left of the button
-		if (x < posX)
+		if (x < posX_)
 		{
 			inside = false;
 		}
 		//Mouse is right of the button
-		else if (x > posX + width)
+		else if (x > posX_ + width)
 		{
 			inside = false;
 		}
 		//Mouse above the button
-		else if (y < posY)
+		else if (y < posY_)
 		{
 			inside = false;
 		}
 		//Mouse below the button
-		else if (y > posY + height)
+		else if (y > posY_ + height)
 		{
 			inside = false;
 		}
@@ -78,5 +78,5 @@ bool GameButton::isPressed(SDL_Event* Event)
 
 void GameButton::renderButton(SDL_Renderer *gRender){
 	//Render current frame
-	render(posX, posY, &buttonState[currentState],0, NULL, SDL_FLIP_NONE, gRender, width, height);
+	render(posX_, posY_, &buttonState[currentState],0, NULL, SDL_FLIP_NONE, gRender, width, height);
 }

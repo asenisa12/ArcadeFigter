@@ -13,11 +13,11 @@ class GameButton :public GameObject
 
 	int framesToEnd;
 	int currentState;
-	int posX, posY;
+	int posX_, posY_;
 	int width, height;
 	SDL_Rect buttonState[BUTTON_CLIPS];
 public:
-	GameButton(int screenW, int screenH);
+	GameButton(int screenW, int screenH, int posX, int posY);
 	bool loadMedia(std::string path, SDL_Renderer* gRenderer);
 	bool isPressed(SDL_Event *keyEvent);
 	void renderButton(SDL_Renderer *gRender);

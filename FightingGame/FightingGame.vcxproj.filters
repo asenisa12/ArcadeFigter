@@ -33,6 +33,9 @@
     <ClCompile Include="SourceCode\GameButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\MainGameHeader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\GameBase.h">
@@ -47,13 +50,13 @@
     <ClInclude Include="SourceCode\BackGround.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\GameHeaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\Enemy1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\GameButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\MainGameHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
