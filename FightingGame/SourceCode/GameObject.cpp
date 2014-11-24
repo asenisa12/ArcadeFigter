@@ -25,7 +25,7 @@ bool GameObject::LoadFromFile(std::string path, SDL_Renderer* gRenderer)
 		else
 		{
 			mWidth = loadedSurface->w;
-			mHeight = loadedSurface->h;
+			mHigth = loadedSurface->h;
 		}
 		SDL_FreeSurface(loadedSurface);
 	}
@@ -39,7 +39,7 @@ void GameObject::free(){
 		SDL_DestroyTexture(objTexture);
 		objTexture = NULL;
 		mWidth = 0;
-		mHeight = 0;
+		mHigth = 0;
 	}
 }
 void GameObject::setAlpha(Uint8 alpha)
@@ -70,7 +70,17 @@ int GameObject::getWidth()
 	return mWidth;
 }
 
-int GameObject::getHeight()
+int GameObject::getHigth()
 {
-	return mHeight;
+	return mHigth;
 }
+int GameObject::getX()
+{
+	return posX_;
+}
+
+int GameObject::getY()
+{
+	return posY_;
+}
+

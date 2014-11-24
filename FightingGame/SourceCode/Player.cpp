@@ -2,8 +2,9 @@
 
 Player::Player(std::string path,int screenW, int screenH)
 	:path_(path), frame(0), flipType(SDL_FLIP_NONE), 
-	screenH_(screenH), screenW_(screenW) 
+	screenH_(screenH), screenW_(screenW)
 {
+	moveDir={ true, true, true, true };
 	int add = 0;
 	camera_pos = 1;
 	//movement speed == 0.625% from screen w
@@ -20,8 +21,8 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 {
 	/*textureH = screenH_*(0.26); 
 	textureW = screenW_*(0.17);*/
-	posX = (screenW_ - textureW) / 2; 
-	posY = screenH_*(0.43);
+	posX_ = (screenW_ - textureW) / 2; 
+	posY_ = screenH_*(0.43);
 
 	if (!LoadFromFile(path_.c_str(), gRenderer))
 	{
@@ -75,7 +76,7 @@ void Player::jump()
 	{
 		jumpH++;
 		if (jumpH <= 20){
-			posY -= 10;
+			posY_ -= 10;
 		}
 		else
 		{
@@ -83,7 +84,7 @@ void Player::jump()
 				jumping = false;
 				jumpH = 0;
 			}
-			posY += 10;
+			posY_ += 10;
 		}
 
 	}
@@ -107,16 +108,16 @@ void Player::moveRight()
 {
 	
 	//max x = 92% from screen w
-	if (posX < (screenW_*(0.92)))
-		posX += movSpeed;
+	if (posX_ < (screenW_*(0.92)) && moveDir.right)
+		posX_ += movSpeed;
 	flipType = SDL_FLIP_NONE;
 }
 
 void Player::moveLeft()
 {
 
-	if (posX > 3)
-		posX -= movSpeed;
+	if (posX_ > 3 && moveDir.left )
+		posX_ -= movSpeed;
 	flipType = SDL_FLIP_HORIZONTAL;
 	
 }
@@ -124,8 +125,8 @@ void Player::moveLeft()
 void Player::moveUp()
 {
 	//max y = 42% form screen h
-	if (posY > (screenH_*(0.42))){
-		posY -= 2;
+	if (posY_ > (screenH_*(0.42)) && moveDir.up){
+		posY_ -= 2;
 		add--;
 		movSpeed -= 0.05;
 	}
@@ -135,9 +136,9 @@ void Player::moveUp()
 void Player::moveDown()
 {
 	//min y = 54% form screen h
-	if (posY < (screenH_*(0.54)))
+	if (posY_ < (screenH_*(0.54)) && moveDir.down)
 	{
-		posY += 2;
+		posY_ += 2;
 		add++;
 		movSpeed += 0.05;
 	}
@@ -156,10 +157,10 @@ bool Player::checkKeys()
 void Player::manageCameraPos(SDL_Rect* camera)
 {
 	//last x position on screen = 90% from screen W 
-	if (posX > screenW_*(0.90) && camera_pos < 5){
+	if (posX_ > screenW_*(0.90) && camera_pos < 5){
 		camera_pos++;
 		camera->x += screenW_;
-		posX = posX - screenW_*(0.90);
+		posX_ = posX_ - screenW_*(0.90);
 	}
 }
 
@@ -172,8 +173,46 @@ void Player::resizeClips()
 	textureH = (currentClip->h * (0.0032) *screenH_) + add;
 }
 
-void Player::doActions(SDL_Event e, SDL_Rect* camera)
+bool Player::collision(GameObject* enemy[])
 {
+	bool blocked = false;
+	for (int i = 0; i < 2; i++)
+	{
+		if (abs(posX_ + textureW/2 - enemy[i]->getX()) < 5)
+		{
+			printf("player pos: %d, npc pos: %d", posX_, enemy[i]->getX());
+			
+			//right
+			if (enemy[i]->getX() + enemy[i]->getWidth() > posX_)
+			{
+				blocked = true;
+				moveDir.left = false;
+			}
+			if (enemy[i]->getX() < (posX_+textureW))
+			{
+				blocked = true;
+				moveDir.right = false;
+			}
+		}
+		else
+		{
+			if (!blocked)
+			{
+				moveDir.left = true;
+				moveDir.right = true;
+			}
+		}
+		
+		if (abs(posY_ - enemy[i]->getY()) < 2)
+			return true;
+	}
+	return false;
+}
+
+void Player::doActions(SDL_Event e, SDL_Rect* camera, GameObject* enemy[])
+{
+	collision(enemy);
+
 	currentKeyStates = SDL_GetKeyboardState(NULL);
 	bool punching = false;
 
@@ -238,21 +277,12 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera)
 void Player::renderPlayer(SDL_Renderer* gRenderer)
 {
 	//Render current frame
-	render(posX, posY, currentClip, 0, NULL, flipType, gRenderer, textureW, textureH);
+	render(posX_, posY_, currentClip, 0, NULL, flipType, gRenderer, textureW, textureH);
 
 }
 
 void Player::changePosX(int changedX)
 {
-	posX = changedX;
+	posX_ = changedX;
 }
 
-int Player::getX()
-{
-	return posX;
-}
-
-int Player::getY()
-{
-	return posY;
-}

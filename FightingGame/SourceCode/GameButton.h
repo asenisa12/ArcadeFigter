@@ -13,7 +13,6 @@ class GameButton :public GameObject
 
 	int framesToEnd;
 	int currentState;
-	int posX_, posY_;
 	int width, height;
 	SDL_Rect buttonState[BUTTON_CLIPS];
 public:

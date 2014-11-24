@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceCode\BackGround.cpp" />
+    <ClCompile Include="SourceCode\Enemy1.cpp" />
     <ClCompile Include="SourceCode\GameBase.cpp" />
     <ClCompile Include="SourceCode\GameButton.cpp" />
     <ClCompile Include="SourceCode\GameObject.cpp" />

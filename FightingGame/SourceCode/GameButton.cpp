@@ -1,9 +1,11 @@
 #include "GameButton.h"
 
 GameButton::GameButton(int screenW, int screenH, int posX, int posY)
-	:width(screenW / 6), height(screenH / 6), 
-	posX_(posX), posY_(posY), framesToEnd(0)
-{}
+	:width(screenW / 6), height(screenH / 6), framesToEnd(0)
+{
+	posX_ = posX; 
+	posY_ = posY;
+}
 
 bool GameButton::loadMedia(std::string path, SDL_Renderer* gRender)
 {

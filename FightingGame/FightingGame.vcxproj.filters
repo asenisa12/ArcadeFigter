@@ -36,6 +36,9 @@
     <ClCompile Include="SourceCode\MainGameHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\Enemy1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\GameBase.h">

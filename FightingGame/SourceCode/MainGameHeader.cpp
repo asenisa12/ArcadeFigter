@@ -2,13 +2,16 @@
 
 void update()
 {
-	int a = SCREEN_WIDTH;
-	player1.doActions(gameEvent, &camera);
 	if (!started)
 	{
 		started = startButton.isPressed(&gameEvent);
 		if (!quit)
 			quit = exitButton.isPressed(&gameEvent);
+	}
+	else
+	{
+		player1.doActions(gameEvent, &camera, enemy);
+
 	}
 }
 
@@ -20,6 +23,8 @@ void render()
 	if (started){
 		backGroundLevel1.renderBack(&camera, player1.getX(), mainGame.getRenderer());
 		player1.renderPlayer(mainGame.getRenderer());
+		enemy1.renderEnemy1(mainGame.getRenderer());
+		enemy2.renderEnemy1(mainGame.getRenderer());
 	}
 	else
 	{
@@ -33,7 +38,12 @@ void render()
 
 bool loadMedia()
 {
+
+	enemy[0] = &enemy1;
+	enemy[1] = &enemy2;
 	if (!player1.loadMedia(mainGame.getRenderer())) return false;
+	if (!enemy1.loadMedia(mainGame.getRenderer())) return false;
+	if (!enemy2.loadMedia(mainGame.getRenderer())) return false;
 	if (!backGroundLevel1.loadMedia(mainGame.getRenderer())) return false;
 	if (!backGroundMenu.loadMedia(mainGame.getRenderer())) return false;
 	if (!startButton.loadMedia("Textures/StartButton.png", mainGame.getRenderer())) return false;

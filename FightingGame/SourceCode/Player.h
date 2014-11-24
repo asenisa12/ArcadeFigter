@@ -2,12 +2,14 @@
 #define PLAYER
 
 #include "GameObject.h"
+#include <cmath>  
 
 class Player : public GameObject
 {	
+	struct direction{ bool right; bool left; bool up; bool down; };
+	struct direction moveDir;
 	int add;
 	int camera_pos;
-	int posX, posY;
 	int jumpH;
 	int firstclip;
 	int lastclip;
@@ -42,6 +44,7 @@ class Player : public GameObject
 	bool checkKeys();
 
 	void resizeClips();
+	bool collision(GameObject* enemy[]);
 	void manageCameraPos(SDL_Rect* camera);
 
 public:
@@ -49,11 +52,9 @@ public:
 	~Player();
 	bool loadMedia(SDL_Renderer* gRenderer);
 	//implements key presses
-	void doActions(SDL_Event e, SDL_Rect* camera);
+	void doActions(SDL_Event e, SDL_Rect* camera, GameObject* enemy[]);
 	void renderPlayer(SDL_Renderer* gRenderer);
 	void changePosX(int changedX);
-	int getX();
-	int getY();
 };
 
 #endif

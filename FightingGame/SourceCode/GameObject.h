@@ -9,8 +9,9 @@
 class GameObject
 {	
 protected:
+	int posX_, posY_;
 	int mWidth;
-	int mHeight;
+	int mHigth;
 	SDL_Texture* objTexture;
 public:
 	bool LoadFromFile(std::string path, SDL_Renderer* gRenderer);
@@ -21,7 +22,9 @@ public:
 	void render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip,
 		SDL_Renderer* gRenderer,int w, int h);
 	int getWidth();
-	int getHeight();
+	int getHigth();
+	int getX();
+	int getY();
 };
 
 #endif
