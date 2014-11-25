@@ -173,40 +173,38 @@ void Player::resizeClips()
 	textureH = (currentClip->h * (0.0032) *screenH_) + add;
 }
 
-bool Player::collision(GameObject* enemy[])
+void Player::collision(GameObject* enemy[])
 {
+	moveDir.left = true;
+	moveDir.right = true;
 	bool blocked = false;
 	for (int i = 0; i < 2; i++)
 	{
-		if (abs(posX_ + textureW/2 - enemy[i]->getX()) < 5)
-		{
-			printf("player pos: %d, npc pos: %d", posX_, enemy[i]->getX());
+		//printf("player pos: %d, npc pos: %d", posX_, enemy[i]->getX());
 			
-			//right
-			if (enemy[i]->getX() + enemy[i]->getWidth() > posX_)
-			{
-				blocked = true;
-				moveDir.left = false;
-			}
-			if (enemy[i]->getX() < (posX_+textureW))
-			{
-				blocked = true;
-				moveDir.right = false;
-			}
-		}
-		else
+		int enemyLeft = enemy[i]->getX();
+		int enemyRight = enemy[i]->getX() + enemy[i]->getWidth()/2;
+
+		int playerLeft = posX_ + textureW/5;
+		int playerRight = posX_ + textureW/2;
+
+
+		if (abs(enemyRight-playerLeft)<5 && enemyRight<=playerLeft)
 		{
-			if (!blocked)
-			{
-				moveDir.left = true;
-				moveDir.right = true;
-			}
+			printf("lala\n");
+			blocked = true;
+			moveDir.left = false;
+		}
+		if (abs(enemyLeft - playerRight)<5 && enemyLeft >= playerRight)
+		{
+			printf("lala2 e:%d P:%d\n",enemyLeft, playerRight);
+			blocked = true;
+			moveDir.right = false;
 		}
 		
-		if (abs(posY_ - enemy[i]->getY()) < 2)
-			return true;
+		/*if (abs(posY_ - enemy[i]->getY()) < 2)
+			return true;*/
 	}
-	return false;
 }
 
 void Player::doActions(SDL_Event e, SDL_Rect* camera, GameObject* enemy[])

@@ -44,7 +44,7 @@ class Player : public GameObject
 	bool checkKeys();
 
 	void resizeClips();
-	bool collision(GameObject* enemy[]);
+	void collision(GameObject* enemy[]);
 	void manageCameraPos(SDL_Rect* camera);
 
 public:
