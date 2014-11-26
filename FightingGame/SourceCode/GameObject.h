@@ -10,8 +10,8 @@ class GameObject
 {	
 protected:
 	int posX_, posY_;
-	int mWidth;
-	int mHigth;
+	double mWidth;
+	double mHigth;
 	SDL_Texture* objTexture;
 public:
 	bool LoadFromFile(std::string path, SDL_Renderer* gRenderer);
@@ -23,6 +23,8 @@ public:
 		SDL_Renderer* gRenderer,int w, int h);
 	int getWidth();
 	int getHigth();
+	bool operator >(const GameObject &object)const;
+	bool operator <(const GameObject &object)const;
 	int getX();
 	int getY();
 };

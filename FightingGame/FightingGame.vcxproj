@@ -15,6 +15,7 @@
     <ClCompile Include="SourceCode\Enemy1.cpp" />
     <ClCompile Include="SourceCode\GameBase.cpp" />
     <ClCompile Include="SourceCode\GameButton.cpp" />
+    <ClCompile Include="SourceCode\GameCharacter.cpp" />
     <ClCompile Include="SourceCode\GameObject.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\MainGameHeader.cpp" />
@@ -24,6 +25,7 @@
     <ClInclude Include="SourceCode\BackGround.h" />
     <ClInclude Include="SourceCode\Enemy1.h" />
     <ClInclude Include="SourceCode\GameBase.h" />
+    <ClInclude Include="SourceCode\GameCharacter.h" />
     <ClInclude Include="SourceCode\MainGameHeader.h" />
     <ClInclude Include="SourceCode\GameButton.h" />
     <ClInclude Include="SourceCode\GameObject.h" />

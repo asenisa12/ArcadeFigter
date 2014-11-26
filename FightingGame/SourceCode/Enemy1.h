@@ -1,10 +1,10 @@
 #ifndef ENEMY_ONE
 #define ENEMY_ONE
 
-#include "GameObject.h"
+#include "GameCharacter.h"
 #include <string>
 
-class Enemy1 : public GameObject
+class Enemy1 : public GameCharacter
 {
 	int width, hight;
 	std::string path_;
@@ -13,7 +13,6 @@ public:
 	Enemy1(std::string path, int posX, int posY);
 	~Enemy1();
 	bool loadMedia(SDL_Renderer* renderer);
-	void renderEnemy1(SDL_Renderer* renderer);
 };
 
 #endif // !ENEMY_ONE

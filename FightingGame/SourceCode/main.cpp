@@ -4,8 +4,9 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int ENEMIES_LEVEL1 = 2;
 
-GameObject *enemy[ENEMIES_LEVEL1];
+GameCharacter *enemy[ENEMIES_LEVEL1+1];
 
+std::vector<GameCharacter*> characters;
 
 SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 SDL_Event gameEvent;
@@ -15,8 +16,8 @@ GameBase mainGame(SCREEN_WIDTH, SCREEN_HEIGHT);
 BackGround backGroundLevel1("Textures/Level1.png");
 BackGround backGroundMenu("Textures/MenuBackground.png");
 Player player1("Textures/Mustafa1.png", SCREEN_WIDTH, SCREEN_HEIGHT);
-Enemy1 enemy1("Textures/Ferris2.png", 500, 280);
-Enemy1 enemy2("Textures/Ferris2.png", 200, 280);
+Enemy1 enemy1("Textures/Enemy1.png", 500, 200);
+Enemy1 enemy2("Textures/Enemy1.png", 200, 200);
 GameButton startButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT/5);
 GameButton exitButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH/5, SCREEN_HEIGHT/1.5);
 

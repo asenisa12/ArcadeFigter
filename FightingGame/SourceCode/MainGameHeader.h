@@ -9,8 +9,11 @@
 #include "GameObject.h"
 #include "BackGround.h"
 #include "GameButton.h"
+#include "GameCharacter.h"
 #include "Enemy1.h"
 #include <string>
+#include <vector>
+#include <algorithm>
 
 
 
@@ -21,7 +24,8 @@ extern const int ENEMIES_LEVEL1;
 extern bool started;
 extern bool quit;
 
-extern GameObject* enemy[];
+extern GameCharacter* enemy[];
+extern std::vector<GameCharacter*> characters;
 
 extern SDL_Rect camera;
 extern SDL_Event gameEvent;
@@ -44,4 +48,12 @@ void getInput();
 
 bool loadMedia();
 
+struct greater_than_key
+{
+	 inline bool operator() (const GameCharacter* struct1, const GameCharacter* struct2)
+	{
+		 printf("sort\n");
+		return (( ((GameObject*)struct1)->getY() + ((GameObject*)struct1)->getWidth() )>( ((GameObject*)struct2)->getY() + ((GameObject*)struct2)->getWidth() ) );
+	}
+};
 #endif

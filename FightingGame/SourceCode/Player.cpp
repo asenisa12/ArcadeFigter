@@ -1,9 +1,10 @@
 #include "Player.h"
 
 Player::Player(std::string path,int screenW, int screenH)
-	:path_(path), frame(0), flipType(SDL_FLIP_NONE), 
+	:path_(path), frame(0),  
 	screenH_(screenH), screenW_(screenW)
 {
+	flipType = SDL_FLIP_NONE;
 	moveDir={ true, true, true, true };
 	int add = 0;
 	camera_pos = 1;
@@ -21,7 +22,7 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 {
 	/*textureH = screenH_*(0.26); 
 	textureW = screenW_*(0.17);*/
-	posX_ = (screenW_ - textureW) / 2; 
+	posX_ = (screenW_ - mWidth) / 2; 
 	posY_ = screenH_*(0.43);
 
 	if (!LoadFromFile(path_.c_str(), gRenderer))
@@ -169,11 +170,11 @@ void Player::resizeClips()
 	currentClip = &Clips[frame / 4];
 	//the height or width of the texture = clip w or h * 0.3% or 0.32% 
 	//+ additional x or y pos if the charracter gets closer or away
-	textureW = (currentClip->w * (0.0030) *screenW_) + add;
-	textureH = (currentClip->h * (0.0032) *screenH_) + add;
+	mWidth= (currentClip->w * (0.0030) *screenW_) + add;
+	mHigth = (currentClip->h * (0.0032) *screenH_) + add;
 }
 
-void Player::collision(GameObject* enemy[])
+void Player::collision(GameCharacter* enemy[])
 {
 	moveDir.left = true;
 	moveDir.right = true;
@@ -186,19 +187,19 @@ void Player::collision(GameObject* enemy[])
 		int enemyLeft = enemy[i]->getX();
 		int enemyRight = enemy[i]->getX() + enemy[i]->getWidth()/2;
 
-		int playerBottom = posY_ + textureH;
-		int playerLeft = posX_ + textureW/5;
-		int playerRight = posX_ + textureW/2;
+		int playerBottom = posY_ + mHigth;
+		int playerLeft = posX_ + mWidth / 5;
+		int playerRight = posX_ + mWidth / 2;
 
-		if (abs(enemyBottom - playerBottom) < 15)
+		if (abs(enemyBottom - playerBottom) < 10)
 		{
-			if (abs(enemyRight-playerLeft)<5 && enemyRight<=playerLeft)
+			if (abs(enemyRight-playerLeft)<5 && enemyRight<playerLeft)
 			{
 				printf("lala\n");
 				blocked = true;
 				moveDir.left = false;
 			}
-			if (abs(enemyLeft - playerRight)<5 && enemyLeft >= playerRight)
+			if (abs(enemyLeft - playerRight)<5 && enemyLeft > playerRight)
 			{
 				printf("lala2 e:%d P:%d\n",enemyLeft, playerRight);
 				blocked = true;
@@ -211,7 +212,7 @@ void Player::collision(GameObject* enemy[])
 	}
 }
 
-void Player::doActions(SDL_Event e, SDL_Rect* camera, GameObject* enemy[])
+void Player::doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[])
 {
 	collision(enemy);
 
@@ -276,12 +277,6 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera, GameObject* enemy[])
 	resizeClips();
 }
 
-void Player::renderPlayer(SDL_Renderer* gRenderer)
-{
-	//Render current frame
-	render(posX_, posY_, currentClip, 0, NULL, flipType, gRenderer, textureW, textureH);
-
-}
 
 void Player::changePosX(int changedX)
 {

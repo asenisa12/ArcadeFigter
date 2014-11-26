@@ -1,10 +1,10 @@
 #ifndef PLAYER
 #define PLAYER
 
-#include "GameObject.h"
+#include "GameCharacter.h"
 #include <cmath>  
 
-class Player : public GameObject
+class Player : public GameCharacter
 {	
 	struct direction{ bool right; bool left; bool up; bool down; };
 	struct direction moveDir;
@@ -15,7 +15,6 @@ class Player : public GameObject
 	int lastclip;
 	int frame;
 	int screenH_, screenW_;
-	double textureW, textureH;
 	double movSpeed;
 	bool jumping;
 	const Uint8* currentKeyStates;
@@ -28,8 +27,6 @@ class Player : public GameObject
 	static const int CLIP_H = 100;
 	static const int CLIP_W = 100;
 
-	SDL_RendererFlip flipType;
-	SDL_Rect* currentClip;
 	SDL_Rect Clips[PUNCH_ANIMATION_FRAMES_END];
 	
 	std::string path_;
@@ -44,7 +41,7 @@ class Player : public GameObject
 	bool checkKeys();
 
 	void resizeClips();
-	void collision(GameObject* enemy[]);
+	void collision(GameCharacter* enemy[]);
 	void manageCameraPos(SDL_Rect* camera);
 
 public:
@@ -52,8 +49,7 @@ public:
 	~Player();
 	bool loadMedia(SDL_Renderer* gRenderer);
 	//implements key presses
-	void doActions(SDL_Event e, SDL_Rect* camera, GameObject* enemy[]);
-	void renderPlayer(SDL_Renderer* gRenderer);
+	void doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[]);
 	void changePosX(int changedX);
 };
 

@@ -65,6 +65,16 @@ void GameObject::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* c
 	SDL_RenderCopyEx(gRenderer, objTexture, clip, &renderQuad, angle, center, flip);
 }
 
+bool GameObject::operator>(const GameObject &object)const
+{
+	return (posY_ + mHigth > (object.posY_ + object.mHigth));
+}
+
+bool GameObject::operator<(const GameObject &object)const
+{
+	return (posY_+mHigth < (object.posY_+object.mHigth));
+}
+
 int GameObject::getWidth()
 {
 	return mWidth;
