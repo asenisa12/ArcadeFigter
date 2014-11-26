@@ -182,24 +182,28 @@ void Player::collision(GameObject* enemy[])
 	{
 		//printf("player pos: %d, npc pos: %d", posX_, enemy[i]->getX());
 			
+		int enemyBottom = enemy[i]->getY() + enemy[i]->getHigth();
 		int enemyLeft = enemy[i]->getX();
 		int enemyRight = enemy[i]->getX() + enemy[i]->getWidth()/2;
 
+		int playerBottom = posY_ + textureH;
 		int playerLeft = posX_ + textureW/5;
 		int playerRight = posX_ + textureW/2;
 
-
-		if (abs(enemyRight-playerLeft)<5 && enemyRight<=playerLeft)
+		if (abs(enemyBottom - playerBottom) < 15)
 		{
-			printf("lala\n");
-			blocked = true;
-			moveDir.left = false;
-		}
-		if (abs(enemyLeft - playerRight)<5 && enemyLeft >= playerRight)
-		{
-			printf("lala2 e:%d P:%d\n",enemyLeft, playerRight);
-			blocked = true;
-			moveDir.right = false;
+			if (abs(enemyRight-playerLeft)<5 && enemyRight<=playerLeft)
+			{
+				printf("lala\n");
+				blocked = true;
+				moveDir.left = false;
+			}
+			if (abs(enemyLeft - playerRight)<5 && enemyLeft >= playerRight)
+			{
+				printf("lala2 e:%d P:%d\n",enemyLeft, playerRight);
+				blocked = true;
+				moveDir.right = false;
+			}
 		}
 		
 		/*if (abs(posY_ - enemy[i]->getY()) < 2)
