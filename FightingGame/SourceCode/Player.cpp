@@ -187,7 +187,7 @@ void Player::collision(GameCharacter* enemy[])
 		int playerLeft = posX_ + mWidth / 5;
 		int playerRight = posX_ + mWidth / 2;
 
-		if (abs(enemyBottom - playerBottom) < 10)
+		if (abs(enemyBottom - playerBottom) < 30)
 		{
 			if (abs(enemyRight-playerLeft)<5 && enemyRight<playerLeft)
 			{
@@ -197,7 +197,7 @@ void Player::collision(GameCharacter* enemy[])
 			{
 				moveDir.right = false;
 			}
-			if (abs(playerLeft - enemyLeft) < 10)
+			if (abs(playerLeft - enemyLeft) < 50)
 			{
 				if (enemyBottom < playerBottom)
 				{
