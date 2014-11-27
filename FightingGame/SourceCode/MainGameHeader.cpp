@@ -1,5 +1,10 @@
 #include "MainGameHeader.h"
 
+inline bool greater_than::operator() (GameCharacter* struct1, GameCharacter* struct2)
+{
+	return (struct1->getBottomY()< struct2->getBottomY());
+}
+
 void update()
 {
 	if (!started)
@@ -11,7 +16,7 @@ void update()
 	else
 	{
 		player1.doActions(gameEvent, &camera, enemy);
-		std::sort(characters.begin(), characters.end(), greater_than_key());
+		std::sort(characters.begin(), characters.end(), greater_than());
 	}
 }
 
@@ -19,12 +24,10 @@ void render()
 {
 	SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(mainGame.getRenderer());
-
 	if (started){
 		backGroundLevel1.renderBack(&camera, player1.getX(), mainGame.getRenderer());
-		//std::reverse(characters.begin(), characters.end());
 		for (std::vector<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); ++it){
-			printf("Y:%d\n", (*it)->getY() + (*it)->getWidth());
+			printf("Y:%d\n", (*it)->getBottomY());
 			(*it)->renderCharacter(mainGame.getRenderer());
 		}
 	}
@@ -41,8 +44,6 @@ void render()
 bool loadMedia()
 {
 
-	if (enemy[0] > enemy[1])
-		printf("aa");
 	enemy[0] = &enemy1;
 	enemy[1] = &enemy2;
 	enemy[2] = &player1;

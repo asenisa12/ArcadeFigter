@@ -5,7 +5,6 @@ Player::Player(std::string path,int screenW, int screenH)
 	screenH_(screenH), screenW_(screenW)
 {
 	flipType = SDL_FLIP_NONE;
-	moveDir={ true, true, true, true };
 	int add = 0;
 	camera_pos = 1;
 	//movement speed == 0.625% from screen w
@@ -176,12 +175,9 @@ void Player::resizeClips()
 
 void Player::collision(GameCharacter* enemy[])
 {
-	moveDir.left = true;
-	moveDir.right = true;
-	bool blocked = false;
+	moveDir = { true, true, true, true };
 	for (int i = 0; i < 2; i++)
 	{
-		//printf("player pos: %d, npc pos: %d", posX_, enemy[i]->getX());
 			
 		int enemyBottom = enemy[i]->getY() + enemy[i]->getHigth();
 		int enemyLeft = enemy[i]->getX();
@@ -195,18 +191,25 @@ void Player::collision(GameCharacter* enemy[])
 		{
 			if (abs(enemyRight-playerLeft)<5 && enemyRight<playerLeft)
 			{
-				printf("lala\n");
-				blocked = true;
 				moveDir.left = false;
 			}
 			if (abs(enemyLeft - playerRight)<5 && enemyLeft > playerRight)
 			{
-				printf("lala2 e:%d P:%d\n",enemyLeft, playerRight);
-				blocked = true;
 				moveDir.right = false;
 			}
+			if (abs(playerLeft - enemyLeft) < 10)
+			{
+				if (enemyBottom < playerBottom)
+				{
+					moveDir.up = false;
+				}
+				if (enemyBottom > playerBottom)
+				{
+					moveDir.down = false;
+				}
+
+			}
 		}
-		
 		/*if (abs(posY_ - enemy[i]->getY()) < 2)
 			return true;*/
 	}

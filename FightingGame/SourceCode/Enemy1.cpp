@@ -15,8 +15,8 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 		printf("Failed to load walking animation texture!\n");
 		return false;
 	}
-	mWidth = 100;
-	mHigth = 200;
+	mWidth = 90;
+	mHigth = 160;
 	Clips[0] = {0,0,100,100};
 	currentClip = Clips;
 

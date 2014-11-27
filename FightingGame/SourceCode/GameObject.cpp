@@ -54,13 +54,6 @@ void GameObject::render(int x, int y, SDL_Rect* clip, double angle, SDL_Point* c
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, w, h };
 
-	//Set clip rendering dimensions
-	/*if (clip != NULL)
-	{
-		renderQuad.w = clip->w;
-		renderQuad.h = clip->h;
-	}*/
-
 	//Render to screen
 	SDL_RenderCopyEx(gRenderer, objTexture, clip, &renderQuad, angle, center, flip);
 }

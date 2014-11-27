@@ -48,12 +48,8 @@ void getInput();
 
 bool loadMedia();
 
-struct greater_than_key
+struct greater_than
 {
-	 inline bool operator() (const GameCharacter* struct1, const GameCharacter* struct2)
-	{
-		 printf("sort\n");
-		return (( ((GameObject*)struct1)->getY() + ((GameObject*)struct1)->getWidth() )>( ((GameObject*)struct2)->getY() + ((GameObject*)struct2)->getWidth() ) );
-	}
+	inline bool operator() (GameCharacter* struct1, GameCharacter* struct2);
 };
 #endif

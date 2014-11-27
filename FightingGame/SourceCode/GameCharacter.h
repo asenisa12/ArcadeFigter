@@ -10,6 +10,7 @@ protected:
 	SDL_RendererFlip flipType;
 public:
 	void renderCharacter(SDL_Renderer* gRenderer);
+	int getBottomY();
 };
 
 #endif
