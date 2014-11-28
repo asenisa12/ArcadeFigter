@@ -11,7 +11,6 @@ class Player : public GameCharacter
 	int jumpH;
 	int firstclip;
 	int lastclip;
-	int frame;
 
 	bool jumping;
 	const Uint8* currentKeyStates;
@@ -33,7 +32,6 @@ class Player : public GameCharacter
 	void run();
 	bool checkKeys();
 
-	void resizeClips();
 	void manageCameraPos(SDL_Rect* camera);
 
 public:

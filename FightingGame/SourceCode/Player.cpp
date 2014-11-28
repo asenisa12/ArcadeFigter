@@ -1,8 +1,9 @@
 #include "Player.h"
 
 Player::Player(std::string path,int screenW, int screenH)
-	:path_(path), frame(0)  	
+	:path_(path) 	
 {
+	frame = 0;
 	screenH_=screenH; 
 	screenW_ = screenW;
 	flipType = SDL_FLIP_NONE;
@@ -126,18 +127,10 @@ void Player::manageCameraPos(SDL_Rect* camera)
 	}
 }
 
-void Player::resizeClips()
-{
-	currentClip = &Clips[frame / 4];
-	//the height or width of the texture = clip w or h * 0.3% or 0.32% 
-	//+ additional x or y pos if the charracter gets closer or away
-	mWidth= (currentClip->w * (0.0030) *screenW_) + add;
-	mHigth = (currentClip->h * (0.0032) *screenH_) + add;
-}
 
 void Player::doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[])
 {
-	collision(enemy);
+	collision(enemy,2);
 
 	currentKeyStates = SDL_GetKeyboardState(NULL);
 	bool punching = false;
@@ -197,7 +190,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[])
 	movSpeed = 3;
 
 	manageCameraPos(camera);
-	resizeClips();
+	resizeClips(Clips);
 }
 
 

@@ -14,13 +14,15 @@ protected:
 	
 	double movSpeed;
 	int add;
+	int frame;
 	int screenH_, screenW_;
 
 	void moveRight();
 	void moveLeft();
 	void moveUp();
 	void moveDown();
-	void collision(GameCharacter* enemy[]);
+	void resizeClips(SDL_Rect Clips[]);
+	void collision(GameCharacter* enemy[], int charactersCount);
 public:
 	void renderCharacter(SDL_Renderer* gRenderer);
 	int getBottomY();

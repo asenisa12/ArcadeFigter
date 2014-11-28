@@ -43,7 +43,7 @@ void GameCharacter::moveUp()
 void GameCharacter::moveDown()
 {
 	//min y = 54% form screen h
-	if (posY_ < (screenH_*(0.54)) && moveDir.down)
+	if (posY_ < (screenH_*(0.56)) && moveDir.down)
 	{
 		posY_ += 2;
 		add++;
@@ -52,10 +52,19 @@ void GameCharacter::moveDown()
 
 }
 
-void GameCharacter::collision(GameCharacter* enemy[])
+void GameCharacter::resizeClips(SDL_Rect Clips[])
+{
+	currentClip = &Clips[frame / 4];
+	//the height or width of the texture = clip w or h * 0.3% or 0.32% 
+	//+ additional x or y pos if the charracter gets closer or away
+	mWidth = (currentClip->w * (0.0030) *screenW_) + add;
+	mHigth = (currentClip->h * (0.0032) *screenH_) + add;
+}
+
+void GameCharacter::collision(GameCharacter* enemy[], int charactersCount)
 {
 	moveDir = { true, true, true, true };
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < charactersCount; i++)
 	{
 
 		int enemyBottom = enemy[i]->getY() + enemy[i]->getHigth();
