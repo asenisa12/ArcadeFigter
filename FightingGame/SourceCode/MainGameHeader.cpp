@@ -15,6 +15,7 @@ void update()
 	}
 	else
 	{
+		enemy1.doActions(enemy);
 		player1.doActions(gameEvent, &camera, enemy);
 		std::sort(characters.begin(), characters.end(), greater_than());
 	}

@@ -6,16 +6,13 @@
 
 class Player : public GameCharacter
 {	
-	struct direction{ bool right; bool left; bool up; bool down; };
-	struct direction moveDir;
 	int add;
 	int camera_pos;
 	int jumpH;
 	int firstclip;
 	int lastclip;
 	int frame;
-	int screenH_, screenW_;
-	double movSpeed;
+
 	bool jumping;
 	const Uint8* currentKeyStates;
 
@@ -34,14 +31,9 @@ class Player : public GameCharacter
 	void punch();
 	void jump();
 	void run();
-	void moveRight();
-	void moveLeft();
-	void moveUp();
-	void moveDown();
 	bool checkKeys();
 
 	void resizeClips();
-	void collision(GameCharacter* enemy[]);
 	void manageCameraPos(SDL_Rect* camera);
 
 public:

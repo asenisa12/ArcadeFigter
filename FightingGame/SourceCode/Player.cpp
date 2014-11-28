@@ -1,9 +1,10 @@
 #include "Player.h"
 
 Player::Player(std::string path,int screenW, int screenH)
-	:path_(path), frame(0),  
-	screenH_(screenH), screenW_(screenW)
+	:path_(path), frame(0)  	
 {
+	screenH_=screenH; 
+	screenW_ = screenW;
 	flipType = SDL_FLIP_NONE;
 	int add = 0;
 	camera_pos = 1;
@@ -104,51 +105,12 @@ void Player::run()
 
 }
 
-void Player::moveRight()
-{
-	
-	//max x = 92% from screen w
-	if (posX_ < (screenW_*(0.92)) && moveDir.right)
-		posX_ += movSpeed;
-	flipType = SDL_FLIP_NONE;
-}
-
-void Player::moveLeft()
-{
-
-	if (posX_ > 3 && moveDir.left )
-		posX_ -= movSpeed;
-	flipType = SDL_FLIP_HORIZONTAL;
-	
-}
-
-void Player::moveUp()
-{
-	//max y = 42% form screen h
-	if (posY_ > (screenH_*(0.42)) && moveDir.up){
-		posY_ -= 2;
-		add--;
-		movSpeed -= 0.05;
-	}
-	
-}
-
-void Player::moveDown()
-{
-	//min y = 54% form screen h
-	if (posY_ < (screenH_*(0.54)) && moveDir.down)
-	{
-		posY_ += 2;
-		add++;
-		movSpeed += 0.05;
-	}
-
-}
-
 bool Player::checkKeys()
 {
-	if (currentKeyStates[SDL_SCANCODE_LEFT] || (currentKeyStates[SDL_SCANCODE_RIGHT])
-		|| currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_UP])
+	if (currentKeyStates[SDL_SCANCODE_LEFT] || 
+		currentKeyStates[SDL_SCANCODE_RIGHT] || 
+		currentKeyStates[SDL_SCANCODE_DOWN] || 
+		currentKeyStates[SDL_SCANCODE_UP])
 		return true;
 	return false;
 	
@@ -171,48 +133,6 @@ void Player::resizeClips()
 	//+ additional x or y pos if the charracter gets closer or away
 	mWidth= (currentClip->w * (0.0030) *screenW_) + add;
 	mHigth = (currentClip->h * (0.0032) *screenH_) + add;
-}
-
-void Player::collision(GameCharacter* enemy[])
-{
-	moveDir = { true, true, true, true };
-	for (int i = 0; i < 2; i++)
-	{
-			
-		int enemyBottom = enemy[i]->getY() + enemy[i]->getHigth();
-		int enemyLeft = enemy[i]->getX();
-		int enemyRight = enemy[i]->getX() + enemy[i]->getWidth()/2;
-
-		int playerBottom = posY_ + mHigth;
-		int playerLeft = posX_ + mWidth / 5;
-		int playerRight = posX_ + mWidth / 2;
-
-		if (abs(enemyBottom - playerBottom) < 30)
-		{
-			if (abs(enemyRight-playerLeft)<5 && enemyRight<playerLeft)
-			{
-				moveDir.left = false;
-			}
-			if (abs(enemyLeft - playerRight)<5 && enemyLeft > playerRight)
-			{
-				moveDir.right = false;
-			}
-			if (abs(playerLeft - enemyLeft) < 50)
-			{
-				if (enemyBottom < playerBottom)
-				{
-					moveDir.up = false;
-				}
-				if (enemyBottom > playerBottom)
-				{
-					moveDir.down = false;
-				}
-
-			}
-		}
-		/*if (abs(posY_ - enemy[i]->getY()) < 2)
-			return true;*/
-	}
 }
 
 void Player::doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[])
