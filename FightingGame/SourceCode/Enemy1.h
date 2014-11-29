@@ -7,13 +7,20 @@
 class Enemy1 : public GameCharacter
 {
 	static const int WALKING_ANIMATION_END = 7;
-	static const int PUNCHING_ANIMATION_END = 13;
+	static const int PUNCHING_ANIMATION_END = 12;
+	static const int FALLING_ANIMATION_END = 18;
 
 	static const int CLIP_H = 100;
 	static const int CLIP_W = 100;
+	static const int FALLING_CLIP_W = 150;
 
+	int punchStart_count;
+	bool punched;
+
+	void punch();
+	void fall();
 	std::string path_;
-	SDL_Rect Clips[PUNCHING_ANIMATION_END];
+	SDL_Rect Clips[FALLING_ANIMATION_END];
 public:
 	Enemy1(std::string path, int posX, int posY,int screenW, int screenH);
 	~Enemy1();

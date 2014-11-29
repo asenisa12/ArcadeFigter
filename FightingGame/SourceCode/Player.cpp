@@ -10,7 +10,7 @@ Player::Player(std::string path,int screenW, int screenH)
 	int add = 0;
 	camera_pos = 1;
 	//movement speed == 0.625% from screen w
-	movSpeed =screenW_*0.00625;
+	movSpeed =screenW_*0.007;
 	objTexture = NULL;
 }
 
@@ -33,11 +33,13 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 	}
 	int x = 0;
 	int y = 0;
-	for (int i = 0; i < PUNCH_ANIMATION_FRAMES_END; i++)
+	for (int i = 0; i < FALLING_ANIMATION_FRAMES_END; i++)
 	{
 
 		if (i == WALKING_ANIMATION_FRAMES_END ||
-			i==JUMPING_ANIMATION_FRAMES_END || i == RUNING_ANIMATION_FRAMES_END){
+			i==JUMPING_ANIMATION_FRAMES_END || 
+			i == RUNING_ANIMATION_FRAMES_END ||
+			i== PUNCH_ANIMATION_FRAMES_END){
 			x = 0;
 			y += CLIP_H;
 		}
@@ -50,18 +52,17 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 
 	return true;
 }
+
 void Player::punch()
 {
+	currentCondition.punching = true;
+	animation(PUNCH_ANIMATION_FRAMES_END, JUMPING_ANIMATION_FRAMES_END);
+}
 
-	lastclip = PUNCH_ANIMATION_FRAMES_END;
-	firstclip = JUMPING_ANIMATION_FRAMES_END * 4;
-	if (frame / 4 < JUMPING_ANIMATION_FRAMES_END ||
-		frame / 4 >= lastclip)
-	{
-		frame = firstclip;
-	}
-	frame++;
-
+void Player::fall()
+{
+	currentCondition.punched = true;
+	animation(FALLING_ANIMATION_FRAMES_END, PUNCH_ANIMATION_FRAMES_END);
 }
 
 void Player::jump()
@@ -127,17 +128,46 @@ void Player::manageCameraPos(SDL_Rect* camera)
 	}
 }
 
+bool Player::punched(GameCharacter* enemy[], int last)
+{
+	for (int i = 0; i < last; i++)
+	{
+		enemyLeft = enemy[i]->getX();
+		enemyRight = enemy[i]->getX() + enemy[i]->getWidth() / 2;
+
+		playerBottom = posY_ + mHigth;
+		playerLeft = posX_ + mWidth / 5;
+
+		if (enemy[i]->punching() && !enemy[i]->getCondition().punched)
+		{
+			/*if (characterInLeft()){
+				flipType = SDL_FLIP_HORIZONTAL;
+			}
+			else if (characterInRigh()){
+				flipType = SDL_FLIP_NONE;
+			}
+				*/
+			return true;
+		}
+	}
+	return false;
+}
 
 void Player::doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[])
 {
-	collision(enemy,2);
-
 	currentKeyStates = SDL_GetKeyboardState(NULL);
 	bool punching = false;
+	collision(enemy,2);
+	currentCondition = { false, false, false, false };
 
+	//printf("%d\n\n", punched);
 	if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping)
 	{
 		jump();
+	}
+	else if (punched(enemy,2))
+	{
+		fall();
 	}
 	else if (currentKeyStates[SDL_SCANCODE_Q])
 	{

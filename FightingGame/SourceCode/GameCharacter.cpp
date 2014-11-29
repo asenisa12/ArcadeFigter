@@ -16,7 +16,10 @@ void GameCharacter::moveRight()
 
 	//max x = 92% from screen w
 	if (posX_ < (screenW_*(0.92)) && moveDir.right)
+	{
 		posX_ += movSpeed;
+		currentCondition.moving = true;
+	}
 	flipType = SDL_FLIP_NONE;
 }
 
@@ -24,8 +27,11 @@ void GameCharacter::moveLeft()
 {
 
 	if (posX_ > 3 && moveDir.left)
+	{
 		posX_ -= movSpeed;
-	flipType = SDL_FLIP_HORIZONTAL;
+		currentCondition.moving = true;
+	}
+		flipType = SDL_FLIP_HORIZONTAL;
 
 }
 
@@ -33,6 +39,7 @@ void GameCharacter::moveUp()
 {
 	//max y = 42% form screen h
 	if (posY_ > (screenH_*(0.42)) && moveDir.up){
+		currentCondition.moving = true;
 		posY_ -= 2;
 		add--;
 		movSpeed -= 0.05;
@@ -45,10 +52,25 @@ void GameCharacter::moveDown()
 	//min y = 54% form screen h
 	if (posY_ < (screenH_*(0.56)) && moveDir.down)
 	{
+		currentCondition.moving = true;
 		posY_ += 2;
 		add++;
 		movSpeed += 0.05;
 	}
+
+}
+
+void GameCharacter::animation(int last, int first)
+{
+	currentCondition.punching = true;
+	lastclip = last;
+	firstclip = first * 4;
+	if (frame / 4 < first ||
+		frame / 4 >= lastclip)
+	{
+		frame = firstclip;
+	}
+	frame++;
 
 }
 
@@ -61,30 +83,48 @@ void GameCharacter::resizeClips(SDL_Rect Clips[])
 	mHigth = (currentClip->h * (0.0032) *screenH_) + add;
 }
 
+bool GameCharacter::characterInLeft()
+{
+	if (abs(enemyRight - playerLeft) < 5 && enemyRight < playerLeft)
+	{
+		return true;
+	}
+	return false;
+}
+bool GameCharacter::characterInRigh()
+{
+	if (abs(enemyLeft - playerRight) < 5 && enemyLeft > playerRight)
+	{
+		return true;
+	}
+	return false;
+}
+
 void GameCharacter::collision(GameCharacter* enemy[], int charactersCount)
 {
 	moveDir = { true, true, true, true };
 	for (int i = 0; i < charactersCount; i++)
 	{
 
-		int enemyBottom = enemy[i]->getY() + enemy[i]->getHigth();
-		int enemyLeft = enemy[i]->getX();
-		int enemyRight = enemy[i]->getX() + enemy[i]->getWidth() / 2;
+		enemyBottom = enemy[i]->getY() + enemy[i]->getHigth();
+		enemyLeft = enemy[i]->getX();
+		enemyRight = enemy[i]->getX() + enemy[i]->getWidth() / 2;
 
-		int playerBottom = posY_ + mHigth;
-		int playerLeft = posX_ + mWidth / 5;
-		int playerRight = posX_ + mWidth / 2;
+		playerBottom = posY_ + mHigth;
+		playerLeft = posX_ + mWidth / 5;
+		playerRight = posX_ + mWidth / 2;
 
-		if (abs(enemyBottom - playerBottom) < 20)
+		if (abs(enemyBottom - playerBottom) < 30)
 		{
-			if (abs(enemyRight - playerLeft)<5 && enemyRight<playerLeft)
+			if (characterInLeft())
 			{
 				moveDir.left = false;
 			}
-			if (abs(enemyLeft - playerRight)<5 && enemyLeft > playerRight)
+			if (characterInRigh())
 			{
 				moveDir.right = false;
 			}
+
 			if (abs(playerLeft - enemyLeft) < 50)
 			{
 				if (enemyBottom < playerBottom)
@@ -99,4 +139,14 @@ void GameCharacter::collision(GameCharacter* enemy[], int charactersCount)
 			}
 		}
 	}
+}
+
+bool GameCharacter::punching()
+{
+	return currentCondition.punching;
+}
+
+GameCharacter::condition GameCharacter::getCondition()
+{
+	return currentCondition;
 }

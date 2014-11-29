@@ -29,7 +29,7 @@ void render()
 	if (started){
 		backGroundLevel1.renderBack(&camera, player1.getX(), mainGame.getRenderer());
 		for (std::vector<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); ++it){
-			printf("Y:%d\n", (*it)->getBottomY());
+			//printf("Y:%d\n", (*it)->getBottomY());
 			(*it)->renderCharacter(mainGame.getRenderer());
 		}
 	}

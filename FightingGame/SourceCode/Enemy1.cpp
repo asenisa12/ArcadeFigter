@@ -2,12 +2,13 @@
 
 Enemy1::Enemy1(std::string path, int posX, int posY, int screenW, int screenH)
 {
+	punchStart_count = 0;
 	screenH_ = screenH;
 	screenW_ = screenW;
 	path_ = path;
 	posX_ = posX;
 	posY_ = posY;
-	movSpeed = screenW_*0.004;
+	movSpeed = screenW_*0.005;
 	flipType = SDL_FLIP_NONE;
 }
 
@@ -22,9 +23,9 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 	mHigth = 160;
 	int x = 0;
 	int y = 0;
-	for (int i = 0; i < PUNCHING_ANIMATION_END;i++)
+	for (int i = 0; i < FALLING_ANIMATION_END;i++)
 	{
-		if (i == WALKING_ANIMATION_END)
+		if (i == WALKING_ANIMATION_END || i== PUNCHING_ANIMATION_END)
 		{
 			x = 0;
 			y += CLIP_H;
@@ -33,7 +34,12 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 		Clips[i].y = y;
 		Clips[i].w = CLIP_W;
 		Clips[i].h = CLIP_H;
-		x += CLIP_W;
+		if (i == 15 || i == 16)
+		{
+			x += FALLING_CLIP_W;
+		}
+		else x += CLIP_W;
+		
 	}
 
 	currentClip = Clips;
@@ -45,36 +51,77 @@ Enemy1::~Enemy1()
 	free();
 }
 
+void Enemy1::punch()
+{
+	animation(PUNCHING_ANIMATION_END, WALKING_ANIMATION_END);
+	currentCondition.punching = true;
+}
+
+void Enemy1::fall()
+{
+	currentCondition.punched = true;
+	animation(FALLING_ANIMATION_END, PUNCHING_ANIMATION_END);
+}
+
 void Enemy1::doActions(GameCharacter* character[])
 {
+	punched = false;
+	currentCondition = { false, false, false, false };
 	collision(character,3);
+	punched = character[2]->punching();
+	enemyLeft = character[2]->getX();
+	enemyRight = character[2]->getX() + character[2]->getWidth() / 2;
 	int playerbottomY = character[2]->getBottomY();
-	if (abs(playerbottomY -getBottomY())>5){
-		if (playerbottomY > getBottomY())
-		{
-			moveDown();
-		}
-		else if(playerbottomY < getBottomY())
-		{
-			moveUp();
-		}
-		frame++;
-	}
-	else if (abs(posX_ - character[2]->getX())>5)
+	lastclip = WALKING_ANIMATION_END;
+	firstclip = 0;
+	bool action = false;
+	if (punched && (characterInLeft() || characterInRigh()) && !character[2]->getCondition().punched)
 	{
-		if (posX_ > character[2]->getX())
-		{
-			moveLeft();
-		}
-		if (posX_ < character[2]->getX())
-		{
-			moveRight();
-		}
-		frame++;
+		fall();
 	}
-	if (frame/4 == WALKING_ANIMATION_END)
+	else
 	{
-		frame = 0;
+		if (abs(playerbottomY - getBottomY())>5){
+			if (playerbottomY > getBottomY())
+			{
+				moveDown();
+				action = true;
+			}
+			else if(playerbottomY < getBottomY())
+			{
+				moveUp();
+				action = true;
+			}
+
+		}
+		if (abs(posX_ - character[2]->getX())>15)
+		{
+			if (posX_ > character[2]->getX())
+			{
+				moveLeft();
+				if (moveDir.left)
+					action = true;
+			}
+			if (posX_ < character[2]->getX())
+			{
+				moveRight();
+				if (moveDir.right)
+					action = true;
+			}
+		}
+		if ((characterInLeft() || characterInRigh()) &&!punched)
+		{
+			punch();
+		}
+		else if (action)
+		{
+			frame++;
+		}
+
+	}
+	if (frame/4 >= lastclip)
+	{
+		frame = firstclip;
 	}
 	resizeClips(Clips);
 }
