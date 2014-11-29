@@ -31,6 +31,7 @@ class Player : public GameCharacter
 	void punch();
 	void jump();
 	void run();
+	void checkCondition();
 	bool checkKeys();
 
 	void manageCameraPos(SDL_Rect* camera);

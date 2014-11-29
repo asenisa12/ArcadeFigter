@@ -13,23 +13,21 @@ int GameCharacter::getBottomY()
 
 void GameCharacter::moveRight()
 {
-
+	currentCondition = MOVING;
 	//max x = 92% from screen w
 	if (posX_ < (screenW_*(0.92)) && moveDir.right)
 	{
 		posX_ += movSpeed;
-		currentCondition.moving = true;
 	}
 	flipType = SDL_FLIP_NONE;
 }
 
 void GameCharacter::moveLeft()
 {
-
+	currentCondition = MOVING;
 	if (posX_ > 3 && moveDir.left)
 	{
 		posX_ -= movSpeed;
-		currentCondition.moving = true;
 	}
 		flipType = SDL_FLIP_HORIZONTAL;
 
@@ -37,9 +35,9 @@ void GameCharacter::moveLeft()
 
 void GameCharacter::moveUp()
 {
+	currentCondition = MOVING;
 	//max y = 42% form screen h
 	if (posY_ > (screenH_*(0.42)) && moveDir.up){
-		currentCondition.moving = true;
 		posY_ -= 2;
 		add--;
 		movSpeed -= 0.05;
@@ -49,10 +47,10 @@ void GameCharacter::moveUp()
 
 void GameCharacter::moveDown()
 {
+	currentCondition = MOVING;
 	//min y = 54% form screen h
 	if (posY_ < (screenH_*(0.56)) && moveDir.down)
 	{
-		currentCondition.moving = true;
 		posY_ += 2;
 		add++;
 		movSpeed += 0.05;
@@ -62,7 +60,6 @@ void GameCharacter::moveDown()
 
 void GameCharacter::animation(int last, int first)
 {
-	currentCondition.punching = true;
 	lastclip = last;
 	firstclip = first * 4;
 	if (frame / 4 < first ||
@@ -140,13 +137,12 @@ void GameCharacter::collision(GameCharacter* enemy[], int charactersCount)
 		}
 	}
 }
-
 bool GameCharacter::punching()
 {
-	return currentCondition.punching;
+	return currentCondition == PUNCHING;
 }
 
-GameCharacter::condition GameCharacter::getCondition()
+int GameCharacter::getCondition()
 {
 	return currentCondition;
 }

@@ -16,8 +16,8 @@ GameBase mainGame(SCREEN_WIDTH, SCREEN_HEIGHT);
 BackGround backGroundLevel1("Textures/Level1.png");
 BackGround backGroundMenu("Textures/MenuBackground.png");
 Player player1("Textures/Mustafa1.png", SCREEN_WIDTH, SCREEN_HEIGHT);
-Enemy1 enemy1("Textures/Enemy1.png", 500, 250, SCREEN_WIDTH, SCREEN_HEIGHT);
-Enemy1 enemy2("Textures/Enemy1.png", 200, 250, SCREEN_WIDTH, SCREEN_HEIGHT);
+Enemy1 enemy1("Textures/Enemy1.png", 650, 250, SCREEN_WIDTH, SCREEN_HEIGHT);
+Enemy1 enemy2("Textures/Enemy1.png", -10, 250, SCREEN_WIDTH, SCREEN_HEIGHT);
 GameButton startButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT/5);
 GameButton exitButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH/5, SCREEN_HEIGHT/1.5);
 

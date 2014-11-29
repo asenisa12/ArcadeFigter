@@ -3,13 +3,14 @@
 Player::Player(std::string path,int screenW, int screenH)
 	:path_(path) 	
 {
+	currentCondition = STANDING;
 	frame = 0;
 	screenH_=screenH; 
 	screenW_ = screenW;
 	flipType = SDL_FLIP_NONE;
 	int add = 0;
 	camera_pos = 1;
-	//movement speed == 0.625% from screen w
+	//movement speed == 0.7% from screen w
 	movSpeed =screenW_*0.007;
 	objTexture = NULL;
 }
@@ -55,13 +56,13 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 
 void Player::punch()
 {
-	currentCondition.punching = true;
+	currentCondition = PUNCHING;
 	animation(PUNCH_ANIMATION_FRAMES_END, JUMPING_ANIMATION_FRAMES_END);
 }
 
 void Player::fall()
 {
-	currentCondition.punched = true;
+	currentCondition = PUNCHED;
 	animation(FALLING_ANIMATION_FRAMES_END, PUNCH_ANIMATION_FRAMES_END);
 }
 
@@ -109,11 +110,13 @@ void Player::run()
 
 bool Player::checkKeys()
 {
-	if (currentKeyStates[SDL_SCANCODE_LEFT] || 
-		currentKeyStates[SDL_SCANCODE_RIGHT] || 
-		currentKeyStates[SDL_SCANCODE_DOWN] || 
+	if (currentKeyStates[SDL_SCANCODE_LEFT] ||
+		currentKeyStates[SDL_SCANCODE_RIGHT] ||
+		currentKeyStates[SDL_SCANCODE_DOWN] ||
 		currentKeyStates[SDL_SCANCODE_UP])
+	{
 		return true;
+	}
 	return false;
 	
 }
@@ -138,15 +141,8 @@ bool Player::punched(GameCharacter* enemy[], int last)
 		playerBottom = posY_ + mHigth;
 		playerLeft = posX_ + mWidth / 5;
 
-		if (enemy[i]->punching() && !enemy[i]->getCondition().punched)
+		if (enemy[i]->punching() && enemy[i]->getCondition()!=PUNCHED)
 		{
-			/*if (characterInLeft()){
-				flipType = SDL_FLIP_HORIZONTAL;
-			}
-			else if (characterInRigh()){
-				flipType = SDL_FLIP_NONE;
-			}
-				*/
 			return true;
 		}
 	}
@@ -158,22 +154,21 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[])
 	currentKeyStates = SDL_GetKeyboardState(NULL);
 	bool punching = false;
 	collision(enemy,2);
-	currentCondition = { false, false, false, false };
+	bool ispunched = punched(enemy, 2);
 
-	//printf("%d\n\n", punched);
 	if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping)
 	{
 		jump();
 	}
-	else if (punched(enemy,2))
+	else if (ispunched)
 	{
 		fall();
 	}
-	else if (currentKeyStates[SDL_SCANCODE_Q])
+	else if (currentKeyStates[SDL_SCANCODE_Q] )
 	{
 		punch();
 	}
-	else 
+	else
 	{
 		if (currentKeyStates[SDL_SCANCODE_LSHIFT])
 		{
@@ -191,6 +186,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[])
 		}
 		else
 		{
+			currentCondition = STANDING;
 			frame = 0;
 		}
 	}

@@ -15,8 +15,10 @@ class Enemy1 : public GameCharacter
 	static const int FALLING_CLIP_W = 150;
 
 	int punchStart_count;
+	bool other_frame;
 	bool punched;
 
+	void moving(GameCharacter* player, bool &action);
 	void punch();
 	void fall();
 	std::string path_;

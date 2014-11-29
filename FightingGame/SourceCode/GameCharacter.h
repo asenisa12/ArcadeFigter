@@ -9,8 +9,8 @@ class GameCharacter : public GameObject
 protected:
 	struct direction{ bool right; bool left; bool up; bool down; };
 	struct direction moveDir;
-	struct condition{ bool punching; bool moving; bool punched; bool standing; };
-	struct condition currentCondition;
+	enum{PUNCHING, MOVING, PUNCHED, FALLING, STANDING};
+	int currentCondition;
 	SDL_Rect * currentClip;
 	SDL_RendererFlip flipType;
 	
@@ -41,7 +41,7 @@ public:
 	bool punching();
 	void renderCharacter(SDL_Renderer* gRenderer);
 	int getBottomY();
-	condition getCondition();
+	int getCondition();
 };
 
 #endif
