@@ -24,8 +24,8 @@ extern const int ENEMIES_LEVEL1;
 extern bool started;
 extern bool quit;
 
-extern GameCharacter* enemy[];
-extern std::vector<GameCharacter*> characters;
+extern GameCharacter* character[];
+extern std::vector<GameCharacter*> charactersVect;
 
 extern SDL_Rect camera;
 extern SDL_Event gameEvent;
@@ -45,6 +45,7 @@ extern GameButton exitButton;
 void update();
 void render();
 void getInput();
+void drawPlayerHealthBar(int health);
 
 bool loadMedia();
 

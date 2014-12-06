@@ -3,6 +3,8 @@
 Player::Player(std::string path,int screenW, int screenH)
 	:path_(path) 	
 {
+	characterType = GPLAYER;
+	health = 200;
 	currentCondition = STANDING;
 	frame = 0;
 	screenH_=screenH; 
@@ -131,30 +133,42 @@ void Player::manageCameraPos(SDL_Rect* camera)
 	}
 }
 
-bool Player::punched(GameCharacter* enemy[], int last)
+bool Player::punched(std::vector<GameCharacter*> characters)
 {
-	for (int i = 0; i < last; i++)
+	for (std::vector<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); ++it)
 	{
-		enemyLeft = enemy[i]->getX();
-		enemyRight = enemy[i]->getX() + enemy[i]->getWidth() / 2;
+		if ((*it)->CharacterType() == GPLAYER)
+			continue;
 
-		playerBottom = posY_ + mHigth;
-		playerLeft = posX_ + mWidth / 5;
+		GameCharacter *enemy = (*it);
+		otherLeft = enemy->getX();
+		otherRight = enemy->getX() + enemy->getWidth() / 2;
 
-		if (enemy[i]->punching() && enemy[i]->getCondition()!=PUNCHED)
+		myBottom = posY_ + mHigth;
+		myLeft = posX_ + mWidth / 5;
+
+		if (enemy->punching() && enemy->getCondition()!=PUNCHED)
 		{
 			return true;
+		}
+		else if (currentKeyStates[SDL_SCANCODE_Q])
+		{
+			if ((characterInLeft() && flipType == SDL_FLIP_HORIZONTAL) ||
+				(characterInRigh() && flipType == SDL_FLIP_NONE))
+			{
+				enemy->editHealth(DAMAGE);
+			}
 		}
 	}
 	return false;
 }
 
-void Player::doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[])
+void Player::doActions(SDL_Rect* camera, std::vector<GameCharacter*> characters)
 {
 	currentKeyStates = SDL_GetKeyboardState(NULL);
 	bool punching = false;
-	collision(enemy,2);
-	bool ispunched = punched(enemy, 2);
+	collision(characters);
+	bool ispunched = punched(characters);
 
 	if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping)
 	{
@@ -167,6 +181,7 @@ void Player::doActions(SDL_Event e, SDL_Rect* camera, GameCharacter* enemy[])
 	else if (currentKeyStates[SDL_SCANCODE_Q] )
 	{
 		punch();
+
 	}
 	else
 	{

@@ -15,10 +15,11 @@ void update()
 	}
 	else
 	{
-		enemy1.doActions(enemy);
-		enemy2.doActions(enemy);
-		player1.doActions(gameEvent, &camera, enemy);
-		std::sort(characters.begin(), characters.end(), greater_than());
+		for (std::vector<GameCharacter*>::iterator it = charactersVect.begin(); it != charactersVect.end(); ++it)
+		{
+			(*it)->doActions(&camera, charactersVect);
+		}
+		std::sort(charactersVect.begin(), charactersVect.end(), greater_than());
 	}
 }
 
@@ -28,10 +29,19 @@ void render()
 	SDL_RenderClear(mainGame.getRenderer());
 	if (started){
 		backGroundLevel1.renderBack(&camera, player1.getX(), mainGame.getRenderer());
-		for (std::vector<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); ++it){
-			//printf("Y:%d\n", (*it)->getBottomY());
-			(*it)->renderCharacter(mainGame.getRenderer());
+		for (std::vector<GameCharacter*>::iterator it = charactersVect.begin(); it != charactersVect.end(); ++it)
+		{
+			if ((*it)->getHealth() > 0)
+			{
+				(*it)->renderCharacter(mainGame.getRenderer());
+			}
+			else
+			{
+				it = charactersVect.erase(it);
+				it--;
+			}
 		}
+		drawPlayerHealthBar(player1.getHealth());
 	}
 	else
 	{
@@ -46,11 +56,10 @@ void render()
 bool loadMedia()
 {
 
-	enemy[0] = &enemy1;
-	enemy[1] = &enemy2;
-	enemy[2] = &player1;
-	for (int i = 0; i < 3; i++) 
-		characters.push_back(enemy[i]);
+
+	charactersVect.push_back(&enemy1);
+	charactersVect.push_back(&enemy2);
+	charactersVect.push_back(&player1);
 
 	if (!player1.loadMedia(mainGame.getRenderer())) return false;
 	if (!enemy1.loadMedia(mainGame.getRenderer())) return false;
@@ -61,4 +70,13 @@ bool loadMedia()
 	if (!exitButton.loadMedia("Textures/ExitButton.png", mainGame.getRenderer())) return false;
 
 	return true;
+}
+
+void drawPlayerHealthBar(int health)
+{
+	int healthBarW = SCREEN_WIDTH*0.0064*(player1.getHealth()/3);
+	SDL_Rect healthbar = {5, 5, healthBarW,SCREEN_HEIGHT*0.05 };
+	SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0, 0, 0);
+	SDL_RenderFillRect(mainGame.getRenderer(), &healthbar);
+	SDL_RenderDrawRect(mainGame.getRenderer(), &healthbar);
 }

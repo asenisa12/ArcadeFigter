@@ -82,7 +82,7 @@ void GameCharacter::resizeClips(SDL_Rect Clips[])
 
 bool GameCharacter::characterInLeft()
 {
-	if (abs(enemyRight - playerLeft) < 5 && enemyRight < playerLeft)
+	if (abs(otherRight - myLeft) < 5 && otherRight < myLeft)
 	{
 		return true;
 	}
@@ -90,28 +90,29 @@ bool GameCharacter::characterInLeft()
 }
 bool GameCharacter::characterInRigh()
 {
-	if (abs(enemyLeft - playerRight) < 5 && enemyLeft > playerRight)
+	if (abs(otherLeft - myRight) < 5 && otherLeft > myRight)
 	{
 		return true;
 	}
 	return false;
 }
 
-void GameCharacter::collision(GameCharacter* enemy[], int charactersCount)
+void GameCharacter::collision(std::vector<GameCharacter*> characters)
 {
 	moveDir = { true, true, true, true };
-	for (int i = 0; i < charactersCount; i++)
+	for (std::vector<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); ++it)
 	{
 
-		enemyBottom = enemy[i]->getY() + enemy[i]->getHigth();
-		enemyLeft = enemy[i]->getX();
-		enemyRight = enemy[i]->getX() + enemy[i]->getWidth() / 2;
+		GameCharacter* otherCharacter = *it;
+		otherBottom = otherCharacter->getY() + otherCharacter->getHigth();
+		otherLeft = otherCharacter->getX();
+		otherRight = otherCharacter->getX() + otherCharacter->getWidth() / 2;
 
-		playerBottom = posY_ + mHigth;
-		playerLeft = posX_ + mWidth / 5;
-		playerRight = posX_ + mWidth / 2;
+		myBottom = posY_ + mHigth;
+		myLeft = posX_ + mWidth / 5;
+		myRight = posX_ + mWidth / 2;
 
-		if (abs(enemyBottom - playerBottom) < 30)
+		if (abs(otherBottom - myBottom) < 30)
 		{
 			if (characterInLeft())
 			{
@@ -122,13 +123,13 @@ void GameCharacter::collision(GameCharacter* enemy[], int charactersCount)
 				moveDir.right = false;
 			}
 
-			if (abs(playerLeft - enemyLeft) < 50)
+			if (abs(myLeft - otherLeft) < 30)
 			{
-				if (enemyBottom < playerBottom)
+				if (otherBottom < myBottom)
 				{
 					moveDir.up = false;
 				}
-				if (enemyBottom > playerBottom)
+				if (otherBottom > myBottom)
 				{
 					moveDir.down = false;
 				}
@@ -145,4 +146,21 @@ bool GameCharacter::punching()
 int GameCharacter::getCondition()
 {
 	return currentCondition;
+}
+
+void GameCharacter::editHealth(int damage)
+{
+	health -= damage;
+
+	if (health < 0) health = 0;
+}
+
+int GameCharacter::getHealth()
+{
+	return health;
+}
+
+int GameCharacter::CharacterType()
+{
+	return characterType;
 }

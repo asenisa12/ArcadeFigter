@@ -1,8 +1,11 @@
 #include "Enemy1.h"
 
-Enemy1::Enemy1(std::string path, int posX, int posY, int screenW, int screenH)
+Enemy1::Enemy1(std::string path, int posX, int posY, int screenW, int screenH, GameCharacter* player)
+	:player_(player)
 {
+	characterType = GENEMY;
 	currentCondition = STANDING;
+	health = 100;
 	punchStart_count = 0;
 	screenH_ = screenH;
 	screenW_ = screenW;
@@ -14,6 +17,10 @@ Enemy1::Enemy1(std::string path, int posX, int posY, int screenW, int screenH)
 	flipType = SDL_FLIP_NONE;
 }
 
+const double Enemy1::SHIFTING_PERCENTIGE = 0.1;
+const double Enemy1::DIFF_BY_X_PERCENTIGE = 0.01;
+const double Enemy1::DIFF_BY_Y_PERCENTIGE = 0.023;
+
 bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 {
 	if (!LoadFromFile(path_.c_str(), gRenderer))
@@ -21,8 +28,6 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 		printf("Failed to load walking animation texture!\n");
 		return false;
 	}
-	mWidth = 90;
-	mHigth = 160;
 	int x = 0;
 	int y = 0;
 	for (int i = 0; i < FALLING_ANIMATION_END;i++)
@@ -65,14 +70,27 @@ void Enemy1::fall()
 	animation(FALLING_ANIMATION_END, PUNCHING_ANIMATION_END);
 }
 
-void Enemy1::moving(GameCharacter* player, bool &action)
+void Enemy1::moving(bool &action)
 {
-	int playerbottomY = player->getBottomY();
+	int playerbottomY = player_->getBottomY();
 	int diffrenceY = abs(playerbottomY - getBottomY());
-	int diffrenceX = abs(posX_ - player->getX());
-	/*bool moveConditionL = ((diffrenceY<15 && playerbottomY) > getBottomY()) && diffrenceX<10;
-	bool moveConditionR = ((diffrenceY<15 && playerbottomY) < getBottomY()) && diffrenceX<10;*/
-	if (diffrenceY > 5){
+	int diffrenceX = abs(posX_ - player_->getX());
+
+	if (!moveDir.down && diffrenceX<DIFF_BY_X_PERCENTIGE * screenW_){
+		if (posX_ > player_->getX()){
+			posX_ += screenW_*SHIFTING_PERCENTIGE;
+		}
+		else
+		{
+			posX_ -= screenW_*SHIFTING_PERCENTIGE;
+		}
+		action = true;
+	}else
+	if (!moveDir.up && diffrenceX<DIFF_BY_X_PERCENTIGE * screenW_){
+		posX_ -= screenW_*SHIFTING_PERCENTIGE;
+		action = true;
+	}
+	if (diffrenceY > screenH_ * DIFF_BY_X_PERCENTIGE){
 		if (playerbottomY > getBottomY())
 		{
 			moveDown();
@@ -84,32 +102,34 @@ void Enemy1::moving(GameCharacter* player, bool &action)
 			action = true;
 		}
 
-	}else 
-	if (posX_ > player->getX() )
+	}
+	else if (posX_ > player_->getX() )
 	{
 		moveLeft();
-		if (moveDir.left)
+		if (moveDir.left ){
 			action = true;
-	}else
-		if (posX_ < player->getX())
+		}
+	}
+	else if (posX_ < player_->getX())
 	{
 		moveRight();
-		if (moveDir.right)
+		if (moveDir.right ){
 			action = true;
+		}
 	}
 }
 
-void Enemy1::doActions(GameCharacter* character[])
+void Enemy1::doActions(SDL_Rect* camera, std::vector<GameCharacter*> characters)
 {
 	punched = false;
-	collision(character,3);
-	punched = character[2]->punching();
-	enemyLeft = character[2]->getX();
-	enemyRight = character[2]->getX() + character[2]->getWidth() / 2;
+	collision(characters);
+	punched = player_->punching();
+	otherLeft = player_->getX();
+	otherRight = player_->getX() + player_->getWidth() / 2;
 
 	bool action = false;
 
-	if (punched && (characterInLeft() || characterInRigh()) && character[2]->getCondition()!=PUNCHED)
+	if (punched && (characterInLeft() || characterInRigh()) && player_->getCondition() != PUNCHED)
 	{
 		fall();
 	}
@@ -118,10 +138,12 @@ void Enemy1::doActions(GameCharacter* character[])
 		lastclip = WALKING_ANIMATION_END;
 		firstclip = 0;
 		
-		moving(character[2], action);
+		moving(action);
 
 		if ((characterInLeft() || characterInRigh()) &&!punched)
 		{
+			if (frame/4 == PUNCHING_ANIMATION_END-1)
+				player_->editHealth(DAMAGE);
 			punch();
 		}
 		else if (action)
