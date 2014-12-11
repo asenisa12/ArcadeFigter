@@ -19,7 +19,7 @@ class Player : public GameCharacter
 	static const int PUNCH_ANIMATION_FRAMES_END = 36;
 	static const int FALLING_ANIMATION_FRAMES_END = 45;
 
-	static const int DAMAGE = 15;
+	static const int DAMAGE = 50;
 	static const int CLIP_H = 100;
 	static const int CLIP_W = 100;
 
@@ -27,7 +27,7 @@ class Player : public GameCharacter
 	
 	std::string path_;
 
-	bool punched(std::vector<GameCharacter*> characters);
+	bool punched(std::list<GameCharacter*> characters);
 	void fall();
 	void punch();
 	void jump();
@@ -42,7 +42,7 @@ public:
 	~Player();
 	bool loadMedia(SDL_Renderer* gRenderer);
 	//implements key presses
-	void doActions(SDL_Rect* camera, std::vector<GameCharacter*> characters);
+	void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters);
 	void changePosX(int changedX);
 };
 

@@ -12,7 +12,7 @@
 #include "GameCharacter.h"
 #include "Enemy1.h"
 #include <string>
-#include <vector>
+#include <list>
 #include <algorithm>
 
 
@@ -25,7 +25,7 @@ extern bool started;
 extern bool quit;
 
 extern GameCharacter* character[];
-extern std::vector<GameCharacter*> charactersVect;
+extern std::list<GameCharacter*> charactersList;
 
 extern SDL_Rect camera;
 extern SDL_Event gameEvent;

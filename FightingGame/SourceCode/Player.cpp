@@ -133,9 +133,9 @@ void Player::manageCameraPos(SDL_Rect* camera)
 	}
 }
 
-bool Player::punched(std::vector<GameCharacter*> characters)
+bool Player::punched(std::list<GameCharacter*> characters)
 {
-	for (std::vector<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); ++it)
+	for (std::list<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); ++it)
 	{
 		if ((*it)->CharacterType() == GPLAYER)
 			continue;
@@ -163,7 +163,7 @@ bool Player::punched(std::vector<GameCharacter*> characters)
 	return false;
 }
 
-void Player::doActions(SDL_Rect* camera, std::vector<GameCharacter*> characters)
+void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 {
 	currentKeyStates = SDL_GetKeyboardState(NULL);
 	bool punching = false;

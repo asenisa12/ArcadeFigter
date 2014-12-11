@@ -97,10 +97,10 @@ bool GameCharacter::characterInRigh()
 	return false;
 }
 
-void GameCharacter::collision(std::vector<GameCharacter*> characters)
+void GameCharacter::collision(std::list<GameCharacter*> characters)
 {
 	moveDir = { true, true, true, true };
-	for (std::vector<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); ++it)
+	for (std::list<GameCharacter*>::iterator it = characters.begin(); it != characters.end(); ++it)
 	{
 
 		GameCharacter* otherCharacter = *it;
@@ -112,7 +112,7 @@ void GameCharacter::collision(std::vector<GameCharacter*> characters)
 		myLeft = posX_ + mWidth / 5;
 		myRight = posX_ + mWidth / 2;
 
-		if (abs(otherBottom - myBottom) < 30)
+		if (abs(otherBottom - myBottom) < screenW_*0.05)
 		{
 			if (characterInLeft())
 			{
@@ -123,7 +123,7 @@ void GameCharacter::collision(std::vector<GameCharacter*> characters)
 				moveDir.right = false;
 			}
 
-			if (abs(myLeft - otherLeft) < 30)
+			if (abs(myLeft - otherLeft) <screenW_*0.05)
 			{
 				if (otherBottom < myBottom)
 				{
@@ -131,6 +131,7 @@ void GameCharacter::collision(std::vector<GameCharacter*> characters)
 				}
 				if (otherBottom > myBottom)
 				{
+					printf("aaaaaa1111\n");
 					moveDir.down = false;
 				}
 

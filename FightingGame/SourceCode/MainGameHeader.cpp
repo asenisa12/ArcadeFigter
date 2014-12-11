@@ -15,11 +15,9 @@ void update()
 	}
 	else
 	{
-		for (std::vector<GameCharacter*>::iterator it = charactersVect.begin(); it != charactersVect.end(); ++it)
-		{
-			(*it)->doActions(&camera, charactersVect);
-		}
-		std::sort(charactersVect.begin(), charactersVect.end(), greater_than());
+		//player1.doActions(&camera, charactersList);
+		charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)
+			{return (struct1->getBottomY()< struct2->getBottomY()); });
 	}
 }
 
@@ -28,18 +26,28 @@ void render()
 	SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(mainGame.getRenderer());
 	if (started){
+		int i = 0;
 		backGroundLevel1.renderBack(&camera, player1.getX(), mainGame.getRenderer());
-		for (std::vector<GameCharacter*>::iterator it = charactersVect.begin(); it != charactersVect.end(); ++it)
+		for (std::list<GameCharacter*>::iterator it = charactersList.begin(); it != charactersList.end(); ++it)
 		{
 			if ((*it)->getHealth() > 0)
 			{
 				(*it)->renderCharacter(mainGame.getRenderer());
+				(*it)->doActions(&camera, charactersList);
 			}
 			else
 			{
-				it = charactersVect.erase(it);
-				it--;
+				it = charactersList.erase(it);
+				if (i > 0)
+				{
+					it--;
+				}
+				else
+				{
+					it++;
+				}
 			}
+			i++;
 		}
 		drawPlayerHealthBar(player1.getHealth());
 	}
@@ -57,9 +65,9 @@ bool loadMedia()
 {
 
 
-	charactersVect.push_back(&enemy1);
-	charactersVect.push_back(&enemy2);
-	charactersVect.push_back(&player1);
+	charactersList.push_back(&enemy1);
+	charactersList.push_back(&enemy2);
+	charactersList.push_back(&player1);
 
 	if (!player1.loadMedia(mainGame.getRenderer())) return false;
 	if (!enemy1.loadMedia(mainGame.getRenderer())) return false;

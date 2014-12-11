@@ -2,7 +2,7 @@
 #define GAMECHARACTER
 
 #include "GameObject.h"
-#include <vector>
+#include <list>
 #include <cmath>  
 
 class GameCharacter : public GameObject
@@ -41,7 +41,7 @@ protected:
 	void moveUp();
 	void moveDown();
 	void resizeClips(SDL_Rect Clips[]);
-	void collision(std::vector<GameCharacter*> characters);
+	void collision(std::list<GameCharacter*> characters);
 public:
 	bool punching();
 	void renderCharacter(SDL_Renderer* gRenderer);
@@ -50,7 +50,7 @@ public:
 	int getHealth();
 	int getCondition();
 	int CharacterType();
-	virtual void doActions(SDL_Rect* camera, std::vector<GameCharacter*> characters) = 0;
+	virtual void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters) = 0;
 };
 
 #endif
