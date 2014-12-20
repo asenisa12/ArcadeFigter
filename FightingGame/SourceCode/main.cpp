@@ -19,6 +19,8 @@ Enemy1 enemy2("Textures/Enemy1.png",540, 290, SCREEN_WIDTH, SCREEN_HEIGHT, &play
 GameButton startButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT/5);
 GameButton exitButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH/5, SCREEN_HEIGHT/1.5);
 
+SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
+
 bool started;
 bool quit = false;
 
@@ -39,7 +41,6 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			
 			started = false;
 
 			//game loop

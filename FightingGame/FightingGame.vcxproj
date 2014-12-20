@@ -20,6 +20,8 @@
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\MainGameHeader.cpp" />
     <ClCompile Include="SourceCode\Player.cpp" />
+    <ClCompile Include="SourceCode\SquareGrid.cpp" />
+    <ClCompile Include="SourceCode\SquareGrid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\BackGround.h" />

@@ -56,11 +56,6 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 	return true;
 }
 
-void Player::punch()
-{
-	currentCondition = PUNCHING;
-	animation(PUNCH_ANIMATION_FRAMES_END, JUMPING_ANIMATION_FRAMES_END);
-}
 
 void Player::fall()
 {
@@ -68,6 +63,11 @@ void Player::fall()
 	animation(FALLING_ANIMATION_FRAMES_END, PUNCH_ANIMATION_FRAMES_END);
 }
 
+void Player::punch()
+{
+	currentCondition = PUNCHING;
+	animation(PUNCH_ANIMATION_FRAMES_END, JUMPING_ANIMATION_FRAMES_END);
+}
 void Player::jump()
 {
 	firstclip = RUNING_ANIMATION_FRAMES_END * 4;
@@ -208,6 +208,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 			
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] && !punching)
 	{
+		printf("posX: %d posY: %d\n", posX_, getBottomY());
 		moveRight();
 	}
 	else if (currentKeyStates[SDL_SCANCODE_LEFT] && !punching)

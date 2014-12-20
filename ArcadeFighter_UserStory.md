@@ -1,11 +1,10 @@
 Arcade Fighter User Story
 =========================
 ____Hard____
-------------
--1. Realisate A* pathfinding algorithum.
--2. Create 2p mode. 
--3. Create LUA scripts for loading items on the map.
--4.(optionaly) Another Enemy behavior for the bosses.
+	- 1. Realisate A* pathfinding algorithum.
+	- 2. Create 2p mode. 
+	- 3. Create LUA scripts for loading items on the map.
+	-4.(optionaly) Another Enemy behavior for the bosses.
 
 ____Medium___
 -------------

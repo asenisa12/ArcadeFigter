@@ -42,6 +42,12 @@
     <ClCompile Include="SourceCode\GameCharacter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SourceCode\SquareGrid.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\SquareGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\GameBase.h">

@@ -14,7 +14,9 @@
 #include <string>
 #include <list>
 #include <algorithm>
+#include "SquareGrid.h"
 
+using namespace std;
 
 
 extern const int SCREEN_WIDTH;
@@ -31,7 +33,7 @@ extern SDL_Rect camera;
 extern SDL_Event gameEvent;
 
 extern GameBase mainGame;
-
+extern SquareGrid levelgrid;
 extern BackGround backGroundMenu;
 extern BackGround backGroundLevel1;
 
@@ -53,4 +55,6 @@ struct greater_than
 {
 	inline bool operator() (GameCharacter* struct1, GameCharacter* struct2);
 };
+
+
 #endif
