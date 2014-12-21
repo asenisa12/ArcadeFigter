@@ -12,7 +12,6 @@ struct Location
 {
 	int X;
 	int Y;
-	bool visited;
 };
 
 struct LocationHash
@@ -39,7 +38,6 @@ class SquareGrid
 	std::unordered_map<Location, std::vector<Location*>, LocationHash, Equal> edges;
 	void add_neighbors(int row, int col);
 	void create_grid();
-	//void add_to_map();
 public:
 	
 	SquareGrid(int length_, int hight_);
