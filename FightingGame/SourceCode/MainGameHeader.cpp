@@ -68,7 +68,10 @@ bool loadMedia()
 	charactersList.push_back(&enemy1);
 	charactersList.push_back(&enemy2);
 	charactersList.push_back(&player1);
-
+	for (auto it : levelgrid.neighbors({ 620, 430 }))
+	{
+		printf("x-%d y-%d\n", it->X, it->Y);
+	}
 
 	if (!player1.loadMedia(mainGame.getRenderer())) return false;
 	if (!enemy1.loadMedia(mainGame.getRenderer())) return false;

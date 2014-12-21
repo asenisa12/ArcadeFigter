@@ -33,7 +33,7 @@ extern SDL_Rect camera;
 extern SDL_Event gameEvent;
 
 extern GameBase mainGame;
-extern SquareGrid levelgrid;
+extern grid::SquareGrid levelgrid;
 extern BackGround backGroundMenu;
 extern BackGround backGroundLevel1;
 
