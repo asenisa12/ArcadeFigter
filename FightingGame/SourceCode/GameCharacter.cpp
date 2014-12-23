@@ -6,9 +6,41 @@ void GameCharacter::renderCharacter(SDL_Renderer* gRenderer)
 	render(posX_, posY_, currentClip, 0, NULL, flipType, gRenderer, mWidth, mHigth);
 }
 
+int GameCharacter::squareSize()
+{
+	return screenW_/GRID_SIZE_X;
+}
+
 int GameCharacter::getBottomY()
 {
 	return mHigth + posY_;
+}
+
+void GameCharacter::changeCurrSquare(int dir)
+{
+	switch (dir)
+	{
+	case LEFT:
+		currentSquare[0] = { currentSquare[0].X - squareSize(), currentSquare[0].Y };
+		currentSquare[1] = { currentSquare[0].X - squareSize(), currentSquare[0].Y };
+		break;
+	case RIGHT:
+		currentSquare[0] = { currentSquare[0].X + squareSize(), currentSquare[0].Y };
+		currentSquare[1] = { currentSquare[0].X + squareSize(), currentSquare[0].Y };
+		break;
+	case UP:
+		currentSquare[0] = { currentSquare[0].X, currentSquare[0].Y + squareSize() };
+		currentSquare[1] = { currentSquare[0].X, currentSquare[0].Y + squareSize() };
+		break;
+	case DOWN:
+		currentSquare[0] = { currentSquare[0].X, currentSquare[0].Y - squareSize() };
+		currentSquare[1] = { currentSquare[0].X, currentSquare[0].Y - squareSize() };
+		break;
+	default:
+		break;
+	}
+	for (int i=0; i < 2;i++)
+		levelGrid->change_cost(currentSquare[i], 5);
 }
 
 void GameCharacter::moveRight()

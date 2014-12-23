@@ -13,8 +13,11 @@
 #include "Enemy1.h"
 #include <string>
 #include <list>
+#include <unordered_map>
 #include <algorithm>
-#include "SquareGrid.h"
+#include "Grid.h"
+#include "PathFinding.h"
+#include "PriorityQueue.h"
 
 using namespace std;
 

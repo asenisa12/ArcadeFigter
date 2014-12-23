@@ -4,6 +4,8 @@
 #include <tuple>
 #include <unordered_map>
 #include <vector>
+#include <functional>
+
 namespace grid
 {
 	struct Location

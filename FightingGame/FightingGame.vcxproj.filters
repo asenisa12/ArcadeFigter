@@ -42,10 +42,10 @@
     <ClCompile Include="SourceCode\GameCharacter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\SquareGrid.h">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="SourceCode\Grid.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\SquareGrid.cpp">
+    <ClCompile Include="SourceCode\PathFinding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -72,6 +72,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\GameCharacter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\PathFinding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\PriorityQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -53,6 +53,7 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 
 	currentClip = Clips;
 	frame = 0;
+	return true;
 }
 
 Enemy1::~Enemy1()
@@ -161,7 +162,6 @@ void Enemy1::moving()
 	}
 
 	action  = moveToPosition(destX, destY);
-
 }
 
 void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
