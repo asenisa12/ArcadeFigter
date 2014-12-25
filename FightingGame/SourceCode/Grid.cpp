@@ -40,26 +40,26 @@ void grid::SquareGrid::add_neighbors(int row, int col)
 	if (col < GRID_SIZE_X - 1)
 	{
 		neigh.push_back(&squares[row][col + 1]);
-		if (row < GRID_SIZE_Y - 1)
+		/*if (row < GRID_SIZE_Y - 1)
 		{
 			neigh.push_back(&squares[row + 1][col + 1]);
 		}
 		if (row > 0)
 		{
 			neigh.push_back(&squares[row - 1][col + 1]);
-		}
+		}*/
 	}
 	if (col > 0)
 	{
 		neigh.push_back(&squares[row][col - 1]);
-		if (row < GRID_SIZE_Y - 1)
+		/*if (row < GRID_SIZE_Y - 1)
 		{
 			neigh.push_back(&squares[row + 1][col - 1]);
 		}
 		if (row > 0)
 		{
 			neigh.push_back(&squares[row - 1][col - 1]);
-		}
+		}*/
 	}
 	if (row < GRID_SIZE_Y - 1)
 	{
@@ -69,7 +69,7 @@ void grid::SquareGrid::add_neighbors(int row, int col)
 	{
 		neigh.push_back(&squares[row - 1][col]);
 	}
-	edges.emplace(squares[row][col], std::make_tuple(neigh, 1));
+	edges.emplace(squares[row][col], std::make_tuple(neigh, FREE_PRIORITY));
 
 	return;
 }

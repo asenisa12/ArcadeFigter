@@ -67,6 +67,7 @@ public:
 	void renderCharacter(SDL_Renderer* gRenderer);
 	int getBottomY();
 	void editHealth(int damage);
+	Location* getCurrSquare();
 	int getHealth();
 	int getCondition();
 	int CharacterType();

@@ -16,31 +16,36 @@ int GameCharacter::getBottomY()
 	return mHigth + posY_;
 }
 
+Location* GameCharacter::getCurrSquare()
+{
+	return currentSquare;
+}
+
 void GameCharacter::changeCurrSquare(int dir)
 {
+	int adjX = 0, adjY = 0;
 	switch (dir)
 	{
 	case LEFT:
-		currentSquare[0] = { currentSquare[0].X - squareSize(), currentSquare[0].Y };
-		currentSquare[1] = { currentSquare[0].X - squareSize(), currentSquare[0].Y };
+		adjX -= squareSize();
 		break;
 	case RIGHT:
-		currentSquare[0] = { currentSquare[0].X + squareSize(), currentSquare[0].Y };
-		currentSquare[1] = { currentSquare[0].X + squareSize(), currentSquare[0].Y };
+		adjX += squareSize();
 		break;
 	case UP:
-		currentSquare[0] = { currentSquare[0].X, currentSquare[0].Y + squareSize() };
-		currentSquare[1] = { currentSquare[0].X, currentSquare[0].Y + squareSize() };
+		adjY += squareSize();
 		break;
 	case DOWN:
-		currentSquare[0] = { currentSquare[0].X, currentSquare[0].Y - squareSize() };
-		currentSquare[1] = { currentSquare[0].X, currentSquare[0].Y - squareSize() };
+		adjY -= squareSize();
 		break;
 	default:
 		break;
 	}
-	for (int i=0; i < 2;i++)
+	for (int i = 0; i < 2; i++)
+	{
+		currentSquare[i] = { currentSquare[i].X - adjX, currentSquare[i].Y + adjY};
 		levelGrid->change_cost(currentSquare[i], 5);
+	}
 }
 
 void GameCharacter::moveRight()
