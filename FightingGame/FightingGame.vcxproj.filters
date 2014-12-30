@@ -74,13 +74,13 @@
     <ClInclude Include="SourceCode\GameCharacter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Grid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\PathFinding.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\PriorityQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
