@@ -22,6 +22,7 @@ protected:
 		Location Left;
 		Location Right;
 	};
+	struct Shift{ int X; int Y; } shifting;
 	Location currentSquare[2];
 	direction moveDir;
 	Neighbors neighbors;
@@ -53,8 +54,10 @@ protected:
 	Neighbors getNeighbors();
 	void changeCurrSquare(int dir);
 	int squareSize();
+	void manageSquareShift();
 	bool characterInLeft();
 	bool characterInRigh();
+	void setGridAttributes(Location location);
 	void animation(int last, int first);
 	void moveRight();
 	void moveLeft();

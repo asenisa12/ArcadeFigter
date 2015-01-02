@@ -1,10 +1,10 @@
 #include "Player.h"
 
-Player::Player(std::string path,int screenW, int screenH)
+Player::Player(std::string path, int screenW, int screenH, Location startingLocation)
 	:path_(path) 	
 {
 	characterType = GPLAYER;
-	health = 200;
+	health = MAX_HEALTH;
 	currentCondition = STANDING;
 	frame = 0;
 	screenH_=screenH; 
@@ -15,6 +15,9 @@ Player::Player(std::string path,int screenW, int screenH)
 	//movement speed == 0.7% from screen w
 	movSpeed =screenW_*0.007;
 	objTexture = NULL;
+	posX_ = startingLocation.X + squareSize() / 2;
+	posY_ = startingLocation.Y - squareSize() / 2;
+	setGridAttributes(startingLocation);
 }
 
 Player::~Player()
@@ -24,10 +27,10 @@ Player::~Player()
 
 bool Player::loadMedia(SDL_Renderer* gRenderer)
 {
-	/*textureH = screenH_*(0.26); 
-	textureW = screenW_*(0.17);*/
-	posX_ = (screenW_ - mWidth) / 2; 
-	posY_ = screenH_*(0.43);
+	///*textureH = screenH_*(0.26); 
+	//textureW = screenW_*(0.17);*/
+	//posX_ = (screenW_ - mWidth) / 2; 
+	//posY_ = screenH_*(0.43);
 
 	if (!LoadFromFile(path_.c_str(), gRenderer))
 	{
@@ -52,7 +55,8 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 		Clips[i].h = CLIP_H;
 		x += CLIP_W;
 	}
-
+	resizeClips(Clips);
+	posY_ -= mHigth;
 	return true;
 }
 
@@ -208,7 +212,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 			
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] && !punching)
 	{
-		printf("posX: %d posY: %d\n", posX_, getBottomY());
+		printf("posX: %d posY: %d\n", posX_, posY_);
 		moveRight();
 	}
 	else if (currentKeyStates[SDL_SCANCODE_LEFT] && !punching)
@@ -231,6 +235,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	}
 	movSpeed = 3;
 
+	manageSquareShift();
 	manageCameraPos(camera);
 	resizeClips(Clips);
 }

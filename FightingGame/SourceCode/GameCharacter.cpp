@@ -43,9 +43,40 @@ void GameCharacter::changeCurrSquare(int dir)
 	}
 	for (int i = 0; i < 2; i++)
 	{
+		levelGrid->change_cost(currentSquare[i], 1);
 		currentSquare[i] = { currentSquare[i].X - adjX, currentSquare[i].Y + adjY};
 		levelGrid->change_cost(currentSquare[i], 5);
 	}
+}
+
+void GameCharacter::manageSquareShift()
+{
+	if (shifting.X>squareSize()/2)
+	{
+		changeCurrSquare(DOWN);
+	}
+	else if (shifting.X<squareSize()/2*(-1))
+	{
+		changeCurrSquare(UP);
+	}
+	if (shifting.Y>squareSize() / 2)
+	{
+		changeCurrSquare(RIGHT);
+	}
+	else if (shifting.Y <squareSize() / 2 * (-1))
+	{
+		changeCurrSquare(LEFT);
+	}
+}
+
+void GameCharacter::setGridAttributes(Location location)
+{
+	int i = 0;
+	currentSquare[i] = location;
+	location.X += squareSize();
+	location.Y += squareSize();
+	currentSquare[i++] = location;
+	shifting = { 0, 0 };
 }
 
 void GameCharacter::moveRight()
@@ -55,6 +86,7 @@ void GameCharacter::moveRight()
 	if (posX_ < (screenW_*(0.92)) && moveDir.right)
 	{
 		posX_ += movSpeed;
+		shifting.X += movSpeed;
 	}
 	flipType = SDL_FLIP_NONE;
 }
@@ -65,6 +97,7 @@ void GameCharacter::moveLeft()
 	if (posX_ > 3 && moveDir.left)
 	{
 		posX_ -= movSpeed;
+		shifting.X -= movSpeed;
 	}
 		flipType = SDL_FLIP_HORIZONTAL;
 
@@ -76,6 +109,7 @@ void GameCharacter::moveUp()
 	//max y = 42% form screen h
 	if (posY_ > (screenH_*(0.42)) && moveDir.up){
 		posY_ -= 2;
+		shifting.Y -= 2;
 		add--;
 		movSpeed -= 0.05;
 	}
@@ -89,6 +123,7 @@ void GameCharacter::moveDown()
 	if (posY_ < (screenH_*(0.56)) && moveDir.down)
 	{
 		posY_ += 2;
+		shifting.Y += 2;
 		add++;
 		movSpeed += 0.05;
 	}

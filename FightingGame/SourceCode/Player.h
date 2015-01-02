@@ -19,6 +19,7 @@ class Player : public GameCharacter
 	static const int PUNCH_ANIMATION_FRAMES_END = 36;
 	static const int FALLING_ANIMATION_FRAMES_END = 45;
 
+	static const int MAX_HEALTH = 200;
 	static const int DAMAGE = 50;
 	static const int CLIP_H = 100;
 	static const int CLIP_W = 100;
@@ -38,7 +39,7 @@ class Player : public GameCharacter
 	void manageCameraPos(SDL_Rect* camera);
 
 public:
-	Player(std::string path, int screenH, int screenW);
+	Player(std::string path, int screenW, int screenH, Location startingLocation);
 	~Player();
 	bool loadMedia(SDL_Renderer* gRenderer);
 	//implements key presses
