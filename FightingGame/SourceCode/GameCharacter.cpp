@@ -66,13 +66,14 @@ void GameCharacter::changeCurrSquare(int dir)
 		}
 	}
 	
-	if (Col_==GRID_SIZE_X-4) Col_ = 0;
+	if (Col_== GRID_SIZE_X - UNUSED_SQUARES_NUM) Col_ = 0;
 
 	printf("row: %d, col: %d\n", Row_, Col_);
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < CHARACTER_SQUARES_NUM; i++)
 	{
+		levelGrid->change_cost(currentSquare[i], FREE_COST);
 		currentSquare[i] = levelGrid->getLocation(Row_, Col_+i);
-		levelGrid->change_cost(currentSquare[i], 5);
+		levelGrid->change_cost(currentSquare[i], OCCUPATION_COST);
 	}
 }
 

@@ -13,6 +13,8 @@ namespace grid
 	static const int GRID_SIZE_X = 32;
 	static const int GRID_SIZE_Y = 5;
 
+	static const int OCCUPATION_COST = 5;
+	static const int FREE_COST = 1;
 
 	struct Location
 	{

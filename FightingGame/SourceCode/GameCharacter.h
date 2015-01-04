@@ -12,15 +12,19 @@ using namespace grid;
 class GameCharacter : public GameObject
 {
 protected:
+	static const int CHARACTER_SQUARES_NUM = 2;
+	static const int UNUSED_SQUARES_NUM = 4;
+
 	struct direction{ bool right; bool left; bool up; bool down; };
 	struct Shift{ int X; int Y; } shifting;
 
-	Location currentSquare[2];
-	direction moveDir;
-	SquareGrid *levelGrid;
 	enum {LEFT, RIGHT, UP, DOWN};
 	enum {PUNCHING, MOVING, PUNCHED, FALLING, STANDING};
 	enum { GPLAYER, GENEMY};
+
+	Location currentSquare[CHARACTER_SQUARES_NUM];
+	direction moveDir;
+	SquareGrid *levelGrid;
 	SDL_Rect * currentClip;
 	SDL_RendererFlip flipType;
 	
