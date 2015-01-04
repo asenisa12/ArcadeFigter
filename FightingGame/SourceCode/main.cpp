@@ -10,17 +10,17 @@ SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 SDL_Event gameEvent;
 
 GameBase mainGame(SCREEN_WIDTH, SCREEN_HEIGHT);
+grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 BackGround backGroundLevel1("Textures/Level1.png");
 BackGround backGroundMenu("Textures/MenuBackground.png");
-Player player1("Textures/Mustafa1.png", SCREEN_WIDTH, SCREEN_HEIGHT, {360, 480});
-Enemy1 enemy1("Textures/Enemy1.png", -10, 320, SCREEN_WIDTH, SCREEN_HEIGHT, &player1);
-Enemy1 enemy2("Textures/Enemy1.png",540, 290, SCREEN_WIDTH, SCREEN_HEIGHT, &player1);
+Player player1("Textures/Mustafa1.png", SCREEN_WIDTH, SCREEN_HEIGHT, {380, 430}, &levelgrid);
+Enemy1 enemy1("Textures/Enemy1.png", -10, 320, SCREEN_WIDTH, SCREEN_HEIGHT, &player1, &levelgrid);
+Enemy1 enemy2("Textures/Enemy1.png",540, 290, SCREEN_WIDTH, SCREEN_HEIGHT, &player1, &levelgrid);
 GameButton startButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT/5);
 GameButton exitButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH/5, SCREEN_HEIGHT/1.5);
 
-grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
-
+int gameState = GameState::MainMenu;
 bool started;
 bool quit = false;
 
@@ -33,8 +33,6 @@ int main(int argc, char* argv[])
 	}
 	else
 	{	
-
-		
 		if (!loadMedia())
 		{
 			printf("Can't load media!");

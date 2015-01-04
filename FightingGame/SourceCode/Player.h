@@ -39,7 +39,7 @@ class Player : public GameCharacter
 	void manageCameraPos(SDL_Rect* camera);
 
 public:
-	Player(std::string path, int screenW, int screenH, Location startingLocation);
+	Player(std::string path, int screenW, int screenH, Location startingLocation, SquareGrid *grid);
 	~Player();
 	bool loadMedia(SDL_Renderer* gRenderer);
 	//implements key presses

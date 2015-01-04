@@ -18,7 +18,6 @@ void path_search(SquareGrid grid,Location start, Location goal,
 	while (!frontier.empty())
 	{
 		Location current = frontier.get();
-		printf("x%d, y%d\n", current.X,current.Y);
 		if (current == goal)
 		{
 			break;

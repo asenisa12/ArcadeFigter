@@ -21,6 +21,14 @@
 
 using namespace std;
 
+enum GameState
+{
+	MainMenu,
+	Level1,
+	Level2
+};
+
+extern int gameState;
 
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
@@ -46,6 +54,9 @@ extern Enemy1 enemy2;
 
 extern GameButton startButton;
 extern GameButton exitButton;
+
+void mainMenu();
+
 
 void update();
 void render();

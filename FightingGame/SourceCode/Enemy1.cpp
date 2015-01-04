@@ -1,10 +1,10 @@
 #include "Enemy1.h"
 
-Enemy1::Enemy1(std::string path, int posX, int posY, int screenW, int screenH, GameCharacter* player)
-	:player_(player), action(false)
+Enemy1::Enemy1(std::string path, int posX, int posY, int screenW, int screenH, 
+	GameCharacter* player, SquareGrid *grid)
+	:player_(player), action(false), GameCharacter(grid, GENEMY, screenW, screenH)
 {
-	characterType = GENEMY;
-	currentCondition = STANDING;
+
 	health = 100;
 	punchStart_count = 0;
 	screenH_ = screenH;
@@ -75,93 +75,12 @@ void Enemy1::fall()
 
 bool Enemy1::moveToPosition(int X, int Y)
 {
-	diffrenceY = abs(Y - getBottomY());
-	diffrenceX = abs(posX_ - X);
-	if (diffrenceY > screenH_ * DIFF_BY_Y_PERCENTIGE)
-	{
-		if (Y > getBottomY() )
-		{
-			if (moveDir.down)
-			{
-				moveDown();
-				return true;
-			}
-
-		}
-		else if (Y < getBottomY() )
-		{
-			if (moveDir.up)
-			{
-				moveUp();
-				return true;
-			}
-		}
-	}
-	else if (posX_ > X )
-	{
-		if (moveDir.left )
-		{
-			moveLeft();
-			return true;
-		}
-	}
-	else if (posX_ < X)
-	{
-		if (moveDir.right )
-		{
-			moveRight();
-			return true;
-		}
-	}
-	return false;
+	return true;
 }
 
 void Enemy1::moving()
 {
-	/*if (!moveDir.down && diffrenceX<DIFF_BY_X_PERCENTIGE * screenW_){
-		printf("aaaaaa");
-		if (posX_ > player_->getX()){
-			posX_ += screenW_*SHIFTING_PERCENTIGE;
-		}
-		else
-		{
-			posX_ -= screenW_*SHIFTING_PERCENTIGE;
-		}
-		action = true;
-	}
-	else if (!moveDir.up && diffrenceX<DIFF_BY_X_PERCENTIGE * screenW_)
-	{
-		posX_ -= screenW_*SHIFTING_PERCENTIGE;
-		action = true;
-	}*/
-
-	if (!action)
-	{
-		int playerbottomY = player_->getBottomY();
-		diffrenceY = abs(player_->getBottomY() - getBottomY());
-		diffrenceX = abs(posX_ - player_->getX());
-		if (!moveDir.down && diffrenceX<DIFF_BY_X_PERCENTIGE * screenW_)
-		{
-			if (posX_ > player_->getX())
-			{
-				destX = player_->getX() + screenW_*SHIFTING_PERCENTIGE;
-				destY = player_->getBottomY() + screenW_*SHIFTING_PERCENTIGE;
-			}
-			else
-			{
-				destX = player_->getX() - screenW_*SHIFTING_PERCENTIGE;
-				destY = player_->getBottomY() - screenW_*SHIFTING_PERCENTIGE;
-			}
-		}
-		else
-		{
-			printf("aa");
-			destX = player_->getX();
-			destY = player_->getBottomY();
-		}
-	}
-
-	action  = moveToPosition(destX, destY);
+	
 }
 
 void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
@@ -181,7 +100,7 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		lastclip = WALKING_ANIMATION_END;
 		firstclip = 0;
 		
-		moving();
+		//moving();
 
 		if ((characterInLeft() || characterInRigh()) &&!punched)
 		{

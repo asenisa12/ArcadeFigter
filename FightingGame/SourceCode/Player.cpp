@@ -1,11 +1,10 @@
 #include "Player.h"
 
-Player::Player(std::string path, int screenW, int screenH, Location startingLocation)
-	:path_(path) 	
+Player::Player(std::string path, int screenW, int screenH, 
+	Location startingLocation, SquareGrid *grid)
+	: path_(path), GameCharacter(grid, GPLAYER, screenW, screenH)
 {
-	characterType = GPLAYER;
 	health = MAX_HEALTH;
-	currentCondition = STANDING;
 	frame = 0;
 	screenH_=screenH; 
 	screenW_ = screenW;
@@ -15,6 +14,8 @@ Player::Player(std::string path, int screenW, int screenH, Location startingLoca
 	//movement speed == 0.7% from screen w
 	movSpeed =screenW_*0.007;
 	objTexture = NULL;
+	Row_ = getRow(startingLocation);
+	Col_ = getCol(startingLocation);
 	posX_ = startingLocation.X + squareSize() / 2;
 	posY_ = startingLocation.Y - squareSize() / 2;
 	setGridAttributes(startingLocation);
@@ -27,10 +28,6 @@ Player::~Player()
 
 bool Player::loadMedia(SDL_Renderer* gRenderer)
 {
-	///*textureH = screenH_*(0.26); 
-	//textureW = screenW_*(0.17);*/
-	//posX_ = (screenW_ - mWidth) / 2; 
-	//posY_ = screenH_*(0.43);
 
 	if (!LoadFromFile(path_.c_str(), gRenderer))
 	{
@@ -212,7 +209,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 			
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] && !punching)
 	{
-		printf("posX: %d posY: %d\n", posX_, posY_);
+		printf("posX: %d posY: %d\n", posX_, getBottomY());
 		moveRight();
 	}
 	else if (currentKeyStates[SDL_SCANCODE_LEFT] && !punching)

@@ -13,19 +13,10 @@ class GameCharacter : public GameObject
 {
 protected:
 	struct direction{ bool right; bool left; bool up; bool down; };
-	struct Neighbors
-	{
-		Location UPL;
-		Location UPR;
-		Location DownL;
-		Location DownR;
-		Location Left;
-		Location Right;
-	};
 	struct Shift{ int X; int Y; } shifting;
+
 	Location currentSquare[2];
 	direction moveDir;
-	Neighbors neighbors;
 	SquareGrid *levelGrid;
 	enum {LEFT, RIGHT, UP, DOWN};
 	enum {PUNCHING, MOVING, PUNCHED, FALLING, STANDING};
@@ -50,8 +41,12 @@ protected:
 	int myBottom;
 	int myLeft;
 	int myRight;
-		
-	Neighbors getNeighbors();
+	
+	int Row_;
+	int Col_;
+	
+	int getCol(Location location);
+	int getRow(Location location);
 	void changeCurrSquare(int dir);
 	int squareSize();
 	void manageSquareShift();
@@ -66,6 +61,8 @@ protected:
 	void resizeClips(SDL_Rect Clips[]);
 	void collision(std::list<GameCharacter*> characters);
 public:
+	GameCharacter(SquareGrid *grid, int characterType_,
+		int screenW, int screenH);
 	bool punching();
 	void renderCharacter(SDL_Renderer* gRenderer);
 	int getBottomY();

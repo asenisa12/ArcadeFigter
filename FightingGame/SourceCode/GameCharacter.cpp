@@ -1,5 +1,11 @@
 #include "GameCharacter.h"
 
+GameCharacter::GameCharacter(SquareGrid *grid, int characterType_,
+	int screenW, int screenH)
+	:levelGrid(grid), characterType(characterType_), currentCondition(STANDING),
+	frame(0), screenH_(screenH), screenW_(screenW)
+{}
+
 void GameCharacter::renderCharacter(SDL_Renderer* gRenderer)
 {
 	//Render current frame
@@ -21,51 +27,76 @@ Location* GameCharacter::getCurrSquare()
 	return currentSquare;
 }
 
+int  GameCharacter::getCol(Location location)
+{
+	return location.X / squareSize();
+}
+int  GameCharacter::getRow(Location location)
+{
+	return (location.Y - levelGrid->getStartingY()) / squareSize();
+}
+
 void GameCharacter::changeCurrSquare(int dir)
 {
 	int adjX = 0, adjY = 0;
-	switch (dir)
+
+	if (Row_ < GRID_SIZE_Y && Row_ >= 0 && (dir == UP || dir == DOWN))
 	{
-	case LEFT:
-		adjX -= squareSize();
-		break;
-	case RIGHT:
-		adjX += squareSize();
-		break;
-	case UP:
-		adjY += squareSize();
-		break;
-	case DOWN:
-		adjY -= squareSize();
-		break;
-	default:
-		break;
+		switch (dir)
+		{
+		case UP:
+			Row_--;
+			break;
+		case DOWN:
+			Row_++;
+			break;
+		}
 	}
+	
+	if (Col_ < GRID_SIZE_X && Col_ >= 0 && (dir==LEFT || dir==RIGHT))
+	{
+		switch (dir)
+		{
+		case LEFT:
+			Col_--;
+			break;
+		case RIGHT:
+			Col_++;
+			break;
+		}
+	}
+	
+	if (Col_==GRID_SIZE_X-4) Col_ = 0;
+
+	printf("row: %d, col: %d\n", Row_, Col_);
 	for (int i = 0; i < 2; i++)
 	{
-		levelGrid->change_cost(currentSquare[i], 1);
-		currentSquare[i] = { currentSquare[i].X - adjX, currentSquare[i].Y + adjY};
+		currentSquare[i] = levelGrid->getLocation(Row_, Col_+i);
 		levelGrid->change_cost(currentSquare[i], 5);
 	}
 }
 
 void GameCharacter::manageSquareShift()
 {
-	if (shifting.X>squareSize()/2)
-	{
-		changeCurrSquare(DOWN);
-	}
-	else if (shifting.X<squareSize()/2*(-1))
-	{
-		changeCurrSquare(UP);
-	}
-	if (shifting.Y>squareSize() / 2)
+	if (shifting.X>squareSize())
 	{
 		changeCurrSquare(RIGHT);
+		shifting.X = 0;
 	}
-	else if (shifting.Y <squareSize() / 2 * (-1))
+	else if (shifting.X<squareSize()*(-1))
 	{
 		changeCurrSquare(LEFT);
+		shifting.X = 0;
+	}
+	if (shifting.Y>squareSize())
+	{
+		changeCurrSquare(DOWN);
+		shifting.Y = 0;
+	}
+	else if (shifting.Y <squareSize() * (-1))
+	{
+		changeCurrSquare(UP);
+		shifting.Y = 0;
 	}
 }
 
