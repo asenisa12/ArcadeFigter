@@ -235,7 +235,6 @@ void GameCharacter::collision(std::list<GameCharacter*> characters)
 				}
 				if (otherBottom > myBottom)
 				{
-					printf("aaaaaa1111\n");
 					moveDir.down = false;
 				}
 

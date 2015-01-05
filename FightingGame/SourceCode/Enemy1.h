@@ -2,6 +2,7 @@
 #define ENEMY_ONE
 
 #include "GameCharacter.h"
+#include "PathFinding.h"
 #include <string>
 
 class Enemy1 : public GameCharacter
@@ -37,7 +38,7 @@ class Enemy1 : public GameCharacter
 	std::string path_;
 	SDL_Rect Clips[FALLING_ANIMATION_END];
 public:
-	Enemy1(std::string path, int posX, int posY, int screenW, int screenH, 
+	Enemy1(std::string path, Location startlocation, int screenW, int screenH, 
 		GameCharacter* player, SquareGrid *grid);
 	~Enemy1();
 	bool loadMedia(SDL_Renderer* renderer);

@@ -74,15 +74,7 @@ bool loadMedia()
 	charactersList.push_back(&enemy1);
 	charactersList.push_back(&enemy2);
 	charactersList.push_back(&player1);
-	std::unordered_map<Location, Location, LocationHash, Equal> came_from;
-	std::unordered_map<Location, int, LocationHash, Equal> cost_so_far;
-	/*path_search(levelgrid,{ 620, 430 }, { 20, 370 },came_from,cost_so_far);
-	auto path = reconstruct_path({ 620, 430 }, { 20, 370 }, came_from);
-	for (auto it : path)
-	{
-		printf("x-%d y-%d\n", it.X, it.Y);
-		levelgrid.change_cost(it, 5);
-	}*/
+	
 	if (!player1.loadMedia(mainGame.getRenderer())) return false;
 	if (!enemy1.loadMedia(mainGame.getRenderer())) return false;
 	if (!enemy2.loadMedia(mainGame.getRenderer())) return false;

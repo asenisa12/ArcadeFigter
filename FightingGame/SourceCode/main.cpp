@@ -14,9 +14,9 @@ grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 BackGround backGroundLevel1("Textures/Level1.png");
 BackGround backGroundMenu("Textures/MenuBackground.png");
-Player player1("Textures/Mustafa1.png", SCREEN_WIDTH, SCREEN_HEIGHT, {380, 430}, &levelgrid);
-Enemy1 enemy1("Textures/Enemy1.png", -10, 320, SCREEN_WIDTH, SCREEN_HEIGHT, &player1, &levelgrid);
-Enemy1 enemy2("Textures/Enemy1.png",540, 290, SCREEN_WIDTH, SCREEN_HEIGHT, &player1, &levelgrid);
+Player player1("Textures/Mustafa1.png", SCREEN_WIDTH, SCREEN_HEIGHT, {380, 410}, &levelgrid);
+Enemy1 enemy1("Textures/Enemy1.png", {0,410}, SCREEN_WIDTH, SCREEN_HEIGHT, &player1, &levelgrid);
+Enemy1 enemy2("Textures/Enemy1.png", { 500, 390 }, SCREEN_WIDTH, SCREEN_HEIGHT, &player1, &levelgrid);
 GameButton startButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT/5);
 GameButton exitButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH/5, SCREEN_HEIGHT/1.5);
 

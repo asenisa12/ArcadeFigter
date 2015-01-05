@@ -1,6 +1,6 @@
 #include "Enemy1.h"
 
-Enemy1::Enemy1(std::string path, int posX, int posY, int screenW, int screenH, 
+Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screenH,
 	GameCharacter* player, SquareGrid *grid)
 	:player_(player), action(false), GameCharacter(grid, GENEMY, screenW, screenH)
 {
@@ -10,11 +10,12 @@ Enemy1::Enemy1(std::string path, int posX, int posY, int screenW, int screenH,
 	screenH_ = screenH;
 	screenW_ = screenW;
 	path_ = path;
-	posX_ = posX;
-	posY_ = posY;
 	//movement speed == 0.5% from screen width
 	movSpeed = screenW_*0.005;
 	flipType = SDL_FLIP_NONE;
+	posX_ = startlocation.X + squareSize() / 2;
+	posY_ = startlocation.Y - squareSize() / 2;
+	setGridAttributes(startlocation);
 }
 
 const double Enemy1::SHIFTING_PERCENTIGE = 0.1;
@@ -80,7 +81,25 @@ bool Enemy1::moveToPosition(int X, int Y)
 
 void Enemy1::moving()
 {
-	
+	Location playerLocation = player_->getCurrSquare()[0];
+	int playerRow = getRow(playerLocation);
+	int playerCol = getCol(playerLocation);
+	int adj = 0;
+
+	if (playerCol>1)
+	{
+		adj -= 2;
+	}
+	else
+	{
+		adj += 3;
+	}
+	Location goal = levelGrid->getLocation(playerRow, playerCol+adj);
+	std::unordered_map<Location, Location, LocationHash, Equal> came_from;
+	std::unordered_map<Location, int, LocationHash, Equal> cost_so_far;
+	path_search(*levelGrid, { 620, 430 }, goal, came_from, cost_so_far);
+	auto path = reconstruct_path({ 620, 430 }, goal, came_from);
+
 }
 
 void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
@@ -100,7 +119,7 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		lastclip = WALKING_ANIMATION_END;
 		firstclip = 0;
 		
-		//moving();
+		moving();
 
 		if ((characterInLeft() || characterInRigh()) &&!punched)
 		{
