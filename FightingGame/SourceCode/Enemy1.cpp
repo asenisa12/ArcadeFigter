@@ -7,14 +7,14 @@ Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screen
 
 	health = 100;
 	punchStart_count = 0;
-	screenH_ = screenH;
-	screenW_ = screenW;
 	path_ = path;
 	//movement speed == 0.5% from screen width
 	movSpeed = screenW_*0.005;
-	flipType = SDL_FLIP_NONE;
 	posX_ = startlocation.X + squareSize() / 2;
-	posY_ = startlocation.Y - squareSize() / 2;
+	posY_ = startlocation.Y - squareSize() / 2 + mHigth;
+
+	destY = getBottomY();
+	destX = posX_;
 	setGridAttributes(startlocation);
 }
 
@@ -74,12 +74,63 @@ void Enemy1::fall()
 	animation(FALLING_ANIMATION_END, PUNCHING_ANIMATION_END);
 }
 
-bool Enemy1::moveToPosition(int X, int Y)
+void Enemy1::moveToPosition(int X, int Y)
 {
-	return true;
+	if (X>posX_)
+	{
+		printf("1\n");
+		moveRight();
+	}
+	else if (X<posX_)
+	{
+		printf("2\n");
+		moveLeft();
+	}
+	else if (Y>getBottomY())
+	{
+		printf("3\n");
+		moveDown();
+	}
+	else if (Y<getBottomY())
+	{
+		printf("4\n");
+		moveUp();
+	}
+
+
 }
 
 void Enemy1::moving()
+{
+
+	if (currentGoal != getCurrSquare()[0])
+	{
+		if (posX_!=destX || getBottomY()!=destY)
+		{
+			/*printf("destxX:%d destY:%d\n",destX, destY);
+			printf("posX:%d posY:%d\n", posX_, getBottomY());*/
+			moveToPosition(destX, destY);
+		}
+		else
+		{
+			posX_ = destX;
+			posY_ = destY - mHigth;
+			auto path = (std::async(&Enemy1::getPath, this)).get();
+
+			for (auto it : path)
+			{
+				printf("}{posX: %d posY: %d\n", it.X, it.Y);
+			}
+
+			destX = path.back().X + squareSize() / 2;
+			destY = path.back().Y - squareSize() / 2;
+			printf("DESTINATION posX: %d posY: %d\n", destX, destY);
+		}
+	}
+	
+}
+
+Location Enemy1::getPlayerSquare()
 {
 	Location playerLocation = player_->getCurrSquare()[0];
 	int playerRow = getRow(playerLocation);
@@ -94,12 +145,17 @@ void Enemy1::moving()
 	{
 		adj += 3;
 	}
-	Location goal = levelGrid->getLocation(playerRow, playerCol+adj);
+	return levelGrid->getLocation(playerRow, playerCol + adj);
+}
+
+std::vector<Location> Enemy1::getPath()
+{
+	
 	std::unordered_map<Location, Location, LocationHash, Equal> came_from;
 	std::unordered_map<Location, int, LocationHash, Equal> cost_so_far;
-	path_search(*levelGrid, { 620, 430 }, goal, came_from, cost_so_far);
-	auto path = reconstruct_path({ 620, 430 }, goal, came_from);
-
+	path_search(*levelGrid, currentSquare[0], currentGoal, came_from, cost_so_far);
+	auto path = reconstruct_path(currentSquare[0], currentGoal, came_from);
+	return path;
 }
 
 void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
@@ -109,6 +165,8 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	punched = player_->punching();
 	otherLeft = player_->getX();
 	otherRight = player_->getX() + player_->getWidth() / 2;
+
+	currentGoal = getPlayerSquare();
 
 	if (punched && (characterInLeft() || characterInRigh()) && player_->getCondition() != PUNCHED)
 	{
@@ -138,4 +196,5 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		frame = firstclip;
 	}
 	resizeClips(Clips);
+	manageSquareShift();
 }

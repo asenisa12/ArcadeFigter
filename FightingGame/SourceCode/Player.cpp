@@ -6,9 +6,6 @@ Player::Player(std::string path, int screenW, int screenH,
 {
 	health = MAX_HEALTH;
 	frame = 0;
-	screenH_=screenH; 
-	screenW_ = screenW;
-	flipType = SDL_FLIP_NONE;
 	int add = 0;
 	camera_pos = 1;
 	//movement speed == 0.7% from screen w
@@ -17,7 +14,7 @@ Player::Player(std::string path, int screenW, int screenH,
 	Row_ = getRow(startingLocation);
 	Col_ = getCol(startingLocation);
 	posX_ = startingLocation.X + squareSize() / 2;
-	posY_ = startingLocation.Y - squareSize() / 2;
+	posY_ = startingLocation.Y - squareSize() / 2 + mHigth;
 	setGridAttributes(startingLocation);
 }
 
@@ -198,6 +195,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		//checks if the moving kes are pressed
 		if (checkKeys())
 		{
+			manageSquareShift();
 			frame++;
 		}
 		else
@@ -232,7 +230,6 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	}
 	movSpeed = 3;
 
-	manageSquareShift();
 	manageCameraPos(camera);
 	resizeClips(Clips);
 }

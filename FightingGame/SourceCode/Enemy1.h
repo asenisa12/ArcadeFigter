@@ -4,6 +4,7 @@
 #include "GameCharacter.h"
 #include "PathFinding.h"
 #include <string>
+#include <future>
 
 class Enemy1 : public GameCharacter
 {
@@ -30,12 +31,16 @@ class Enemy1 : public GameCharacter
 	bool action;
 
 	GameCharacter* player_;
+	Location lastPlayerSquare;
+	Location currentGoal;
 
-	bool moveToPosition(int X, int Y);
+	void moveToPosition(int X, int Y);
 	void moving();
 	void punch();
 	void fall();
+	Location getPlayerSquare();
 	std::string path_;
+	std::vector<Location> getPath();
 	SDL_Rect Clips[FALLING_ANIMATION_END];
 public:
 	Enemy1(std::string path, Location startlocation, int screenW, int screenH, 
