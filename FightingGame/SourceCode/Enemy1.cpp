@@ -11,11 +11,11 @@ Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screen
 	//movement speed == 0.5% from screen width
 	movSpeed = screenW_*0.005;
 	posX_ = startlocation.X + squareSize() / 2;
-	posY_ = startlocation.Y - squareSize() / 2 + mHigth;
+	posY_ = startlocation.Y - squareSize() / 2;
 
-	destY = getBottomY();
-	destX = posX_;
+	
 	setGridAttributes(startlocation);
+	PrevSquare = currentSquare[0];
 }
 
 const double Enemy1::SHIFTING_PERCENTIGE = 0.1;
@@ -54,7 +54,14 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 
 	currentClip = Clips;
 	frame = 0;
+	resizeClips(Clips);
+	posY_ -= mHigth;
+	destY = posY_;
+	destX = posX_;
+
 	return true;
+
+
 }
 
 Enemy1::~Enemy1()
@@ -74,60 +81,104 @@ void Enemy1::fall()
 	animation(FALLING_ANIMATION_END, PUNCHING_ANIMATION_END);
 }
 
+void Enemy1::findDestination()
+{
+	path = (std::async(&Enemy1::getPath, this)).get();
+	path.pop_back();
+	if (currentSquare[0] == path.back() && path.back() != currentGoal)
+	{
+		path.pop_back();
+	}
+	destX = path.back().X + squareSize() / 2;
+	destY = path.back().Y - squareSize() / 2 - mHigth;
+}
+
 void Enemy1::moveToPosition(int X, int Y)
 {
-	if (X>posX_)
+	diffrenceY = abs(Y+mHigth - getBottomY());
+	diffrenceX = abs(posX_ - X);
+	if (diffrenceY >3 /*screenH_ * DIFF_BY_Y_PERCENTIGE*/)
 	{
-		printf("1\n");
-		moveRight();
-	}
-	else if (X<posX_)
-	{
-		printf("2\n");
-		moveLeft();
-	}
-	else if (Y>getBottomY())
-	{
-		printf("3\n");
-		moveDown();
-	}
-	else if (Y<getBottomY())
-	{
-		printf("4\n");
-		moveUp();
-	}
+		if (Y > posY_)
+		{
+			if (moveDir.down)
+			{
+				moveDown();
+				action = true;
+				return;
+			}
 
-
+		}
+		else if (Y <posY_)
+		{
+			if (moveDir.up)
+			{
+				moveUp();
+				action = true;
+				return;
+			}
+		}
+	}
+	else if (diffrenceX >3 /*screenW_ * DIFF_BY_X_PERCENTIGE*/)
+	{
+		if (posX_ > X)
+		{
+			if (moveDir.left)
+			{
+				moveLeft();
+				action = true;
+				return;
+			}
+		}
+		else if (posX_ < X)
+		{
+			if (moveDir.right)
+			{
+				moveRight();
+				action = true;
+				return;
+			}
+		}
+	}
+	if (diffrenceY < 5/*screenH_ * DIFF_BY_Y_PERCENTIGE*/)
+	{
+		posX_ =X;
+		action = true;
+	}
+	if (diffrenceX < 5/*screenW_ * DIFF_BY_X_PERCENTIGE*/)
+	{
+		posY_ = Y;
+		action = true;
+	}
 }
 
 void Enemy1::moving()
 {
 
-	if (currentGoal != getCurrSquare()[0])
+	if (currentGoal.X != posX_ + squareSize() / 2)
 	{
-		if (posX_!=destX || getBottomY()!=destY)
+		if (posX_ != destX || posY_ != destY)
 		{
-			/*printf("destxX:%d destY:%d\n",destX, destY);
-			printf("posX:%d posY:%d\n", posX_, getBottomY());*/
+			/*printf("SquareGridX:%d Y%d\n", getCurrSquare()[0].X, getCurrSquare()[0].Y);
+			printf("MHight %d \n", mHigth);*/
 			moveToPosition(destX, destY);
+			printf("destxX:%d destY:%d\n",destX, destY);
+			printf("posX:%d posY:%d\n", posX_, posY_);
+
+			if (posX_ == destX || posY_ == destY)
+			{
+				currentSquare[0] = path.back();
+				currentSquare[1] = levelGrid->getLocation(getRow(path.back()), getCol(path.back()) + 1);
+			}
 		}
 		else
-		{
-			posX_ = destX;
-			posY_ = destY - mHigth;
-			auto path = (std::async(&Enemy1::getPath, this)).get();
-
-			for (auto it : path)
-			{
-				printf("}{posX: %d posY: %d\n", it.X, it.Y);
-			}
-
-			destX = path.back().X + squareSize() / 2;
-			destY = path.back().Y - squareSize() / 2;
-			printf("DESTINATION posX: %d posY: %d\n", destX, destY);
+		{	
+				findDestination();
+				printf("DESTINATION posX: %d posY: %d\n", destX, destY);
 		}
 	}
-	
+	/*printf("posX:%d posY:%d\n", posX_, getBottomY());
+	moveToPosition(player_->getX(), player_->getY());*/
 }
 
 Location Enemy1::getPlayerSquare()
@@ -137,20 +188,22 @@ Location Enemy1::getPlayerSquare()
 	int playerCol = getCol(playerLocation);
 	int adj = 0;
 
-	if (playerCol>1)
+	if (playerCol>3)
 	{
-		adj -= 2;
+		playerCol -= 5;
 	}
 	else
 	{
-		adj += 3;
+		playerCol += 1;
 	}
+
+	/*printf("goal col%d, goal row%d\n",playerCol, playerRow+adj);*/
 	return levelGrid->getLocation(playerRow, playerCol + adj);
 }
 
 std::vector<Location> Enemy1::getPath()
 {
-	
+	//printf("SquareGridX:%d Y%d\n", getCurrSquare()[0].X, getCurrSquare()[0].Y);
 	std::unordered_map<Location, Location, LocationHash, Equal> came_from;
 	std::unordered_map<Location, int, LocationHash, Equal> cost_so_far;
 	path_search(*levelGrid, currentSquare[0], currentGoal, came_from, cost_so_far);
@@ -165,6 +218,7 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	punched = player_->punching();
 	otherLeft = player_->getX();
 	otherRight = player_->getX() + player_->getWidth() / 2;
+	currentCondition = STANDING;
 
 	currentGoal = getPlayerSquare();
 
@@ -196,5 +250,5 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		frame = firstclip;
 	}
 	resizeClips(Clips);
-	manageSquareShift();
+	//manageSquareShift();
 }

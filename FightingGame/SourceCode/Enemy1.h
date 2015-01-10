@@ -33,7 +33,10 @@ class Enemy1 : public GameCharacter
 	GameCharacter* player_;
 	Location lastPlayerSquare;
 	Location currentGoal;
+	Location PrevSquare;
+	std::vector<Location> path;
 
+	void findDestination();
 	void moveToPosition(int X, int Y);
 	void moving();
 	void punch();

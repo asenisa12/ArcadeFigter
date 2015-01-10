@@ -72,7 +72,7 @@ void render()
 bool loadMedia()
 {
 	charactersList.push_back(&enemy1);
-	charactersList.push_back(&enemy2);
+	/*charactersList.push_back(&enemy2);*/
 	charactersList.push_back(&player1);
 	
 	if (!player1.loadMedia(mainGame.getRenderer())) return false;

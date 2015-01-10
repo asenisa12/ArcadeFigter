@@ -13,7 +13,7 @@ class GameCharacter : public GameObject
 {
 protected:
 	static const int CHARACTER_SQUARES_NUM = 2;
-	static const int UNUSED_SQUARES_NUM = 4;
+	static const int UNUSED_SQUARES_NUM = 5;
 
 	struct direction{ bool right; bool left; bool up; bool down; };
 	struct Shift{ int X; int Y; } shifting;

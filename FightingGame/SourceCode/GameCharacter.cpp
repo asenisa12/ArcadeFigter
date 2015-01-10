@@ -186,7 +186,7 @@ void GameCharacter::resizeClips(SDL_Rect Clips[])
 
 bool GameCharacter::characterInLeft()
 {
-	if (abs(otherRight - myLeft) < 5 && otherRight < myLeft)
+	if (abs(otherRight - myLeft) < 10 && otherRight < myLeft)
 	{
 		return true;
 	}
@@ -194,7 +194,7 @@ bool GameCharacter::characterInLeft()
 }
 bool GameCharacter::characterInRigh()
 {
-	if (abs(otherLeft - myRight) < 5 && otherLeft > myRight)
+	if (abs(otherLeft - myRight) < 10 && otherLeft > myRight)
 	{
 		return true;
 	}

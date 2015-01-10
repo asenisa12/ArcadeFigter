@@ -108,7 +108,7 @@ void grid::SquareGrid::create_grid()
 	{
 		for (int j = 0; j < GRID_SIZE_X; j++)
 		{
-			printf("aaaa--x%d, y%d\n", x, y);
+			//printf("aaaa--x%d, y%d\n", x, y);
 			GridSquares[i][j] = { x, y };
 			add_neighbors(i, j);
 			x += squareSize;
