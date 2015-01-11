@@ -164,7 +164,6 @@ bool Player::punched(std::list<GameCharacter*> characters)
 void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 {
 	currentKeyStates = SDL_GetKeyboardState(NULL);
-	bool punching = false;
 	collision(characters);
 	bool ispunched = punched(characters);
 
@@ -195,7 +194,6 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		//checks if the moving kes are pressed
 		if (checkKeys())
 		{
-			manageSquareShift();
 			frame++;
 		}
 		else
@@ -205,12 +203,12 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		}
 	}
 			
-	if (currentKeyStates[SDL_SCANCODE_RIGHT] && !punching)
+	if (currentKeyStates[SDL_SCANCODE_RIGHT] && !currentKeyStates[SDL_SCANCODE_Q])
 	{
 		printf("posX: %d posY: %d\n", posX_, getBottomY());
 		moveRight();
 	}
-	else if (currentKeyStates[SDL_SCANCODE_LEFT] && !punching)
+	else if (currentKeyStates[SDL_SCANCODE_LEFT] && !currentKeyStates[SDL_SCANCODE_Q])
 	{
 		moveLeft();
 	}
@@ -230,6 +228,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	}
 	movSpeed = 3;
 
+	manageSquareShift();
 	manageCameraPos(camera);
 	resizeClips(Clips);
 }

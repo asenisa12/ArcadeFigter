@@ -33,6 +33,7 @@ void render()
 	SDL_SetRenderDrawColor(mainGame.getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(mainGame.getRenderer());
 
+	std::list<GameCharacter*>::iterator it = charactersList.begin();
 	switch (gameState)
 	{
 	case GameState::MainMenu:
@@ -47,16 +48,17 @@ void render()
 	case GameState::Level1:
 
 		backGroundLevel1.renderBack(&camera, player1.getX(), mainGame.getRenderer());
-		for (auto it : charactersList)
+		while (it != charactersList.end())
 		{
-			if (it->getHealth() > 0)
+			if ((*it)->getHealth() == 0)
 			{
-				it->renderCharacter(mainGame.getRenderer());
-				it->doActions(&camera, charactersList);
+				it = charactersList.erase(it);
 			}
 			else
 			{
-				charactersList.remove(it);
+				(*it)->renderCharacter(mainGame.getRenderer());
+				(*it)->doActions(&camera, charactersList);
+				++it;
 			}
 		}
 		drawPlayerHealthBar(player1.getHealth());
@@ -72,7 +74,7 @@ void render()
 bool loadMedia()
 {
 	charactersList.push_back(&enemy1);
-	/*charactersList.push_back(&enemy2);*/
+	charactersList.push_back(&enemy2);
 	charactersList.push_back(&player1);
 	
 	if (!player1.loadMedia(mainGame.getRenderer())) return false;

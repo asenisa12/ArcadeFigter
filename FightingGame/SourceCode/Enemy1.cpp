@@ -84,10 +84,16 @@ void Enemy1::fall()
 void Enemy1::findDestination()
 {
 	path = (std::async(&Enemy1::getPath, this)).get();
-	path.pop_back();
-	if (currentSquare[0] == path.back() && path.back() != currentGoal)
-	{
-		path.pop_back();
+
+	for (;;){
+		if (currentSquare[0] == path.back() && path.back() != currentGoal)
+		{
+			path.pop_back();
+		}
+		else
+		{
+			break;
+		}
 	}
 	destX = path.back().X + squareSize() / 2;
 	destY = path.back().Y - squareSize() / 2 - mHigth;
@@ -154,16 +160,12 @@ void Enemy1::moveToPosition(int X, int Y)
 
 void Enemy1::moving()
 {
-
-	if (currentGoal.X != posX_ + squareSize() / 2)
+	if (currentGoal != currentSquare[0])
 	{
+
 		if (posX_ != destX || posY_ != destY)
 		{
-			/*printf("SquareGridX:%d Y%d\n", getCurrSquare()[0].X, getCurrSquare()[0].Y);
-			printf("MHight %d \n", mHigth);*/
 			moveToPosition(destX, destY);
-			printf("destxX:%d destY:%d\n",destX, destY);
-			printf("posX:%d posY:%d\n", posX_, posY_);
 
 			if (posX_ == destX || posY_ == destY)
 			{
@@ -177,8 +179,6 @@ void Enemy1::moving()
 				printf("DESTINATION posX: %d posY: %d\n", destX, destY);
 		}
 	}
-	/*printf("posX:%d posY:%d\n", posX_, getBottomY());
-	moveToPosition(player_->getX(), player_->getY());*/
 }
 
 Location Enemy1::getPlayerSquare()
@@ -197,13 +197,11 @@ Location Enemy1::getPlayerSquare()
 		playerCol += 1;
 	}
 
-	/*printf("goal col%d, goal row%d\n",playerCol, playerRow+adj);*/
 	return levelGrid->getLocation(playerRow, playerCol + adj);
 }
 
 std::vector<Location> Enemy1::getPath()
 {
-	//printf("SquareGridX:%d Y%d\n", getCurrSquare()[0].X, getCurrSquare()[0].Y);
 	std::unordered_map<Location, Location, LocationHash, Equal> came_from;
 	std::unordered_map<Location, int, LocationHash, Equal> cost_so_far;
 	path_search(*levelGrid, currentSquare[0], currentGoal, came_from, cost_so_far);
@@ -219,7 +217,7 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	otherLeft = player_->getX();
 	otherRight = player_->getX() + player_->getWidth() / 2;
 	currentCondition = STANDING;
-
+	action = false;
 	currentGoal = getPlayerSquare();
 
 	if (punched && (characterInLeft() || characterInRigh()) && player_->getCondition() != PUNCHED)
