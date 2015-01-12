@@ -2,9 +2,8 @@
 
 Player::Player(std::string path, int screenW, int screenH, 
 	Location startingLocation, SquareGrid *grid)
-	: path_(path), GameCharacter(grid, GPLAYER, screenW, screenH)
+	: path_(path), GameCharacter(grid, GPLAYER, screenW, screenH, MAX_HEALTH)
 {
-	health = MAX_HEALTH;
 	frame = 0;
 	int add = 0;
 	camera_pos = 1;
@@ -13,8 +12,6 @@ Player::Player(std::string path, int screenW, int screenH,
 	objTexture = NULL;
 	Row_ = getRow(startingLocation);
 	Col_ = getCol(startingLocation);
-	posX_ = startingLocation.X + squareSize() / 2;
-	posY_ = startingLocation.Y - squareSize() / 2 + mHigth;
 	setGridAttributes(startingLocation);
 }
 
@@ -37,20 +34,18 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 	{
 
 		if (i == WALKING_ANIMATION_FRAMES_END ||
-			i==JUMPING_ANIMATION_FRAMES_END || 
+			i == JUMPING_ANIMATION_FRAMES_END || 
 			i == RUNING_ANIMATION_FRAMES_END ||
-			i== PUNCH_ANIMATION_FRAMES_END){
+			i == PUNCH_ANIMATION_FRAMES_END )
+		{
 			x = 0;
 			y += CLIP_H;
 		}
-		Clips[i].x = x;
-		Clips[i].y = y;
-		Clips[i].w = CLIP_W;
-		Clips[i].h = CLIP_H;
+		Clips[i] = { x, y, CLIP_W, CLIP_H };
 		x += CLIP_W;
 	}
 	resizeClips(Clips);
-	posY_ -= mHigth;
+	posToSquareMiddle();
 	return true;
 }
 
@@ -66,6 +61,7 @@ void Player::punch()
 	currentCondition = PUNCHING;
 	animation(PUNCH_ANIMATION_FRAMES_END, JUMPING_ANIMATION_FRAMES_END);
 }
+
 void Player::jump()
 {
 	firstclip = RUNING_ANIMATION_FRAMES_END * 4;
@@ -108,7 +104,7 @@ void Player::run()
 
 }
 
-bool Player::checkKeys()
+bool Player::checkMoveKeys()
 {
 	if (currentKeyStates[SDL_SCANCODE_LEFT] ||
 		currentKeyStates[SDL_SCANCODE_RIGHT] ||
@@ -126,6 +122,8 @@ void Player::manageCameraPos(SDL_Rect* camera)
 	//last x position on screen = 90% from screen W 
 	if (posX_ > screenW_*(0.90) && camera_pos < 5){
 		camera_pos++;
+		Col_ = 1;
+		shifting.X = 0;
 		camera->x += screenW_;
 		posX_ = posX_ - screenW_*(0.90);
 	}
@@ -192,7 +190,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 			firstclip = 5;
 		}
 		//checks if the moving kes are pressed
-		if (checkKeys())
+		if (checkMoveKeys())
 		{
 			frame++;
 		}
@@ -205,7 +203,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 			
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] && !currentKeyStates[SDL_SCANCODE_Q])
 	{
-		printf("posX: %d posY: %d\n", posX_, getBottomY());
+		printf("posX: %d posY: %d Shift[X]: %d \n", posX_, getBottomY(), shifting.X);
 		moveRight();
 	}
 	else if (currentKeyStates[SDL_SCANCODE_LEFT] && !currentKeyStates[SDL_SCANCODE_Q])

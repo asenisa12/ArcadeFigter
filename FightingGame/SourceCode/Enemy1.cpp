@@ -2,25 +2,20 @@
 
 Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screenH,
 	GameCharacter* player, SquareGrid *grid)
-	:player_(player), action(false), GameCharacter(grid, GENEMY, screenW, screenH)
+	:player_(player), action(false), GameCharacter(grid, GENEMY, screenW, screenH, MAX_HEALTH)
 {
 
-	health = 100;
 	punchStart_count = 0;
 	path_ = path;
 	//movement speed == 0.5% from screen width
-	movSpeed = screenW_*0.005;
-	posX_ = startlocation.X + squareSize() / 2;
-	posY_ = startlocation.Y - squareSize() / 2;
-
-	
+	movSpeed = screenW_*0.005;	
 	setGridAttributes(startlocation);
 	PrevSquare = currentSquare[0];
 }
 
 const double Enemy1::SHIFTING_PERCENTIGE = 0.1;
-const double Enemy1::DIFF_BY_X_PERCENTIGE = 0.03;
-const double Enemy1::DIFF_BY_Y_PERCENTIGE = 0.04;
+const double Enemy1::DIFF_BY_X_PERCENTIGE = 0.0046876;
+const double Enemy1::DIFF_BY_Y_PERCENTIGE = 0.00625;
 
 bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 {
@@ -40,10 +35,7 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 			x = 0;
 			y += CLIP_H;
 		}
-		Clips[i].x = x;
-		Clips[i].y = y;
-		Clips[i].w = CLIP_W;
-		Clips[i].h = CLIP_H;
+		Clips[i] = { x, y, CLIP_W, CLIP_H };
 		if (i == 15 || i == 16)
 		{
 			x += FALLING_CLIP_W;
@@ -55,7 +47,7 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 	currentClip = Clips;
 	frame = 0;
 	resizeClips(Clips);
-	posY_ -= mHigth;
+	posToSquareMiddle();
 	destY = posY_;
 	destX = posX_;
 
@@ -86,14 +78,11 @@ void Enemy1::findDestination()
 	path = (std::async(&Enemy1::getPath, this)).get();
 
 	for (;;){
-		if (currentSquare[0] == path.back() && path.back() != currentGoal)
+		if (currentSquare[FIRST_SQUARE_ID] == path.back() && path.back() != currentGoal)
 		{
 			path.pop_back();
 		}
-		else
-		{
-			break;
-		}
+		else break;
 	}
 	destX = path.back().X + squareSize() / 2;
 	destY = path.back().Y - squareSize() / 2 - mHigth;
@@ -103,7 +92,8 @@ void Enemy1::moveToPosition(int X, int Y)
 {
 	diffrenceY = abs(Y+mHigth - getBottomY());
 	diffrenceX = abs(posX_ - X);
-	if (diffrenceY >3 /*screenH_ * DIFF_BY_Y_PERCENTIGE*/)
+
+	if (diffrenceY >screenH_ * DIFF_BY_Y_PERCENTIGE)
 	{
 		if (Y > posY_)
 		{
@@ -125,7 +115,7 @@ void Enemy1::moveToPosition(int X, int Y)
 			}
 		}
 	}
-	else if (diffrenceX >3 /*screenW_ * DIFF_BY_X_PERCENTIGE*/)
+	else if (diffrenceX >screenW_ * DIFF_BY_X_PERCENTIGE)
 	{
 		if (posX_ > X)
 		{
@@ -146,12 +136,12 @@ void Enemy1::moveToPosition(int X, int Y)
 			}
 		}
 	}
-	if (diffrenceY < 5/*screenH_ * DIFF_BY_Y_PERCENTIGE*/)
+	if (diffrenceY < screenH_ * DIFF_BY_Y_PERCENTIGE)
 	{
 		posX_ =X;
 		action = true;
 	}
-	if (diffrenceX < 5/*screenW_ * DIFF_BY_X_PERCENTIGE*/)
+	if (diffrenceX < screenW_ * DIFF_BY_X_PERCENTIGE)
 	{
 		posY_ = Y;
 		action = true;
@@ -160,17 +150,16 @@ void Enemy1::moveToPosition(int X, int Y)
 
 void Enemy1::moving()
 {
-	if (currentGoal != currentSquare[0])
+	if (currentGoal != currentSquare[FIRST_SQUARE_ID])
 	{
 
 		if (posX_ != destX || posY_ != destY)
 		{
 			moveToPosition(destX, destY);
 
-			if (posX_ == destX || posY_ == destY)
+			if (posX_ == destX && posY_ == destY)
 			{
-				currentSquare[0] = path.back();
-				currentSquare[1] = levelGrid->getLocation(getRow(path.back()), getCol(path.back()) + 1);
+				changeSquare(getRow(path.back()), getCol(path.back()));
 			}
 		}
 		else
@@ -183,7 +172,7 @@ void Enemy1::moving()
 
 Location Enemy1::getPlayerSquare()
 {
-	Location playerLocation = player_->getCurrSquare()[0];
+	Location playerLocation = player_->getCurrSquare()[FIRST_SQUARE_ID];
 	int playerRow = getRow(playerLocation);
 	int playerCol = getCol(playerLocation);
 	int adj = 0;
@@ -204,8 +193,8 @@ std::vector<Location> Enemy1::getPath()
 {
 	std::unordered_map<Location, Location, LocationHash, Equal> came_from;
 	std::unordered_map<Location, int, LocationHash, Equal> cost_so_far;
-	path_search(*levelGrid, currentSquare[0], currentGoal, came_from, cost_so_far);
-	auto path = reconstruct_path(currentSquare[0], currentGoal, came_from);
+	path_search(*levelGrid, currentSquare[FIRST_SQUARE_ID], currentGoal, came_from, cost_so_far);
+	auto path = reconstruct_path(currentSquare[FIRST_SQUARE_ID], currentGoal, came_from);
 	return path;
 }
 
@@ -248,5 +237,4 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		frame = firstclip;
 	}
 	resizeClips(Clips);
-	//manageSquareShift();
 }

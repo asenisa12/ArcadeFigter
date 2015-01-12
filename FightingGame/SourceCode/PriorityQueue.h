@@ -5,6 +5,7 @@
 #include <functional>
 #include <vector>
 #include "Grid.h"
+
 using grid::Location;
 
 typedef std::pair<int, Location> PQElement;

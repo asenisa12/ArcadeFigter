@@ -1,9 +1,9 @@
 #include "GameCharacter.h"
 
 GameCharacter::GameCharacter(SquareGrid *grid, int characterType_,
-	int screenW, int screenH)
+	int screenW, int screenH, int health_)
 	:levelGrid(grid), characterType(characterType_), currentCondition(STANDING),
-	frame(0), screenH_(screenH), screenW_(screenW), flipType(SDL_FLIP_NONE)
+	frame(0), screenH_(screenH), screenW_(screenW), flipType(SDL_FLIP_NONE), health(health_)
 {}
 
 void GameCharacter::renderCharacter(SDL_Renderer* gRenderer)
@@ -36,6 +36,22 @@ int  GameCharacter::getRow(Location location)
 	return (location.Y - levelGrid->getStartingY()) / squareSize();
 }
 
+void GameCharacter::posToSquareMiddle()
+{
+	posX_ = currentSquare[FIRST_SQUARE_ID].X + squareSize() / 2;
+	posY_ = currentSquare[FIRST_SQUARE_ID].Y - squareSize() / 2 - mHigth;
+}
+
+void GameCharacter::changeSquare(int row, int col)
+{
+	for (int i = 0; i < CHARACTER_SQUARES_NUM; i++)
+	{
+		levelGrid->change_cost(currentSquare[i], FREE_COST);
+		currentSquare[i] = levelGrid->getLocation(row, col + i);
+		levelGrid->change_cost(currentSquare[i], OCCUPATION_COST);
+	}
+}
+
 void GameCharacter::changeCurrSquare(int dir)
 {
 	int adjX = 0, adjY = 0;
@@ -65,36 +81,27 @@ void GameCharacter::changeCurrSquare(int dir)
 			break;
 		}
 	}
-	
-	if (Col_== GRID_SIZE_X - UNUSED_SQUARES_NUM) Col_ = 0;
-
-	printf("row: %d, col: %d\n", Row_, Col_);
-	for (int i = 0; i < CHARACTER_SQUARES_NUM; i++)
-	{
-		levelGrid->change_cost(currentSquare[i], FREE_COST);
-		currentSquare[i] = levelGrid->getLocation(Row_, Col_+i);
-		levelGrid->change_cost(currentSquare[i], OCCUPATION_COST);
-	}
+	changeSquare(Row_, Col_);
 }
 
 void GameCharacter::manageSquareShift()
 {
-	if (shifting.X>squareSize())
+	if (shifting.X>=squareSize())
 	{
 		changeCurrSquare(RIGHT);
 		shifting.X = 0;
 	}
-	else if (shifting.X<squareSize()*(-1))
+	else if (shifting.X <= squareSize()*(-1))
 	{
 		changeCurrSquare(LEFT);
 		shifting.X = 0;
 	}
-	if (shifting.Y>squareSize())
+	if (shifting.Y>=squareSize())
 	{
 		changeCurrSquare(DOWN);
 		shifting.Y = 0;
 	}
-	else if (shifting.Y <squareSize() * (-1))
+	else if (shifting.Y <= squareSize() * (-1))
 	{
 		changeCurrSquare(UP);
 		shifting.Y = 0;

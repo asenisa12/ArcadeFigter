@@ -13,11 +13,12 @@ class GameCharacter : public GameObject
 {
 protected:
 	static const int CHARACTER_SQUARES_NUM = 2;
-	static const int UNUSED_SQUARES_NUM = 5;
+	static const int UNUSED_SQUARES_NUM = 6;
 
 	struct direction{ bool right; bool left; bool up; bool down; };
 	struct Shift{ int X; int Y; } shifting;
 
+	enum {FIRST_SQUARE_ID=0, SECOND_SQUARE_ID=1};
 	enum {LEFT, RIGHT, UP, DOWN};
 	enum {PUNCHING, MOVING, PUNCHED, FALLING, STANDING};
 	enum { GPLAYER, GENEMY};
@@ -49,6 +50,8 @@ protected:
 	int Row_;
 	int Col_;
 	
+	void changeSquare(int row, int col);
+	void posToSquareMiddle();
 	int getCol(Location location);
 	int getRow(Location location);
 	void changeCurrSquare(int dir);
@@ -66,7 +69,7 @@ protected:
 	void collision(std::list<GameCharacter*> characters);
 public:
 	GameCharacter(SquareGrid *grid, int characterType_,
-		int screenW, int screenH);
+		int screenW, int screenH, int health_);
 	bool punching();
 	void renderCharacter(SDL_Renderer* gRenderer);
 	int getBottomY();

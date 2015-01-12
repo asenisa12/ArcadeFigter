@@ -5,8 +5,6 @@ inline bool greater_than::operator() (GameCharacter* struct1, GameCharacter* str
 	return (struct1->getBottomY()< struct2->getBottomY());
 }
 
-
-
 void update()
 {
 	switch (gameState)
@@ -20,7 +18,7 @@ void update()
 		break;
 	case GameState::Level1:
 		charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)
-		{return (struct1->getBottomY()< struct2->getBottomY()); });
+			{return (struct1->getBottomY()< struct2->getBottomY()); });
 		break;
 	case GameState::Level2:
 		break;
@@ -56,8 +54,8 @@ void render()
 			}
 			else
 			{
-				(*it)->renderCharacter(mainGame.getRenderer());
 				(*it)->doActions(&camera, charactersList);
+				(*it)->renderCharacter(mainGame.getRenderer());
 				++it;
 			}
 		}

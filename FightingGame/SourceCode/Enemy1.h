@@ -16,6 +16,7 @@ class Enemy1 : public GameCharacter
 	static const double DIFF_BY_X_PERCENTIGE;
 	static const double DIFF_BY_Y_PERCENTIGE;
 
+	static const int MAX_HEALTH = 100;
 	static const int DAMAGE = 4;
 	static const int CLIP_H = 100;
 	static const int CLIP_W = 100;
