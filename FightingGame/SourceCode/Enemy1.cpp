@@ -216,7 +216,8 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		{
 			frame++;
 		}
-		else if ((characterInLeft(player_) || characterInRigh(player_)) && !punched)
+		else if ((characterInLeft(player_) || characterInRigh(player_)) && !punched
+			&& player_->getCondition()!=MOVING)
 		{
 			if (frame / 4 == PUNCHING_ANIMATION_END - 1)
 				player_->editHealth(DAMAGE);

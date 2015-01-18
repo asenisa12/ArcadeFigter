@@ -17,9 +17,11 @@
     <ClCompile Include="SourceCode\GameButton.cpp" />
     <ClCompile Include="SourceCode\GameCharacter.cpp" />
     <ClCompile Include="SourceCode\GameObject.cpp" />
+    <ClCompile Include="SourceCode\GameState.cpp" />
     <ClCompile Include="SourceCode\Grid.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\MainGame.cpp" />
+    <ClCompile Include="SourceCode\MainMenu.cpp" />
     <ClCompile Include="SourceCode\PathFinding.cpp" />
     <ClCompile Include="SourceCode\Player.cpp" />
   </ItemGroup>
@@ -28,7 +30,9 @@
     <ClInclude Include="SourceCode\Enemy1.h" />
     <ClInclude Include="SourceCode\GameBase.h" />
     <ClInclude Include="SourceCode\GameCharacter.h" />
+    <ClInclude Include="SourceCode\GameState.h" />
     <ClInclude Include="SourceCode\Grid.h" />
+    <ClInclude Include="SourceCode\MainMenu.h" />
     <ClInclude Include="SourceCode\PathFinding.h" />
     <ClInclude Include="SourceCode\PriorityQueue.h" />
     <ClInclude Include="SourceCode\MainGame.h" />
