@@ -20,7 +20,7 @@ class Player : public GameCharacter
 	static const int FALLING_ANIMATION_FRAMES_END = 45;
 
 	static const int MAX_HEALTH = 200;
-	static const int DAMAGE = 50;
+	static const int DAMAGE = 20;
 	static const int CLIP_H = 100;
 	static const int CLIP_W = 100;
 

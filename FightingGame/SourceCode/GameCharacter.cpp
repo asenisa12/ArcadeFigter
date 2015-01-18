@@ -27,11 +27,11 @@ Location* GameCharacter::getCurrSquare()
 	return currentSquare;
 }
 
-int  GameCharacter::getCol(Location location)
+int  GameCharacter::getLocationCol(Location location)
 {
 	return location.X / squareSize();
 }
-int  GameCharacter::getRow(Location location)
+int  GameCharacter::getLocationRow(Location location)
 {
 	return (location.Y - levelGrid->getStartingY()) / squareSize();
 }
@@ -82,6 +82,7 @@ void GameCharacter::changeCurrSquare(int dir)
 		}
 	}
 	changeSquare(Row_, Col_);
+	posX_ = currentSquare[FIRST_SQUARE_ID].X + squareSize() / 2;
 }
 
 void GameCharacter::manageSquareShift()
@@ -146,7 +147,7 @@ void GameCharacter::moveUp()
 {
 	currentCondition = MOVING;
 	//max y = 42% form screen h
-	if (posY_ > (screenH_*(0.42)) && moveDir.up){
+	if (posY_ > (screenH_*(0.435)) && moveDir.up){
 		posY_ -= 2;
 		shifting.Y -= 2;
 		add--;
@@ -191,17 +192,19 @@ void GameCharacter::resizeClips(SDL_Rect Clips[])
 	mHigth = (currentClip->h * (0.0032) *screenH_) + add;
 }
 
-bool GameCharacter::characterInLeft()
+bool GameCharacter::characterInLeft(GameCharacter* character)
 {
-	if (abs(otherRight - myLeft) < 10 && otherRight < myLeft)
+	int colChar = character->getCol();
+	if (abs(colChar - Col_) < 5 && colChar < Col_)
 	{
 		return true;
 	}
 	return false;
 }
-bool GameCharacter::characterInRigh()
+bool GameCharacter::characterInRigh(GameCharacter* character)
 {
-	if (abs(otherLeft - myRight) < 10 && otherLeft > myRight)
+	int colChar = character->getCol();
+	if (abs(colChar - Col_) < 5 && colChar > Col_)
 	{
 		return true;
 	}
@@ -225,11 +228,11 @@ void GameCharacter::collision(std::list<GameCharacter*> characters)
 
 		if (abs(otherBottom - myBottom) < screenW_*0.05)
 		{
-			if (characterInLeft())
+			if (characterInLeft(otherCharacter))
 			{
 				moveDir.left = false;
 			}
-			if (characterInRigh())
+			if (characterInRigh(otherCharacter))
 			{
 				moveDir.right = false;
 			}
@@ -252,6 +255,15 @@ void GameCharacter::collision(std::list<GameCharacter*> characters)
 bool GameCharacter::punching()
 {
 	return currentCondition == PUNCHING;
+}
+
+int GameCharacter::getCol()
+{
+	return Col_;
+}
+int GameCharacter::getRow()
+{
+	return Row_;
 }
 
 int GameCharacter::getCondition()

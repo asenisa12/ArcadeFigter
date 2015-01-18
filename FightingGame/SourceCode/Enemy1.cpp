@@ -11,6 +11,8 @@ Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screen
 	movSpeed = screenW_*0.005;	
 	setGridAttributes(startlocation);
 	PrevSquare = currentSquare[0];
+	Row_ = getLocationRow(startlocation);
+	Col_ = getLocationCol(startlocation);
 }
 
 const double Enemy1::SHIFTING_PERCENTIGE = 0.1;
@@ -24,8 +26,7 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 		printf("Failed to load walking animation texture!\n");
 		return false;
 	}
-	mWidth =200;
-	mHigth = 150;
+
 	int x = 0;
 	int y = 0;
 	for (int i = 0; i < FALLING_ANIMATION_END;i++)
@@ -46,6 +47,7 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 
 	currentClip = Clips;
 	frame = 0;
+
 	resizeClips(Clips);
 	posToSquareMiddle();
 	destY = posY_;
@@ -85,14 +87,13 @@ void Enemy1::findDestination()
 		else break;
 	}
 	destX = path.back().X + squareSize() / 2;
-	destY = path.back().Y - squareSize() / 2 - mHigth;
+	destY = path.back().Y - squareSize() / 2 - mHigth + mHigth/5;
 }
 
 void Enemy1::moveToPosition(int X, int Y)
 {
 	diffrenceY = abs(Y+mHigth - getBottomY());
 	diffrenceX = abs(posX_ - X);
-
 	if (diffrenceY >screenH_ * DIFF_BY_Y_PERCENTIGE)
 	{
 		if (Y > posY_)
@@ -136,7 +137,7 @@ void Enemy1::moveToPosition(int X, int Y)
 			}
 		}
 	}
-	if (diffrenceY < screenH_ * DIFF_BY_Y_PERCENTIGE)
+	if (diffrenceY < screenH_ * DIFF_BY_Y_PERCENTIGE+5)
 	{
 		posX_ =X;
 		action = true;
@@ -159,7 +160,9 @@ void Enemy1::moving()
 
 			if (posX_ == destX && posY_ == destY)
 			{
-				changeSquare(getRow(path.back()), getCol(path.back()));
+				changeSquare(getLocationRow(path.back()), getLocationCol(path.back()));
+				Row_ = getLocationRow(currentSquare[FIRST_SQUARE_ID]);
+				Col_ = getLocationCol(currentSquare[FIRST_SQUARE_ID]);
 			}
 		}
 		else
@@ -173,20 +176,10 @@ void Enemy1::moving()
 Location Enemy1::getPlayerSquare()
 {
 	Location playerLocation = player_->getCurrSquare()[FIRST_SQUARE_ID];
-	int playerRow = getRow(playerLocation);
-	int playerCol = getCol(playerLocation);
-	int adj = 0;
-
-	if (playerCol>3)
-	{
-		playerCol -= 5;
-	}
-	else
-	{
-		playerCol += 1;
-	}
-
-	return levelGrid->getLocation(playerRow, playerCol + adj);
+	int playerRow = getLocationRow(playerLocation);
+	int playerCol = getLocationCol(playerLocation);
+	playerCol += 4;
+	return levelGrid->getLocation(playerRow-1, playerCol);
 }
 
 std::vector<Location> Enemy1::getPath()
@@ -202,14 +195,13 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 {
 	punched = false;
 	collision(characters);
-	punched = player_->punching();
 	otherLeft = player_->getX();
 	otherRight = player_->getX() + player_->getWidth() / 2;
 	currentCondition = STANDING;
 	action = false;
 	currentGoal = getPlayerSquare();
 
-	if (punched && (characterInLeft() || characterInRigh()) && player_->getCondition() != PUNCHED)
+	if (player_->punching() &&  (characterInLeft(player_) || characterInRigh(player_)))
 	{
 		fall();
 	}
@@ -220,15 +212,15 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		
 		moving();
 
-		if ((characterInLeft() || characterInRigh()) &&!punched)
-		{
-			if (frame/4 == PUNCHING_ANIMATION_END-1)
-				player_->editHealth(DAMAGE);
-			punch();
-		}
-		else if (action)
+		if (action)
 		{
 			frame++;
+		}
+		else if ((characterInLeft(player_) || characterInRigh(player_)) && !punched)
+		{
+			if (frame / 4 == PUNCHING_ANIMATION_END - 1)
+				player_->editHealth(DAMAGE);
+			punch();
 		}
 
 	}

@@ -52,13 +52,13 @@ protected:
 	
 	void changeSquare(int row, int col);
 	void posToSquareMiddle();
-	int getCol(Location location);
-	int getRow(Location location);
+	int getLocationCol(Location location);
+	int getLocationRow(Location location);
 	void changeCurrSquare(int dir);
 	int squareSize();
 	void manageSquareShift();
-	bool characterInLeft();
-	bool characterInRigh();
+	bool characterInLeft(GameCharacter* character);
+	bool characterInRigh(GameCharacter* character);
 	void setGridAttributes(Location location);
 	void animation(int last, int first);
 	void moveRight();
@@ -76,6 +76,8 @@ public:
 	void editHealth(int damage);
 	Location* getCurrSquare();
 	int getHealth();
+	int getCol();
+	int getRow();
 	int getCondition();
 	int CharacterType();
 	virtual void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters) = 0;

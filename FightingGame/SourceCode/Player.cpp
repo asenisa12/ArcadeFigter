@@ -10,8 +10,8 @@ Player::Player(std::string path, int screenW, int screenH,
 	//movement speed == 0.7% from screen w
 	movSpeed =screenW_*0.007;
 	objTexture = NULL;
-	Row_ = getRow(startingLocation);
-	Col_ = getCol(startingLocation);
+	Row_ = getLocationRow(startingLocation);
+	Col_ = getLocationCol(startingLocation);
 	setGridAttributes(startingLocation);
 }
 
@@ -122,10 +122,11 @@ void Player::manageCameraPos(SDL_Rect* camera)
 	//last x position on screen = 90% from screen W 
 	if (posX_ > screenW_*(0.90) && camera_pos < 5){
 		camera_pos++;
-		Col_ = 1;
+		Col_ = 0;
+		changeSquare(Row_, Col_);
+		posX_ = currentSquare[FIRST_SQUARE_ID].X + squareSize() / 2;
 		shifting.X = 0;
 		camera->x += screenW_;
-		posX_ = posX_ - screenW_*(0.90);
 	}
 }
 
@@ -149,10 +150,14 @@ bool Player::punched(std::list<GameCharacter*> characters)
 		}
 		else if (currentKeyStates[SDL_SCANCODE_Q])
 		{
-			if ((characterInLeft() && flipType == SDL_FLIP_HORIZONTAL) ||
-				(characterInRigh() && flipType == SDL_FLIP_NONE))
+			if ((characterInLeft(enemy) && flipType == SDL_FLIP_HORIZONTAL) ||
+				(characterInRigh(enemy) && flipType == SDL_FLIP_NONE))
 			{
-				enemy->editHealth(DAMAGE);
+				if (frame / 4 == PUNCH_ANIMATION_FRAMES_END - 1)
+				{
+					printf("DAMAGE\n");
+					enemy->editHealth(DAMAGE);
+				}
 			}
 		}
 	}
@@ -203,7 +208,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 			
 	if (currentKeyStates[SDL_SCANCODE_RIGHT] && !currentKeyStates[SDL_SCANCODE_Q])
 	{
-		printf("posX: %d posY: %d Shift[X]: %d \n", posX_, getBottomY(), shifting.X);
+		printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
 		moveRight();
 	}
 	else if (currentKeyStates[SDL_SCANCODE_LEFT] && !currentKeyStates[SDL_SCANCODE_Q])
@@ -212,6 +217,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	}
 	else if (currentKeyStates[SDL_SCANCODE_UP] && !jumping)
 	{
+		printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
 		moveUp();
 	}
 	else if (currentKeyStates[SDL_SCANCODE_DOWN] && !jumping)
