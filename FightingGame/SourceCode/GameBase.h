@@ -14,8 +14,12 @@ public:
 	GameBase(int height, int width);
 	~GameBase();
 	bool init();
+	int getScreenW();
+	int getScreenH();
 	SDL_Renderer* getRenderer();
 	SDL_Window* getWindow();
+	SDL_Event gameEvent;
+	bool quit;
 };
 
 #endif

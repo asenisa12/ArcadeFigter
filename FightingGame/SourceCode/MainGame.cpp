@@ -10,11 +10,11 @@ void update()
 	switch (gameState)
 	{
 	case GameState::MainMenu:
-		if (startButton.isPressed(&gameEvent))
+		if (startButton.isPressed(&mainGame.gameEvent))
 			gameState = GameState::Level1;
 
-		if (!quit)
-			quit = exitButton.isPressed(&gameEvent);
+		if (!mainGame.quit)
+			mainGame.quit = exitButton.isPressed(&mainGame.gameEvent);
 		break;
 	case GameState::Level1:
 		charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)

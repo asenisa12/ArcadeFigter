@@ -15,6 +15,16 @@ GameBase::~GameBase()
 	IMG_Quit();
 }
 
+int GameBase::getScreenW()
+{
+	return windowWidth;
+}
+
+int GameBase::getScreenH()
+{
+	return windowHeight;
+}
+
 bool GameBase::init()
 {
 	if (SDL_Init(SDL_INIT_VIDEO)<0)

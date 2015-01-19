@@ -7,7 +7,6 @@ const int ENEMIES_LEVEL1 = 2;
 std::list<GameCharacter*> charactersList;
 
 SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-SDL_Event gameEvent;
 
 GameBase mainGame(SCREEN_WIDTH, SCREEN_HEIGHT);
 grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -22,7 +21,6 @@ GameButton exitButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH/5, SCREEN_HEIGHT
 
 int gameState = GameState::MainMenu;
 bool started;
-bool quit = false;
 
 
 
@@ -40,15 +38,16 @@ int main(int argc, char* argv[])
 		else
 		{
 			started = false;
+			mainGame.quit = false;
 
 			//game loop
-			while (!quit)
+			while (!mainGame.quit)
 			{
-				while (SDL_PollEvent(&gameEvent) != 0)
+				while (SDL_PollEvent(&mainGame.gameEvent) != 0)
 				{
-					if (gameEvent.type == SDL_QUIT)
+					if (mainGame.gameEvent.type == SDL_QUIT)
 					{
-						quit = true;
+						mainGame.quit = true;
 					}
 				}
 				//update

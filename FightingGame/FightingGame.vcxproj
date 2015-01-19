@@ -30,6 +30,7 @@
     <ClInclude Include="SourceCode\Enemy1.h" />
     <ClInclude Include="SourceCode\GameBase.h" />
     <ClInclude Include="SourceCode\GameCharacter.h" />
+    <ClInclude Include="SourceCode\GameLevel.h" />
     <ClInclude Include="SourceCode\GameState.h" />
     <ClInclude Include="SourceCode\Grid.h" />
     <ClInclude Include="SourceCode\MainMenu.h" />

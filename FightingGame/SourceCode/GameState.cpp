@@ -18,7 +18,7 @@ void GameStateMachine::changeState(GameState *newState)
 	}
 
 	states.push_back(newState);
-	states.back()->onEnter();
+	states.back()->onEnter(mainGame);
 
 }
 void  GameStateMachine::update()
@@ -28,4 +28,31 @@ void  GameStateMachine::update()
 void GameStateMachine::render(SDL_Renderer* renderer)
 {
 	states.back()->render(renderer);
+}
+
+void GameStateMachine::pushState(GameState *newState)
+{
+	states.push_back(newState);
+	states.back()->onEnter(mainGame);
+}
+
+void GameStateMachine::popState()
+{
+	if (!states.empty())
+	{
+		if (states.back()->onExit())
+		{
+			delete states.back();
+			states.pop_back();
+		}
+	}
+}
+
+GameStateMachine::GameStateMachine(GameBase* mainGame_)
+	:mainGame(mainGame_)
+{}
+
+GameBase* GameStateMachine::getGameBase()
+{
+	return mainGame;
 }

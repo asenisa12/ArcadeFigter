@@ -35,13 +35,11 @@ extern const int SCREEN_HEIGHT;
 extern const int ENEMIES_LEVEL1;
 
 extern bool started;
-extern bool quit;
 
 extern GameCharacter* character[];
 extern std::list<GameCharacter*> charactersList;
 
 extern SDL_Rect camera;
-extern SDL_Event gameEvent;
 
 extern GameBase mainGame;
 extern grid::SquareGrid levelgrid;
