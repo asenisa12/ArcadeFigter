@@ -8,7 +8,7 @@ std::list<GameCharacter*> charactersList;
 
 SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
-GameBase mainGame(SCREEN_WIDTH, SCREEN_HEIGHT);
+GameBase mainGame(SCREEN_HEIGHT,SCREEN_WIDTH);
 grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 BackGround backGroundLevel1("Textures/Level1.png");
@@ -19,7 +19,7 @@ Enemy1 enemy2("Textures/Enemy1.png", { 500, 370 }, SCREEN_WIDTH, SCREEN_HEIGHT, 
 GameButton startButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT/5);
 GameButton exitButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH/5, SCREEN_HEIGHT/1.5);
 
-int gameState = GameState::MainMenu;
+int gameState = GameState1::MainMenu1;
 bool started;
 
 
@@ -31,31 +31,26 @@ int main(int argc, char* argv[])
 	}
 	else
 	{	
-		if (!loadMedia())
-		{
-			printf("Can't load media!");
-		}
-		else
-		{
-			started = false;
-			mainGame.quit = false;
+		GameStateMachine stateMachine(&mainGame);
+		stateMachine.changeState(new MainMenu());
+		started = false;
+		mainGame.quit = false;
 
-			//game loop
-			while (!mainGame.quit)
+		//game loop
+		while (!mainGame.quit)
+		{
+			while (SDL_PollEvent(&mainGame.gameEvent) != 0)
 			{
-				while (SDL_PollEvent(&mainGame.gameEvent) != 0)
+				if (mainGame.gameEvent.type == SDL_QUIT)
 				{
-					if (mainGame.gameEvent.type == SDL_QUIT)
-					{
-						mainGame.quit = true;
-					}
+					mainGame.quit = true;
 				}
-				//update
-				update();
-
-				//render
-				render();
 			}
+			//update
+			stateMachine.update();
+
+			//render
+			stateMachine.render(mainGame.getRenderer());
 		}
 	}
 	//system("pause");

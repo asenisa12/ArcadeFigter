@@ -16,6 +16,7 @@
     <ClCompile Include="SourceCode\GameBase.cpp" />
     <ClCompile Include="SourceCode\GameButton.cpp" />
     <ClCompile Include="SourceCode\GameCharacter.cpp" />
+    <ClCompile Include="SourceCode\GameLevel.cpp" />
     <ClCompile Include="SourceCode\GameObject.cpp" />
     <ClCompile Include="SourceCode\GameState.cpp" />
     <ClCompile Include="SourceCode\Grid.cpp" />

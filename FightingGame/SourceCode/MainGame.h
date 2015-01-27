@@ -1,6 +1,9 @@
 #ifndef MAINGAMEHEADER
 #define MAINGAMEHEADER
 
+#include "GameState.h"
+
+#include "MainMenu.h"
 #include "Player.h"
 #include <iostream>
 #include <SDL.h>
@@ -21,9 +24,9 @@
 
 using namespace std;
 
-enum GameState
+enum GameState1
 {
-	MainMenu,
+	MainMenu1,
 	Level1,
 	Level2
 };

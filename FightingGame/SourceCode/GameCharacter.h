@@ -80,6 +80,7 @@ public:
 	int getRow();
 	int getCondition();
 	int CharacterType();
+	virtual bool loadMedia(SDL_Renderer* gRenderer) = 0;
 	virtual void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters) = 0;
 };
 

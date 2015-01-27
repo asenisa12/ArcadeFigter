@@ -39,7 +39,7 @@ bool GameBase::init()
 	}
 
 	gWindow_ = SDL_CreateWindow("Game DEMO", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		windowHeight, windowWidth, SDL_WINDOW_SHOWN);
+		windowWidth, windowHeight, SDL_WINDOW_SHOWN);
 	if (gWindow_ == NULL)
 	{
 		printf("Window could not be created! SDL Error: %s\n", SDL_GetError());

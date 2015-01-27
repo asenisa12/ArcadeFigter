@@ -16,9 +16,7 @@ bool BackGround::loadMedia(SDL_Renderer* gRenderer){
 	return true;
 }
 
-void BackGround::renderBack(SDL_Rect *camera, int playerX, SDL_Renderer* gRenderer){
-
-	
+void BackGround::renderBack(SDL_Rect *camera, SDL_Renderer* gRenderer){
 
 	if (camera->x < 0)
 	{

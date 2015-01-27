@@ -27,7 +27,10 @@ void  GameStateMachine::update()
 }
 void GameStateMachine::render(SDL_Renderer* renderer)
 {
+	SDL_SetRenderDrawColor(mainGame->getRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(mainGame->getRenderer());
 	states.back()->render(renderer);
+	SDL_RenderPresent(mainGame->getRenderer());
 }
 
 void GameStateMachine::pushState(GameState *newState)

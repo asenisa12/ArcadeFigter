@@ -9,18 +9,18 @@ void update()
 {
 	switch (gameState)
 	{
-	case GameState::MainMenu:
+	case GameState1::MainMenu1:
 		if (startButton.isPressed(&mainGame.gameEvent))
-			gameState = GameState::Level1;
+			gameState = GameState1::Level1;
 
 		if (!mainGame.quit)
 			mainGame.quit = exitButton.isPressed(&mainGame.gameEvent);
 		break;
-	case GameState::Level1:
+	case GameState1::Level1:
 		charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)
 			{return (struct1->getBottomY()< struct2->getBottomY()); });
 		break;
-	case GameState::Level2:
+	case GameState1::Level2:
 		break;
 	}
 
@@ -34,18 +34,18 @@ void render()
 	std::list<GameCharacter*>::iterator it = charactersList.begin();
 	switch (gameState)
 	{
-	case GameState::MainMenu:
+	case GameState1::MainMenu1:
 
-		backGroundMenu.renderBack(&camera, 0, mainGame.getRenderer());
+		backGroundMenu.renderBack(&camera, mainGame.getRenderer());
 
 		startButton.renderButton(mainGame.getRenderer());
 
 		exitButton.renderButton(mainGame.getRenderer());
 
 		break;
-	case GameState::Level1:
+	case GameState1::Level1:
 
-		backGroundLevel1.renderBack(&camera, player1.getX(), mainGame.getRenderer());
+		backGroundLevel1.renderBack(&camera, mainGame.getRenderer());
 		while (it != charactersList.end())
 		{
 			if ((*it)->getHealth() == 0)
@@ -62,7 +62,7 @@ void render()
 		drawPlayerHealthBar(player1.getHealth());
 
 		break;
-	case GameState::Level2:
+	case GameState1::Level2:
 		break;
 	}
 
@@ -71,17 +71,17 @@ void render()
 
 bool loadMedia()
 {
-	charactersList.push_back(&enemy1);
-	/*charactersList.push_back(&enemy2);*/
-	charactersList.push_back(&player1);
-	
-	if (!player1.loadMedia(mainGame.getRenderer())) return false;
-	if (!enemy1.loadMedia(mainGame.getRenderer())) return false;
-	if (!enemy2.loadMedia(mainGame.getRenderer())) return false;
-	if (!backGroundLevel1.loadMedia(mainGame.getRenderer())) return false;
-	if (!backGroundMenu.loadMedia(mainGame.getRenderer())) return false;
-	if (!startButton.loadMedia("Textures/StartButton.png", mainGame.getRenderer())) return false;
-	if (!exitButton.loadMedia("Textures/ExitButton.png", mainGame.getRenderer())) return false;
+	//charactersList.push_back(&enemy1);
+	///*charactersList.push_back(&enemy2);*/
+	//charactersList.push_back(&player1);
+	//
+	//if (!player1.loadMedia(mainGame.getRenderer())) return false;
+	//if (!enemy1.loadMedia(mainGame.getRenderer())) return false;
+	//if (!enemy2.loadMedia(mainGame.getRenderer())) return false;
+	//if (!backGroundLevel1.loadMedia(mainGame.getRenderer())) return false;
+	//if (!backGroundMenu.loadMedia(mainGame.getRenderer())) return false;
+	//if (!startButton.loadMedia("Textures/StartButton.png", mainGame.getRenderer())) return false;
+	//if (!exitButton.loadMedia("Textures/ExitButton.png", mainGame.getRenderer())) return false;
 
 	return true;
 }
