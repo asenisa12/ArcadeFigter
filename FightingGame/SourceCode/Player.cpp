@@ -1,22 +1,62 @@
 #include "Player.h"
 
-Player::Player(std::string path, int screenW, int screenH, 
-	Location startingLocation, SquareGrid *grid)
-	: path_(path), GameCharacter(grid, GPLAYER, screenW, screenH, MAX_HEALTH)
+Player::Player(std::string jsonPath, int screenW, int screenH, SquareGrid *grid, int player)
+	:playerID(player), GameCharacter(grid, GPLAYER, screenW, screenH)
 {
 	frame = 0;
 	int add = 0;
 	camera_pos = 1;
+
+	loadData(jsonPath);
 	//movement speed == 0.7% from screen w
 	movSpeed =screenW_*0.007;
 	objTexture = NULL;
-	Row_ = getLocationRow(startingLocation);
-	Col_ = getLocationCol(startingLocation);
-	setGridAttributes(startingLocation);
+	setGridAttributes(grid->getLocation(Row_, Col_));
+}
+
+void Player::loadData(std::string path)
+{
+
+	std::fstream jsonFile;
+	jsonFile.open("Resources/player.json");
+	if (jsonFile.is_open())
+	{
+
+		jsonObj player = jsonObj::parse(jsonFile);
+		jsonObj attr;
+		if (playerID == Player1) attr = player[U("Player1")];
+			else attr = player[U("Player2")];
+	
+		path_ = utility::conversions::to_utf8string(attr[U("texture")].as_string());
+		Row_ = attr[U("row")].as_integer();
+		Col_ = attr[U("col")].as_integer();
+
+		jsonObj consts = player[U("Constants")];
+		WALKING_ANIMATION_FRAMES_END = consts[U("WALKING_ANIMATION_FRAMES_END")].as_integer();
+		RUNING_ANIMATION_FRAMES_END = consts[U("RUNING_ANIMATION_FRAMES_END")].as_integer();
+		JUMPING_ANIMATION_FRAMES_END = consts[U("JUMPING_ANIMATION_FRAMES_END")].as_integer();
+		PUNCH_ANIMATION_FRAMES_END = consts[U("PUNCH_ANIMATION_FRAMES_END")].as_integer();
+		FALLING_ANIMATION_FRAMES_END = consts[U("FALLING_ANIMATION_FRAMES_END")].as_integer();
+		MAX_HEALTH = consts[U("MAX_HEALTH")].as_integer();
+		DAMAGE = consts[U("DAMAGE")].as_integer();
+		CLIP_H = consts[U("CLIP_H")].as_integer();
+		CLIP_W = consts[U("CLIP_W")].as_integer();
+		health = MAX_HEALTH;
+		Clips = new SDL_Rect[FALLING_ANIMATION_FRAMES_END];
+
+	}
+	else
+	{
+		printf("Error: Can't open file %s\n",path.c_str());
+	}
+
+
+	jsonFile.close();
 }
 
 Player::~Player()
 {
+	delete[] Clips;
 	free();
 }
 

@@ -56,8 +56,9 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 	levelgrid = new SquareGrid(mainGame->getScreenW(), mainGame->getScreenH());
 
 
-	players.push_back(new Player("Textures/Mustafa1.png", mainGame->getScreenW(), mainGame->getScreenH(), { 60, 410 }, levelgrid));
+	players.push_back(new Player("Resources/player.json", mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, Player1));
 	charactersList.push_back(new Enemy1("Textures/Enemy1.png", { 380, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.back(), levelgrid));
+	charactersList.push_back(new Enemy1("Textures/Enemy1.png", { 500, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.back(), levelgrid));
 	charactersList.push_back(players.back());
 
 	

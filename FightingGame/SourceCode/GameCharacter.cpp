@@ -1,9 +1,9 @@
 #include "GameCharacter.h"
 
 GameCharacter::GameCharacter(SquareGrid *grid, int characterType_,
-	int screenW, int screenH, int health_)
+	int screenW, int screenH)
 	:levelGrid(grid), characterType(characterType_), currentCondition(STANDING),
-	frame(0), screenH_(screenH), screenW_(screenW), flipType(SDL_FLIP_NONE), health(health_)
+	frame(0), screenH_(screenH), screenW_(screenW), flipType(SDL_FLIP_NONE)
 {}
 
 void GameCharacter::renderCharacter(SDL_Renderer* gRenderer)

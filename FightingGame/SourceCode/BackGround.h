@@ -1,5 +1,3 @@
-//#ifndef BACKGROUND
-//#define BACKGOUND
 #pragma once
 
 #include "GameObject.h"
@@ -17,7 +15,3 @@ public:
 	bool loadMedia(SDL_Renderer* gRenderer);
 	~BackGround();
 };
-
-
-
-//#endif

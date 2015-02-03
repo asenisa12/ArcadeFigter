@@ -5,6 +5,11 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <cpprest/json.h> 
+#include <fstream>
+#include <vector>
+
+typedef web::json::value jsonObj;
 
 class GameObject
 {	

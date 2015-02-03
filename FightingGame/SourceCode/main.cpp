@@ -1,4 +1,8 @@
 #include "MainGame.h"
+#include <cpprest/json.h> 
+#include <fstream>
+
+using namespace std;
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -11,14 +15,6 @@ SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 GameBase mainGame(SCREEN_HEIGHT,SCREEN_WIDTH);
 grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-BackGround backGroundLevel1("Textures/Level1.png");
-BackGround backGroundMenu("Textures/MenuBackground.png");
-Player player1("Textures/Mustafa1.png", SCREEN_WIDTH, SCREEN_HEIGHT, {60, 410}, &levelgrid);
-Enemy1 enemy1("Textures/Enemy1.png", {380,370}, SCREEN_WIDTH, SCREEN_HEIGHT, &player1, &levelgrid);
-Enemy1 enemy2("Textures/Enemy1.png", { 500, 370 }, SCREEN_WIDTH, SCREEN_HEIGHT, &player1, &levelgrid);
-GameButton startButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT/5);
-GameButton exitButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH/5, SCREEN_HEIGHT/1.5);
-
 int gameState = GameState1::MainMenu1;
 bool started;
 
@@ -26,6 +22,15 @@ bool started;
 
 int main(int argc, char* argv[])
 {
+	//fstream file;
+	//file.open("Resources/player.json");
+	/////*file.seekg(0, ios::end);
+	////int size =  file.tellg();*/
+	//web::json::value obj = web::json::value::parse(file);
+	////obj[U("a")] = web::json::value::number(12);
+	//cout << (obj[U("a")])[U("b")].as_integer() << endl;
+
+	//file.close();
 	if (!mainGame.init()){
 		printf("Can't init!");
 	}

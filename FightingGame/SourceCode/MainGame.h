@@ -49,22 +49,11 @@ extern grid::SquareGrid levelgrid;
 extern BackGround backGroundMenu;
 extern BackGround backGroundLevel1;
 
-extern Player player1;
 extern Enemy1 enemy1;
 extern Enemy1 enemy2;
 
 extern GameButton startButton;
 extern GameButton exitButton;
-
-void mainMenu();
-
-
-void update();
-void render();
-void getInput();
-void drawPlayerHealthBar(int health);
-
-bool loadMedia();
 
 struct greater_than
 {

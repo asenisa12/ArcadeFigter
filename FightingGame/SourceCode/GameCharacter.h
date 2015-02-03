@@ -69,7 +69,7 @@ protected:
 	void collision(std::list<GameCharacter*> characters);
 public:
 	GameCharacter(SquareGrid *grid, int characterType_,
-		int screenW, int screenH, int health_);
+		int screenW, int screenH);
 	bool punching();
 	void renderCharacter(SDL_Renderer* gRenderer);
 	int getBottomY();

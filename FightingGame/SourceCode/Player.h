@@ -4,27 +4,29 @@
 #include "GameCharacter.h"
 #include <cmath>  
 
+enum {Player1=1, Player2=2};
+
 class Player : public GameCharacter
 {	
 	int add;
 	int camera_pos;
 	int jumpH;
-
+	int playerID;
 	bool jumping;
 	const Uint8* currentKeyStates;
 
-	static const int WALKING_ANIMATION_FRAMES_END = 12;
-	static const int RUNING_ANIMATION_FRAMES_END = 21;
-	static const int JUMPING_ANIMATION_FRAMES_END = 25;
-	static const int PUNCH_ANIMATION_FRAMES_END = 36;
-	static const int FALLING_ANIMATION_FRAMES_END = 45;
+	int WALKING_ANIMATION_FRAMES_END;
+	int RUNING_ANIMATION_FRAMES_END;
+	int JUMPING_ANIMATION_FRAMES_END;
+	int PUNCH_ANIMATION_FRAMES_END;
+	int FALLING_ANIMATION_FRAMES_END;
 
-	static const int MAX_HEALTH = 200;
-	static const int DAMAGE = 20;
-	static const int CLIP_H = 100;
-	static const int CLIP_W = 100;
+	int MAX_HEALTH;
+	int DAMAGE;
+	int CLIP_H;
+	int CLIP_W;
 
-	SDL_Rect Clips[FALLING_ANIMATION_FRAMES_END];
+	SDL_Rect *Clips;
 	
 	std::string path_;
 
@@ -35,11 +37,12 @@ class Player : public GameCharacter
 	void run();
 	void checkCondition();
 	bool checkMoveKeys();
+	void loadData(std::string path);
 
 	void manageCameraPos(SDL_Rect* camera);
 
 public:
-	Player(std::string path, int screenW, int screenH, Location startingLocation, SquareGrid *grid);
+	Player(std::string jsonPath, int screenW, int screenH, SquareGrid *grid, int player);
 	~Player();
 	bool loadMedia(SDL_Renderer* gRenderer);
 	//implements key presses

@@ -2,9 +2,9 @@
 
 Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screenH,
 	GameCharacter* player, SquareGrid *grid)
-	:player_(player), action(false), GameCharacter(grid, GENEMY, screenW, screenH, MAX_HEALTH)
+	:player_(player), action(false), GameCharacter(grid, GENEMY, screenW, screenH)
 {
-
+	health = MAX_HEALTH;
 	punchStart_count = 0;
 	path_ = path;
 	//movement speed == 0.5% from screen width
