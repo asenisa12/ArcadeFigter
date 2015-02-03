@@ -1,0 +1,21 @@
+{
+	"Player1" : 
+	{
+		"texture" : "Textures/Mustafa1.png",
+		"col" : 3,
+		"row" : 2
+
+	},
+	"Constants":
+	{
+		"WALKING_ANIMATION_FRAMES_END" : 12,
+		"RUNING_ANIMATION_FRAMES_END" : 21,
+		"JUMPING_ANIMATION_FRAMES_END" : 25,
+		"PUNCH_ANIMATION_FRAMES_END" : 36,
+		"FALLING_ANIMATION_FRAMES_END" : 45,
+		"MAX_HEALTH" : 200,
+		"DAMAGE" : 20,
+		"CLIP_H" : 100,
+		"CLIP_W" : 100
+	}	
+}
