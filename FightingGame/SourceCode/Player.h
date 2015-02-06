@@ -6,6 +6,32 @@
 
 enum {Player1=1, Player2=2};
 
+struct pEvent
+{
+	bool runPunch;
+	bool normalPunch;
+	bool superPunch;
+	bool moveLeft;
+	bool moveRight;
+	bool moveUP;
+	bool moveDown;
+	bool jump;
+	bool run;
+};
+
+struct pKeys
+{
+	int moveR;
+	int moveL;
+	int moveU;
+	int moveD;
+	int punch;
+	int run;
+	int jump;
+};
+
+
+
 class Player : public GameCharacter
 {	
 	int add;
@@ -14,6 +40,7 @@ class Player : public GameCharacter
 	int playerID;
 	bool jumping;
 	const Uint8* currentKeyStates;
+	pEvent playerEvent;
 
 	int WALKING_ANIMATION_FRAMES_END;
 	int RUNING_ANIMATION_FRAMES_END;
@@ -46,6 +73,7 @@ public:
 	~Player();
 	bool loadMedia(SDL_Renderer* gRenderer);
 	//implements key presses
+	void handleEvent(pKeys playerKey);
 	void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters);
 	void changePosX(int changedX);
 };

@@ -274,7 +274,7 @@ int GameCharacter::getCondition()
 void GameCharacter::editHealth(int damage)
 {
 	health -= damage;
-
+	currentCondition = PUNCHED;
 	if (health < 0) health = 0;
 }
 

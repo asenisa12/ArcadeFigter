@@ -10,6 +10,8 @@
 
 class GameLevel : public GameState
 {
+	static const pKeys player1Keys;
+	static const pKeys player2Keys;
 	grid::SquareGrid *levelgrid;
 	SDL_Rect camera;
 	BackGround *backGroundLevel1;
@@ -17,6 +19,7 @@ class GameLevel : public GameState
 	std::list<Player*> players;
 	std::list<GameCharacter*> charactersList;
 	void drawPlayerHealthBar(int health);
+	bool createLevel();
 public:
 	~GameLevel();
 	bool LoadObjects();

@@ -25,7 +25,7 @@ void Player::loadData(std::string path)
 		jsonObj player = jsonObj::parse(jsonFile);
 		jsonObj attr;
 		if (playerID == Player1) attr = player[U("Player1")];
-			else attr = player[U("Player2")];
+		else if (playerID == Player2) attr = player[U("Player2")];
 	
 		path_ = utility::conversions::to_utf8string(attr[U("texture")].as_string());
 		Row_ = attr[U("row")].as_integer();
@@ -146,10 +146,8 @@ void Player::run()
 
 bool Player::checkMoveKeys()
 {
-	if (currentKeyStates[SDL_SCANCODE_LEFT] ||
-		currentKeyStates[SDL_SCANCODE_RIGHT] ||
-		currentKeyStates[SDL_SCANCODE_DOWN] ||
-		currentKeyStates[SDL_SCANCODE_UP])
+	if (playerEvent.moveLeft || playerEvent.moveRight ||
+		playerEvent.moveUP || playerEvent.moveDown)
 	{
 		return true;
 	}
@@ -186,9 +184,11 @@ bool Player::punched(std::list<GameCharacter*> characters)
 
 		if (enemy->punching() && enemy->getCondition()!=PUNCHED)
 		{
+			if ((characterInLeft(enemy) || characterInRigh(enemy)) && 
+				enemy->getRow() == Row_)
 			return true;
 		}
-		else if (currentKeyStates[SDL_SCANCODE_Q])
+		else if (playerEvent.normalPunch)
 		{
 			if ((characterInLeft(enemy) && flipType == SDL_FLIP_HORIZONTAL) ||
 				(characterInRigh(enemy) && flipType == SDL_FLIP_NONE))
@@ -204,28 +204,72 @@ bool Player::punched(std::list<GameCharacter*> characters)
 	return false;
 }
 
+void Player::handleEvent(pKeys playerKey)
+{
+	playerEvent = { false, false, false, false, false, false, false, false, false };
+	auto currentKeyStates = SDL_GetKeyboardState(NULL);
+
+	if (currentKeyStates[playerKey.punch] && currentKeyStates[playerKey.jump])
+	{
+		playerEvent.superPunch = true;
+	}
+	else if (currentKeyStates[playerKey.punch] && currentKeyStates[playerKey.run])
+	{
+		playerEvent.runPunch = true;
+	}
+	else if (currentKeyStates[playerKey.punch])
+	{
+		playerEvent.normalPunch = true;
+	}
+	if (currentKeyStates[playerKey.jump])
+	{
+		playerEvent.jump = true;
+	}
+	if (currentKeyStates[playerKey.run])
+	{
+		playerEvent.run = true;
+	}
+	if (currentKeyStates[playerKey.moveD])
+	{
+		playerEvent.moveDown = true;
+	}
+	if (currentKeyStates[playerKey.moveU])
+	{
+		playerEvent.moveUP = true;
+	}
+	if (currentKeyStates[playerKey.moveL])
+	{
+		playerEvent.moveLeft = true;
+	}
+	if (currentKeyStates[playerKey.moveR])
+	{
+		playerEvent.moveRight = true;
+	}
+
+}
+
+
 void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 {
-	currentKeyStates = SDL_GetKeyboardState(NULL);
 	collision(characters);
 	bool ispunched = punched(characters);
 
-	if (currentKeyStates[SDL_SCANCODE_SPACE] || jumping)
+	if (playerEvent.jump || jumping)
 	{
 		jump();
 	}
-	else if (ispunched)
+	else if (currentCondition == PUNCHED)
 	{
 		fall();
 	}
-	else if (currentKeyStates[SDL_SCANCODE_Q] )
+	else if (playerEvent.normalPunch )
 	{
 		punch();
 
 	}
 	else
 	{
-		if (currentKeyStates[SDL_SCANCODE_LSHIFT])
+		if (playerEvent.run)
 		{
 			run();
 		}
@@ -246,21 +290,21 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 		}
 	}
 			
-	if (currentKeyStates[SDL_SCANCODE_RIGHT] && !currentKeyStates[SDL_SCANCODE_Q])
+	if (playerEvent.moveRight && !playerEvent.normalPunch)
 	{
 		printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
 		moveRight();
 	}
-	else if (currentKeyStates[SDL_SCANCODE_LEFT] && !currentKeyStates[SDL_SCANCODE_Q])
+	else if (playerEvent.moveLeft && !playerEvent.normalPunch)
 	{
 		moveLeft();
 	}
-	else if (currentKeyStates[SDL_SCANCODE_UP] && !jumping)
+	else if (playerEvent.moveUP && !jumping)
 	{
 		printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
 		moveUp();
 	}
-	else if (currentKeyStates[SDL_SCANCODE_DOWN] && !jumping)
+	else if (playerEvent.moveDown && !jumping)
 	{
 		moveDown();
 	}

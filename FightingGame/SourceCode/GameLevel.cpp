@@ -2,10 +2,20 @@
 
 const std::string GameLevel::levelID = "GameLevel";
 
+const pKeys GameLevel::player1Keys = 
+{ SDL_SCANCODE_D, SDL_SCANCODE_A, SDL_SCANCODE_W, SDL_SCANCODE_S, 
+SDL_SCANCODE_V, SDL_SCANCODE_B, SDL_SCANCODE_N };
+const pKeys GameLevel::player2Keys = 
+{ SDL_SCANCODE_RIGHT, SDL_SCANCODE_LEFT, SDL_SCANCODE_UP, SDL_SCANCODE_DOWN,
+SDL_SCANCODE_RCTRL, SDL_SCANCODE_RSHIFT, SDL_SCANCODE_RALT };
+
 
 void GameLevel::update(GameStateMachine *stateMachine)
 	
 {
+	players.front()->handleEvent(player1Keys);
+	players.back()->handleEvent(player2Keys);
+
 	charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)
 		{return (struct1->getBottomY()< struct2->getBottomY()); });
 
@@ -48,6 +58,11 @@ bool  GameLevel::LoadObjects(){
 		if (!it->loadMedia(mainGame->getRenderer())) return false;
 }
 
+bool GameLevel::createLevel()
+{
+	return true;
+}
+
 bool GameLevel::onEnter(GameBase *mainGame_)
 {
 	mainGame = mainGame_;
@@ -57,9 +72,11 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 
 
 	players.push_back(new Player("Resources/player.json", mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, Player1));
+	players.push_back(new Player("Resources/player.json", mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, Player2));
 	charactersList.push_back(new Enemy1("Textures/Enemy1.png", { 380, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.back(), levelgrid));
-	charactersList.push_back(new Enemy1("Textures/Enemy1.png", { 500, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.back(), levelgrid));
+	charactersList.push_back(new Enemy1("Textures/Enemy1.png", { 500, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.front(), levelgrid));
 	charactersList.push_back(players.back());
+	charactersList.push_back(players.front());
 
 	
 	return LoadObjects();

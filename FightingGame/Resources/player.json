@@ -6,6 +6,13 @@
 		"row" : 2
 
 	},
+	"Player2" : 
+	{
+		"texture" : "Textures/Bradovich.png",
+		"col" : 3,
+		"row" : 3
+
+	},
 	"Constants":
 	{
 		"WALKING_ANIMATION_FRAMES_END" : 12,
