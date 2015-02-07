@@ -1,0 +1,9 @@
+{
+	"startButton":
+	{
+		"texture" : "Textures/StartButton.png",
+		"CLIP_W" : 200,
+		"CLIP_H" : 200
+	},
+
+}

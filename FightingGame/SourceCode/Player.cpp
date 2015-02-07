@@ -18,7 +18,7 @@ void Player::loadData(std::string path)
 {
 
 	std::fstream jsonFile;
-	jsonFile.open("Resources/player.json");
+	jsonFile.open(path);
 	if (jsonFile.is_open())
 	{
 
@@ -184,9 +184,13 @@ bool Player::punched(std::list<GameCharacter*> characters)
 
 		if (enemy->punching() && enemy->getCondition()!=PUNCHED)
 		{
-			if ((characterInLeft(enemy) || characterInRigh(enemy)) && 
+			if ((characterInLeft(enemy) || characterInRigh(enemy)) &&
 				enemy->getRow() == Row_)
-			return true;
+			{
+				if (otherLeft > myLeft) flipType == SDL_FLIP_HORIZONTAL;
+				if (otherLeft < myLeft) flipType == SDL_FLIP_NONE;
+				return true;
+			}
 		}
 		else if (playerEvent.normalPunch)
 		{

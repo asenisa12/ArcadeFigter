@@ -18,10 +18,7 @@ bool GameButton::loadMedia(std::string path, SDL_Renderer* gRender)
 	int y = 0;
 	for (int i = 0; i < BUTTON_CLIPS; i++)
 	{
-		buttonState[i].x = x;
-		buttonState[i].y = y;
-		buttonState[i].w = CLIP_W;
-		buttonState[i].h = CLIP_H;
+		buttonState[i] = { x, y, CLIP_W, CLIP_H };
 		x += CLIP_W;
 		if (i == 1){
 			y += CLIP_H;

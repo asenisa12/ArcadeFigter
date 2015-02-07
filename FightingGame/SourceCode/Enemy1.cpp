@@ -1,23 +1,58 @@
 #include "Enemy1.h"
 
 Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screenH,
-	GameCharacter* player, SquareGrid *grid)
-	:player_(player), action(false), GameCharacter(grid, GENEMY, screenW, screenH)
+	GameCharacter* player, SquareGrid *grid, int id)
+	:player_(player), action(false), enemyID(id), GameCharacter(grid, GENEMY, screenW, screenH)
 {
-	health = MAX_HEALTH;
+	loadData(path);
 	punchStart_count = 0;
-	path_ = path;
 	//movement speed == 0.5% from screen width
 	movSpeed = screenW_*0.005;	
 	setGridAttributes(startlocation);
-	PrevSquare = currentSquare[0];
+	PrevSquare = currentSquare[FIRST_SQUARE_ID];
 	Row_ = getLocationRow(startlocation);
 	Col_ = getLocationCol(startlocation);
 }
 
-const double Enemy1::SHIFTING_PERCENTIGE = 0.1;
-const double Enemy1::DIFF_BY_X_PERCENTIGE = 0.0046876;
-const double Enemy1::DIFF_BY_Y_PERCENTIGE = 0.00625;
+
+
+void Enemy1::loadData(std::string path)
+{
+	std::fstream jsonFile;
+	jsonFile.open(path);
+	if (jsonFile.is_open())
+	{
+		jsonObj enemy = jsonObj::parse(jsonFile);
+		jsonObj attr;
+
+		switch (enemyID)
+		{
+		case FERRIS:
+			attr = enemy[U("Ferrys")];
+			break;
+		}
+		path_ = utility::conversions::to_utf8string(attr[U("texture")].as_string());
+		MAX_HEALTH = attr[U("MAX_HEALTH")].as_integer();
+		DAMAGE = attr[U("DAMAGE")].as_integer();
+		CLIP_H = attr[U("CLIP_H")].as_integer();
+		CLIP_W = attr[U("CLIP_W")].as_integer();
+		FALLING_CLIP_W = attr[U("FALLING_CLIP_W")].as_integer();
+		jsonObj variables = enemy[U("variables")];
+		WALKING_ANIMATION_END = variables[U("WALKING_ANIMATION_END")].as_integer();
+		PUNCHING_ANIMATION_END = variables[U("PUNCHING_ANIMATION_END")].as_integer();
+		FALLING_ANIMATION_END = variables[U("FALLING_ANIMATION_END")].as_integer();
+		SHIFTING_PERCENTIGE = variables[U("SHIFTING_PERCENTIGE")].as_double();
+		DIFF_BY_X_PERCENTIGE = variables[U("DIFF_BY_X_PERCENTIGE")].as_double();
+		DIFF_BY_Y_PERCENTIGE = variables[U("DIFF_BY_Y_PERCENTIGE")].as_double();
+		Clips = new SDL_Rect[FALLING_ANIMATION_END];
+		health = MAX_HEALTH;
+	}
+	else
+	{
+		printf("Error: Can't open file %s\n", path.c_str());
+	}
+	jsonFile.close();
+}
 
 bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 {
@@ -45,7 +80,7 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 		
 	}
 
-	currentClip = Clips;
+	currentClip = &Clips[0];
 	frame = 0;
 
 	resizeClips(Clips);
@@ -60,6 +95,7 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 
 Enemy1::~Enemy1()
 {
+	delete[] Clips;
 	free();
 }
 
@@ -193,6 +229,7 @@ std::vector<Location> Enemy1::getPath()
 
 void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 {
+		printf("aa%d\n", MAX_HEALTH);
 	punched = false;
 	collision(characters);
 	otherLeft = player_->getX();

@@ -6,21 +6,25 @@
 #include <string>
 #include <future>
 
+enum{ FERRIS };
+
 class Enemy1 : public GameCharacter
 {
-	static const int WALKING_ANIMATION_END = 7;
-	static const int PUNCHING_ANIMATION_END = 12;
-	static const int FALLING_ANIMATION_END = 18;
 
-	static const double SHIFTING_PERCENTIGE;
-	static const double DIFF_BY_X_PERCENTIGE;
-	static const double DIFF_BY_Y_PERCENTIGE;
+	int enemyID;
+	int WALKING_ANIMATION_END;
+	int PUNCHING_ANIMATION_END;
+	int FALLING_ANIMATION_END;
 
-	static const int MAX_HEALTH = 100;
-	static const int DAMAGE = 4;
-	static const int CLIP_H = 100;
-	static const int CLIP_W = 100;
-	static const int FALLING_CLIP_W = 150;
+	double SHIFTING_PERCENTIGE;
+	double DIFF_BY_X_PERCENTIGE;
+	double DIFF_BY_Y_PERCENTIGE;
+
+	int MAX_HEALTH;
+	int DAMAGE;
+	int CLIP_H;
+	int CLIP_W;
+	int FALLING_CLIP_W;
 
 	int destX;
 	int destY;
@@ -45,11 +49,12 @@ class Enemy1 : public GameCharacter
 	Location getPlayerSquare();
 	std::string path_;
 	std::vector<Location> getPath();
-	SDL_Rect Clips[FALLING_ANIMATION_END];
+	SDL_Rect *Clips;
 public:
 	Enemy1(std::string path, Location startlocation, int screenW, int screenH, 
-		GameCharacter* player, SquareGrid *grid);
+		GameCharacter* player, SquareGrid *grid, int id);
 	~Enemy1();
+	void loadData(std::string path);
 	bool loadMedia(SDL_Renderer* renderer);
 	void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters);
 };

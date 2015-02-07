@@ -67,14 +67,14 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 {
 	mainGame = mainGame_;
 	camera = { 0, 0, mainGame->getScreenW(), mainGame->getScreenH()};
-	backGroundLevel1 = new BackGround("Textures/Level1.png");
+	backGroundLevel1 = new BackGround("Textures/Level2.png");
 	levelgrid = new SquareGrid(mainGame->getScreenW(), mainGame->getScreenH());
 
 
 	players.push_back(new Player("Resources/player.json", mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, Player1));
 	players.push_back(new Player("Resources/player.json", mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, Player2));
-	charactersList.push_back(new Enemy1("Textures/Enemy1.png", { 380, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.back(), levelgrid));
-	charactersList.push_back(new Enemy1("Textures/Enemy1.png", { 500, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.front(), levelgrid));
+	charactersList.push_back(new Enemy1("Resources/enemy.json", { 380, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.back(), levelgrid, FERRIS));
+	charactersList.push_back(new Enemy1("Resources/enemy.json", { 500, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.front(), levelgrid, FERRIS));
 	charactersList.push_back(players.back());
 	charactersList.push_back(players.front());
 

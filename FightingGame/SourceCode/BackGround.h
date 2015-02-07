@@ -6,7 +6,7 @@
 
 class BackGround : public GameObject
 {
-	static const int MAP_W = 3065;
+	static const int MAP_W = 3014;
 	int camera_pos;
 	std::string path_;
 public:
