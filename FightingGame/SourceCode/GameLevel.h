@@ -8,10 +8,14 @@
 #include "GameCharacter.h" 
 #include <list>
 
+
 class GameLevel : public GameState
 {
 	static const pKeys player1Keys;
 	static const pKeys player2Keys;
+
+	bool gameMode1, level1;
+
 	grid::SquareGrid *levelgrid;
 	SDL_Rect camera;
 	BackGround *backGroundLevel1;
@@ -22,6 +26,7 @@ class GameLevel : public GameState
 	bool createLevel();
 public:
 	~GameLevel();
+	GameLevel(bool gameMode_, bool level_);
 	bool LoadObjects();
 	virtual void update(GameStateMachine *stateMachine);
 	virtual void render(SDL_Renderer* renderer);

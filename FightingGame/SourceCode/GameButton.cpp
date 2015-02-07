@@ -1,15 +1,21 @@
 #include "GameButton.h"
 
-GameButton::GameButton(int screenW, int screenH, int posX, int posY)
-	:width(screenW / 6), height(screenH / 6), framesToEnd(0)
+GameButton::GameButton(int screenW, int screenH, jsonObj buttonData)
+	:framesToEnd(0)
 {
-	posX_ = posX; 
-	posY_ = posY;
+	width = screenW / buttonData[U("widthDivide")].as_integer();
+	height = screenH / buttonData[U("heightDivide")].as_integer();
+	CLIP_W = buttonData[U("CLIP_W")].as_integer();
+	CLIP_H = buttonData[U("CLIP_H")].as_integer();
+	path_ = utility::conversions::to_utf8string(buttonData[U("texture")].as_string());
+	posX_ = screenW / buttonData[U("xDivide")].as_double();
+	posY_ = screenH / buttonData[U("yDivide")].as_double();
 }
 
-bool GameButton::loadMedia(std::string path, SDL_Renderer* gRender)
+
+bool GameButton::loadMedia(SDL_Renderer* gRender)
 {
-	if (!LoadFromFile(path, gRender))
+	if (!LoadFromFile(path_, gRender))
 	{
 		printf("Failed to load button animation texture!\n");
 		return false;

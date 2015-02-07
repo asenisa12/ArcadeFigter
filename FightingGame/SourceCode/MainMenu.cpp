@@ -3,18 +3,41 @@
 
 MainMenu::~MainMenu()
 {
-	delete backGroundMenu;
-	delete startButton;
-	delete exitButton;
+
 }
 
 void MainMenu::update(GameStateMachine *stateMachine)
 {
-	if (startButton->isPressed(&mainGame->gameEvent))
-		stateMachine->pushState(new GameLevel());
+			
+
+	switch (currentMenu)
+	{
+	case Menu1:
+		if (button[Start]->isPressed(&mainGame->gameEvent))
+			currentMenu = Menu2;
+		break;
+	case Menu2:
+		if (button[p1Mode]->isPressed(&mainGame->gameEvent))
+		{
+			gameMode = false;
+			currentMenu = Menu3;
+		}
+		if (button[p2Mode]->isPressed(&mainGame->gameEvent))
+		{
+			gameMode = true;
+			currentMenu = Menu3;
+		}
+		break;
+	case Menu3:
+		if (button[Level1]->isPressed(&mainGame->gameEvent))
+			stateMachine->pushState(new GameLevel(gameMode, true));
+		if (button[Level2]->isPressed(&mainGame->gameEvent))
+			stateMachine->pushState(new GameLevel(gameMode, false));
+		break;
+	}
 
 	if (!mainGame->quit)
-		mainGame->quit = exitButton->isPressed(&mainGame->gameEvent);
+		mainGame->quit = button[Exit]->isPressed(&mainGame->gameEvent);
 
 	return;
 }
@@ -24,15 +47,29 @@ void MainMenu::render(SDL_Renderer* renderer)
 
 	SDL_Rect camera = {0, 0, mainGame->getScreenW(), mainGame->getScreenH()};
 	backGroundMenu->renderBack(&camera, renderer);
-	startButton->renderButton(renderer);
-	exitButton->renderButton(renderer);
+	switch (currentMenu)
+	{
+	case Menu1:
+		button[Start]->renderButton(renderer);
+		break;
+	case Menu2:
+		button[p2Mode]->renderButton(renderer);
+		button[p1Mode]->renderButton(renderer);
+		break;
+	case Menu3:
+		button[Level1]->renderButton(renderer);
+		button[Level2]->renderButton(renderer);
+		break;
+	}
+	button[Exit]->renderButton(renderer);
 }
 
 bool  MainMenu::loadObjects()
 {
 	if (!backGroundMenu->loadMedia(mainGame->getRenderer())) return false;
-	if (!startButton->loadMedia("Textures/StartButton.png", mainGame->getRenderer())) return false;
-	if (!exitButton->loadMedia("Textures/ExitButton.png", mainGame->getRenderer())) return false;
+	for (auto const it : button)
+		if (!(it.second)->loadMedia(mainGame->getRenderer())) return false;
+
 	return true;
 }
 
@@ -41,10 +78,25 @@ bool MainMenu::onEnter(GameBase *mainGame_)
 	mainGame = mainGame_;
 	int SCREEN_WIDTH = mainGame->getScreenW(), SCREEN_HEIGHT = mainGame->getScreenH();
 	
-	backGroundMenu = new BackGround("Textures/MenuBackground.png");
-	startButton = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT / 5);
-	exitButton = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH / 5, SCREEN_HEIGHT / 1.5);
+	std::fstream jsonFile;
+	jsonFile.open(menuData);
+	if (jsonFile.is_open())
+	{
+		jsonObj data = jsonObj::parse(jsonFile);
+		backGroundMenu = new BackGround(utility::conversions::to_utf8string(data[U("backgroundTexture")].as_string()));
+		button[Start] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("startButton")]);
+		button[Exit] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("exitButton")]);
+		button[p1Mode] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("1pButton")]);
+		button[p2Mode] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("2pButton")]);
+		button[Level1] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("Level1")]);
+		button[Level2] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("Level2")]);
+	}
+	else
+	{
+		printf("Error: Can't open file %s\n", menuData.c_str());
+	}
 
+	currentMenu = Menu1;
 	return loadObjects();
 }
 

@@ -15,7 +15,7 @@ SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 GameBase mainGame(SCREEN_HEIGHT,SCREEN_WIDTH);
 grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-int gameState = GameState1::MainMenu1;
+//int gameState = GameState1::MainMenu1;
 bool started;
 
 

@@ -1,5 +1,9 @@
 #include "GameLevel.h"
 
+GameLevel::GameLevel(bool gameMode1_, bool level1_)
+	: gameMode1(gameMode1_), level1(level1_)
+{}
+
 const std::string GameLevel::levelID = "GameLevel";
 
 const pKeys GameLevel::player1Keys = 
@@ -67,12 +71,19 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 {
 	mainGame = mainGame_;
 	camera = { 0, 0, mainGame->getScreenW(), mainGame->getScreenH()};
-	backGroundLevel1 = new BackGround("Textures/Level2.png");
+	if (level1){
+		backGroundLevel1 = new BackGround("Textures/Level1.png");
+	}
+	else
+	{
+		backGroundLevel1 = new BackGround("Textures/Level2.png");
+	}
 	levelgrid = new SquareGrid(mainGame->getScreenW(), mainGame->getScreenH());
 
 
 	players.push_back(new Player("Resources/player.json", mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, Player1));
-	players.push_back(new Player("Resources/player.json", mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, Player2));
+	if (gameMode1)
+		players.push_back(new Player("Resources/player.json", mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, Player2));
 	charactersList.push_back(new Enemy1("Resources/enemy.json", { 380, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.back(), levelgrid, FERRIS));
 	charactersList.push_back(new Enemy1("Resources/enemy.json", { 500, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), players.front(), levelgrid, FERRIS));
 	charactersList.push_back(players.back());

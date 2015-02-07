@@ -1,9 +1,25 @@
 {
+	"backgroundTexture" : "Textures/MenuBackground.png",
 	"startButton":
 	{
 		"texture" : "Textures/StartButton.png",
 		"CLIP_W" : 200,
-		"CLIP_H" : 200
+		"CLIP_H" : 200,
+		"widthDivide" : 6,
+		"heigthDivide" : 6,
+		"xDevide" : 5,
+		"yDevide" : 5
 	},
+	"exitButton":
+	{
+		"texture" : "Textures/ExitButton.png",
+		"CLIP_W" : 200,
+		"CLIP_H" : 200,
+		"widthDivide" : 6,
+		"heigthDivide" : 6,
+		"xDevide" : 5,
+		"yDevide" : 1.5
+	},
+
 
 }

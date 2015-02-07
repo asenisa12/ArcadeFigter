@@ -24,12 +24,12 @@
 
 using namespace std;
 
-enum GameState1
-{
-	MainMenu1,
-	Level1,
-	Level2
-};
+//enum GameState1
+//{
+//	MainMenu1,
+//	Level1,
+//	Level2
+//};
 
 extern int gameState;
 
