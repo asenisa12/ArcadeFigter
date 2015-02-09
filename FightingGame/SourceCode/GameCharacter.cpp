@@ -3,7 +3,7 @@
 GameCharacter::GameCharacter(SquareGrid *grid, int characterType_,
 	int screenW, int screenH)
 	:levelGrid(grid), characterType(characterType_), currentCondition(STANDING),
-	frame(0), screenH_(screenH), screenW_(screenW), flipType(SDL_FLIP_NONE)
+	frame(0), screenH_(screenH), screenW_(screenW), flipType(SDL_FLIP_NONE), framesToEnd(DEATH_FRAMES)
 {}
 
 void GameCharacter::renderCharacter(SDL_Renderer* gRenderer)
@@ -282,6 +282,13 @@ int GameCharacter::getHealth()
 {
 	return health;
 }
+
+bool GameCharacter::ready_for_delete()
+{
+	if (framesToEnd <= 0) return true;
+	return false;
+}
+
 
 int GameCharacter::CharacterType()
 {

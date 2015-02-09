@@ -1,11 +1,5 @@
 #include "MainMenu.h"
 
-
-MainMenu::~MainMenu()
-{
-
-}
-
 void MainMenu::update(GameStateMachine *stateMachine)
 {
 			
@@ -19,20 +13,20 @@ void MainMenu::update(GameStateMachine *stateMachine)
 	case Menu2:
 		if (button[p1Mode]->isPressed(&mainGame->gameEvent))
 		{
-			gameMode = false;
+			gameMode = p1Mode;
 			currentMenu = Menu3;
 		}
 		if (button[p2Mode]->isPressed(&mainGame->gameEvent))
 		{
-			gameMode = true;
+			gameMode = p2Mode;
 			currentMenu = Menu3;
 		}
 		break;
 	case Menu3:
 		if (button[Level1]->isPressed(&mainGame->gameEvent))
-			stateMachine->pushState(new GameLevel(gameMode, true));
+			stateMachine->pushState(new GameLevel(gameMode, Level1));
 		if (button[Level2]->isPressed(&mainGame->gameEvent))
-			stateMachine->pushState(new GameLevel(gameMode, false));
+			stateMachine->pushState(new GameLevel(gameMode, Level2));
 		break;
 	}
 

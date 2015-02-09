@@ -1,8 +1,13 @@
 {
 	"Level1":{
 		"background":"Textures/Level1.png",
+		"enemy"
+	},
+	"Level2":{
+		"background":"Textures/Level2.png",
 	},
 	"playerJSON" : "Resources/player.json",
-	"enemyJSON" : 
+	"enemyJSON" : "Resources/enemy.json"
+
 }
 

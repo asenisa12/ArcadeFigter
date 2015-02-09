@@ -14,6 +14,7 @@ class GameCharacter : public GameObject
 protected:
 	static const int CHARACTER_SQUARES_NUM = 2;
 	static const int UNUSED_SQUARES_NUM = 6;
+	static const int DEATH_FRAMES = 50;
 
 	struct direction{ bool right; bool left; bool up; bool down; };
 	struct Shift{ int X; int Y; } shifting;
@@ -33,6 +34,7 @@ protected:
 	int currentCondition;
 	int health;
 	int add;
+	int framesToEnd;
 	int frame;
 	int screenH_, screenW_;
 	int firstclip;
@@ -80,8 +82,9 @@ public:
 	int getRow();
 	int getCondition();
 	int CharacterType();
+	bool ready_for_delete();
 	virtual bool loadMedia(SDL_Renderer* gRenderer) = 0;
-	virtual void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters) = 0;
+	virtual void update(SDL_Rect* camera, std::list<GameCharacter*> characters) = 0;
 };
 
 #endif

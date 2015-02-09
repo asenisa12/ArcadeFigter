@@ -13,7 +13,6 @@
 #include "BackGround.h"
 #include "GameButton.h"
 #include "GameCharacter.h"
-#include "Enemy1.h"
 #include <string>
 #include <list>
 #include <unordered_map>
@@ -48,9 +47,6 @@ extern GameBase mainGame;
 extern grid::SquareGrid levelgrid;
 extern BackGround backGroundMenu;
 extern BackGround backGroundLevel1;
-
-extern Enemy1 enemy1;
-extern Enemy1 enemy2;
 
 extern GameButton startButton;
 extern GameButton exitButton;

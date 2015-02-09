@@ -252,7 +252,6 @@ void Player::handleEvent(pKeys playerKey)
 
 }
 
-
 void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 {
 	collision(characters);
@@ -266,7 +265,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	{
 		fall();
 	}
-	else if (playerEvent.normalPunch )
+	else if (playerEvent.normalPunch)
 	{
 		punch();
 
@@ -293,10 +292,10 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 			frame = 0;
 		}
 	}
-			
+
 	if (playerEvent.moveRight && !playerEvent.normalPunch)
 	{
-		printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
+		//printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
 		moveRight();
 	}
 	else if (playerEvent.moveLeft && !playerEvent.normalPunch)
@@ -312,9 +311,9 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	{
 		moveDown();
 	}
-	
+
 	//Cycle animation
-	if (frame/4 >= lastclip )
+	if (frame / 4 >= lastclip)
 	{
 		frame = firstclip;
 	}
@@ -322,6 +321,19 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 
 	manageSquareShift();
 	manageCameraPos(camera);
+}
+
+void Player::update(SDL_Rect* camera, std::list<GameCharacter*> characters)
+{
+	if (health > 0)
+	{
+		doActions(camera, characters);
+	}
+	else
+	{
+		framesToEnd--;
+		frame = (PUNCH_ANIMATION_FRAMES_END + 4)*4;
+	}
 	resizeClips(Clips);
 }
 

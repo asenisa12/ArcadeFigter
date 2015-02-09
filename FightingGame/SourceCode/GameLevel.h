@@ -8,25 +8,27 @@
 #include "GameCharacter.h" 
 #include <list>
 
+enum { Start, Exit, p2Mode, p1Mode, Level1, Level2 };
+
 
 class GameLevel : public GameState
 {
 	static const pKeys player1Keys;
 	static const pKeys player2Keys;
 
-	bool gameMode1, level1;
+	int gameMode, level;
 
 	grid::SquareGrid *levelgrid;
 	SDL_Rect camera;
 	BackGround *backGroundLevel1;
 	static const std::string levelID;
-	std::list<Player*> players;
+	std::list<Player*> players_;
 	std::list<GameCharacter*> charactersList;
 	void drawPlayerHealthBar(int health);
 	bool createLevel();
 public:
 	~GameLevel();
-	GameLevel(bool gameMode_, bool level_);
+	GameLevel(int gameMode_, int level_);
 	bool LoadObjects();
 	virtual void update(GameStateMachine *stateMachine);
 	virtual void render(SDL_Renderer* renderer);

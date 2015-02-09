@@ -4,13 +4,19 @@
 #include "GameCharacter.h"
 #include "PathFinding.h"
 #include <string>
+#include <tuple>
 #include <future>
 
 enum{ FERRIS };
+enum{TARGET=0, AVAILABLE=1};
+extern std::vector < std::tuple<GameCharacter*, bool> > players;
+
+typedef std::list<std::tuple<GameCharacter*, bool>>::iterator playerIter;
 
 class Enemy1 : public GameCharacter
 {
-
+	int playersCOUNT;
+	int playernum;
 	int enemyID;
 	int WALKING_ANIMATION_END;
 	int PUNCHING_ANIMATION_END;
@@ -35,28 +41,31 @@ class Enemy1 : public GameCharacter
 	bool punched;
 	bool action;
 
-	GameCharacter* player_;
+	GameCharacter* target_;
 	Location lastPlayerSquare;
 	Location currentGoal;
 	Location PrevSquare;
 	std::vector<Location> path;
 
 	void findDestination();
+	void getTarget();
 	void moveToPosition(int X, int Y);
 	void moving();
 	void punch();
 	void fall();
-	Location getPlayerSquare();
+	bool player_punching();
+	void punch_players();
+	void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters);
+	Location getGoalSquare();
 	std::string path_;
 	std::vector<Location> getPath();
 	SDL_Rect *Clips;
 public:
-	Enemy1(std::string path, Location startlocation, int screenW, int screenH, 
-		GameCharacter* player, SquareGrid *grid, int id);
+	Enemy1(std::string path, Location startlocation, int screenW, int screenH, SquareGrid *grid, int id);
 	~Enemy1();
 	void loadData(std::string path);
 	bool loadMedia(SDL_Renderer* renderer);
-	void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters);
+	void update(SDL_Rect* camera, std::list<GameCharacter*> characters);
 };
 
 #endif // !ENEMY_ONE

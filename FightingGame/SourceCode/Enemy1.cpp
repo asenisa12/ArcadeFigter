@@ -1,8 +1,7 @@
 #include "Enemy1.h"
 
-Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screenH,
-	GameCharacter* player, SquareGrid *grid, int id)
-	:player_(player), action(false), enemyID(id), GameCharacter(grid, GENEMY, screenW, screenH)
+Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screenH, SquareGrid *grid, int id)
+	:action(false), enemyID(id), GameCharacter(grid, GENEMY, screenW, screenH), playersCOUNT(players.size())
 {
 	loadData(path);
 	punchStart_count = 0;
@@ -209,13 +208,22 @@ void Enemy1::moving()
 	}
 }
 
-Location Enemy1::getPlayerSquare()
+Location Enemy1::getGoalSquare()
 {
-	Location playerLocation = player_->getCurrSquare()[FIRST_SQUARE_ID];
-	int playerRow = getLocationRow(playerLocation);
-	int playerCol = getLocationCol(playerLocation);
-	playerCol += 4;
-	return levelGrid->getLocation(playerRow-1, playerCol);
+	getTarget();
+	if (target_ == NULL)
+	{
+		return currentSquare[0];
+	}
+	else
+	{
+		Location playerLocation = target_->getCurrSquare()[FIRST_SQUARE_ID];
+		int playerRow = getLocationRow(playerLocation);
+		int playerCol = getLocationCol(playerLocation);
+		playerCol += 4;
+		return levelGrid->getLocation(playerRow - 1, playerCol);
+	}
+
 }
 
 std::vector<Location> Enemy1::getPath()
@@ -227,18 +235,62 @@ std::vector<Location> Enemy1::getPath()
 	return path;
 }
 
+bool Enemy1::player_punching()
+{
+	for (auto player : players)
+	{
+		if (std::get<TARGET>(player)->punching() &&
+			(characterInLeft(std::get<TARGET>(player)) || characterInRigh(std::get<TARGET>(player))))
+		{
+			return true;
+		}
+
+	}
+	return false;
+}
+
+void Enemy1::getTarget()
+{
+	for (int i = 0;i<playersCOUNT;i++)
+	{
+		if (std::get<AVAILABLE>(players[i]))
+		{
+			playernum = i;
+			target_ = std::get<TARGET>(players[i]);
+			std::get<AVAILABLE>(players[i]) = false;
+			return;
+		}
+	}
+	//target_ = NULL;
+}
+
+void Enemy1::punch_players()
+{
+	for (auto player : players)
+	{
+		GameCharacter *player_ = std::get<TARGET>(player);
+		if ((characterInLeft(player_) || characterInRigh(player_)) && !punched
+			&& player_->getCondition() != MOVING)
+		{
+			if (frame / 4 == PUNCHING_ANIMATION_END - 1)
+				player_->editHealth(DAMAGE);
+			punch();
+		}
+	}
+}
+
+
 void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 {
-		printf("aa%d\n", MAX_HEALTH);
 	punched = false;
 	collision(characters);
-	otherLeft = player_->getX();
-	otherRight = player_->getX() + player_->getWidth() / 2;
+	/*otherLeft = player_->getX();
+	otherRight = player_->getX() + player_->getWidth() / 2;*/
 	currentCondition = STANDING;
 	action = false;
-	currentGoal = getPlayerSquare();
+	currentGoal = getGoalSquare();
 
-	if (player_->punching() &&  (characterInLeft(player_) || characterInRigh(player_)))
+	if (player_punching())
 	{
 		fall();
 	}
@@ -246,25 +298,39 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	{
 		lastclip = WALKING_ANIMATION_END;
 		firstclip = 0;
-		
-		moving();
+
+		if (currentGoal != currentSquare[0])
+		{
+			moving();
+		}
 
 		if (action)
 		{
 			frame++;
 		}
-		else if ((characterInLeft(player_) || characterInRigh(player_)) && !punched
-			&& player_->getCondition()!=MOVING)
-		{
-			if (frame / 4 == PUNCHING_ANIMATION_END - 1)
-				player_->editHealth(DAMAGE);
-			punch();
-		}
+		else punch_players();
 
 	}
-	if (frame/4 >= lastclip)
+	if (frame / 4 >= lastclip)
 	{
 		frame = firstclip;
+	}
+
+}
+void Enemy1::update(SDL_Rect* camera, std::list<GameCharacter*> characters)
+{
+	if (health > 0)
+	{
+		doActions(camera, characters);
+	}
+	else
+	{
+		if (target_ != NULL)
+		{
+			std::get<AVAILABLE>(players[playernum]) = false;
+		}
+		framesToEnd--;
+		frame = (PUNCHING_ANIMATION_END + 4) * 4;
 	}
 	resizeClips(Clips);
 }

@@ -66,6 +66,7 @@ class Player : public GameCharacter
 	bool checkMoveKeys();
 	void loadData(std::string path);
 
+	void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters);
 	void manageCameraPos(SDL_Rect* camera);
 
 public:
@@ -74,8 +75,8 @@ public:
 	bool loadMedia(SDL_Renderer* gRenderer);
 	//implements key presses
 	void handleEvent(pKeys playerKey);
-	void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters);
 	void changePosX(int changedX);
+	void update(SDL_Rect* camera, std::list<GameCharacter*> characters);
 };
 
 #endif
