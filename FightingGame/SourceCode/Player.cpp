@@ -49,8 +49,6 @@ void Player::loadData(std::string path)
 	{
 		printf("Error: Can't open file %s\n",path.c_str());
 	}
-
-
 	jsonFile.close();
 }
 
@@ -155,17 +153,12 @@ bool Player::checkMoveKeys()
 	
 }
 
-void Player::manageCameraPos(SDL_Rect* camera)
+void Player::manageCameraPos()
 {
-	//last x position on screen = 90% from screen W 
-	if (posX_ > screenW_*(0.90) && camera_pos < 5){
-		camera_pos++;
-		Col_ = 0;
-		changeSquare(Row_, Col_);
-		posX_ = currentSquare[FIRST_SQUARE_ID].X + squareSize() / 2;
-		shifting.X = 0;
-		camera->x += screenW_;
-	}
+	Col_ = 0;
+	changeSquare(Row_, Col_);
+	posX_ = currentSquare[FIRST_SQUARE_ID].X + squareSize() / 2;
+	shifting.X = 0;
 }
 
 bool Player::punched(std::list<GameCharacter*> characters)
@@ -320,7 +313,7 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	movSpeed = 3;
 
 	manageSquareShift();
-	manageCameraPos(camera);
+	//manageCameraPos(camera);
 }
 
 void Player::update(SDL_Rect* camera, std::list<GameCharacter*> characters)

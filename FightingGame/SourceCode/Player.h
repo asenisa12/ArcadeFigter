@@ -67,7 +67,6 @@ class Player : public GameCharacter
 	void loadData(std::string path);
 
 	void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters);
-	void manageCameraPos(SDL_Rect* camera);
 
 public:
 	Player(std::string jsonPath, int screenW, int screenH, SquareGrid *grid, int player);
@@ -76,6 +75,7 @@ public:
 	//implements key presses
 	void handleEvent(pKeys playerKey);
 	void changePosX(int changedX);
+	void manageCameraPos();
 	void update(SDL_Rect* camera, std::list<GameCharacter*> characters);
 };
 

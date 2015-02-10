@@ -3,6 +3,7 @@
 Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screenH, SquareGrid *grid, int id)
 	:action(false), enemyID(id), GameCharacter(grid, GENEMY, screenW, screenH), playersCOUNT(players.size())
 {
+	flipType = SDL_FLIP_HORIZONTAL;
 	loadData(path);
 	punchStart_count = 0;
 	//movement speed == 0.5% from screen width
@@ -210,18 +211,28 @@ void Enemy1::moving()
 
 Location Enemy1::getGoalSquare()
 {
+
 	getTarget();
-	if (target_ == NULL)
+	if (target_ != NULL)
 	{
-		return currentSquare[0];
+		if (target_->getHealth() > 0)
+		{
+			Location playerLocation = target_->getCurrSquare()[FIRST_SQUARE_ID];
+			int playerRow = getLocationRow(playerLocation);
+			int playerCol = getLocationCol(playerLocation);
+			playerCol += 4;
+			return levelGrid->getLocation(playerRow - 1, playerCol);
+
+		}
+		else
+		{
+			target_ = NULL; 
+			return currentSquare[0];
+		}
 	}
-	else
+	else 
 	{
-		Location playerLocation = target_->getCurrSquare()[FIRST_SQUARE_ID];
-		int playerRow = getLocationRow(playerLocation);
-		int playerCol = getLocationCol(playerLocation);
-		playerCol += 4;
-		return levelGrid->getLocation(playerRow - 1, playerCol);
+		if (target_ == NULL) return currentSquare[0];
 	}
 
 }
@@ -251,32 +262,38 @@ bool Enemy1::player_punching()
 
 void Enemy1::getTarget()
 {
-	for (int i = 0;i<playersCOUNT;i++)
+	if (target_ == NULL)
 	{
-		if (std::get<AVAILABLE>(players[i]))
+
+		for (int i = 0;i<players.size();i++)
 		{
-			playernum = i;
-			target_ = std::get<TARGET>(players[i]);
-			std::get<AVAILABLE>(players[i]) = false;
-			return;
+			if (std::get<AVAILABLE>(players[i]))
+			{
+				printf("psize%d\n",players.size());
+				playernum = i;
+				target_ = std::get<TARGET>(players[i]);
+				std::get<AVAILABLE>(players[i]) = false;
+				break;
+			}
 		}
 	}
-	//target_ = NULL;
 }
 
 void Enemy1::punch_players()
 {
+	bool hitPlayer = false;
 	for (auto player : players)
 	{
 		GameCharacter *player_ = std::get<TARGET>(player);
 		if ((characterInLeft(player_) || characterInRigh(player_)) && !punched
-			&& player_->getCondition() != MOVING)
+			&& player_->getCondition() != MOVING && abs(player_->getRow()-Row_)<=1)
 		{
 			if (frame / 4 == PUNCHING_ANIMATION_END - 1)
 				player_->editHealth(DAMAGE);
-			punch();
+			hitPlayer = true;
 		}
 	}
+	if (hitPlayer) punch();
 }
 
 
@@ -327,7 +344,8 @@ void Enemy1::update(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	{
 		if (target_ != NULL)
 		{
-			std::get<AVAILABLE>(players[playernum]) = false;
+			std::get<AVAILABLE>(players[playernum]) = true;
+			target_ = NULL;
 		}
 		framesToEnd--;
 		frame = (PUNCHING_ANIMATION_END + 4) * 4;

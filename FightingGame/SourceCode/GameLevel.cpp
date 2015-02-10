@@ -20,6 +20,8 @@ void GameLevel::update(GameStateMachine *stateMachine)
 	
 {
 	players_.front()->handleEvent(player1Keys);
+	
+	manage_camera();
 	if (gameMode == p2Mode)
 		players_.back()->handleEvent(player2Keys);
 
@@ -65,6 +67,25 @@ bool  GameLevel::LoadObjects(){
 		if (!it->loadMedia(mainGame->getRenderer())) return false;
 }
 
+void GameLevel::manage_camera()
+{
+	if (cameraPosCount < CAMERA_POSITIONS)
+	{
+		int playersAtEndOfCAmera = 0;
+		for (auto player : players_)
+		{
+			//last x position on screen = 90% from screen W 
+			if (player->getX() > mainGame->getScreenW()*(0.90))
+				playersAtEndOfCAmera++;
+		}
+		if (playersAtEndOfCAmera == players.size()){
+			for (auto player : players_) player->manageCameraPos();
+			camera.x += mainGame->getScreenW();
+		}
+	}
+
+}
+
 bool GameLevel::createLevel()
 {
 	return true;
@@ -72,6 +93,7 @@ bool GameLevel::createLevel()
 
 bool GameLevel::onEnter(GameBase *mainGame_)
 {
+	cameraPosCount = 0;
 	mainGame = mainGame_;
 	camera = { 0, 0, mainGame->getScreenW(), mainGame->getScreenH()};
 	if (level==Level1){
@@ -93,8 +115,10 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 		charactersList.push_back(players_.back());
 		players.push_back(std::make_tuple(players_.back(), true));
 	}
-	charactersList.push_back(new Enemy1("Resources/enemy.json", { 380, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
+	charactersList.push_back(new Enemy1("Resources/enemy.json", { 380, 350 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
 	charactersList.push_back(new Enemy1("Resources/enemy.json", { 500, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
+	charactersList.push_back(new Enemy1("Resources/enemy.json", { 560, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
+	charactersList.push_back(new Enemy1("Resources/enemy.json", { 300, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
 	
 
 	
