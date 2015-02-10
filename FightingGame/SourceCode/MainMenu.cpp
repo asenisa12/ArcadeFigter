@@ -36,6 +36,23 @@ void MainMenu::update(GameStateMachine *stateMachine)
 	return;
 }
 
+void MainMenu::handleEvent()
+{
+
+	switch (mainGame->gameEvent.type)
+	{
+	case SDL_KEYUP:
+		switch (mainGame->gameEvent.key.keysym.sym){
+		case SDLK_ESCAPE:
+			mainGame->quit = true;
+			break;
+		default:
+			break;
+		}
+		break;
+	}
+}
+
 void MainMenu::render(SDL_Renderer* renderer)
 {
 

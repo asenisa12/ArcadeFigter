@@ -14,6 +14,7 @@ protected:
 public: 
 	virtual void update(GameStateMachine *stateMachine) = 0;
 	virtual void render(SDL_Renderer* renderer) = 0;
+	virtual void handleEvent() = 0;
 
 	virtual bool onEnter(GameBase *mainGame_) = 0;
 	virtual bool onExit() = 0;
@@ -32,6 +33,7 @@ public:
 	void changeState(GameState *newState);
 	void pushState(GameState *newState);
 	void popState();
+	void handleEvent();
 	void update();
 	void render(SDL_Renderer* renderer);
 };

@@ -84,7 +84,7 @@ public:
 	int CharacterType();
 	bool ready_for_delete();
 	virtual bool loadMedia(SDL_Renderer* gRenderer) = 0;
-	virtual void update(SDL_Rect* camera, std::list<GameCharacter*> characters) = 0;
+	virtual void update(std::list<GameCharacter*> characters) = 0;
 };
 
 #endif

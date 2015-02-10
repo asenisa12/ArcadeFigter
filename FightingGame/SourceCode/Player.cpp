@@ -245,7 +245,7 @@ void Player::handleEvent(pKeys playerKey)
 
 }
 
-void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
+void Player::doActions(std::list<GameCharacter*> characters)
 {
 	collision(characters);
 	bool ispunched = punched(characters);
@@ -313,14 +313,13 @@ void Player::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	movSpeed = 3;
 
 	manageSquareShift();
-	//manageCameraPos(camera);
 }
 
-void Player::update(SDL_Rect* camera, std::list<GameCharacter*> characters)
+void Player::update(std::list<GameCharacter*> characters)
 {
 	if (health > 0)
 	{
-		doActions(camera, characters);
+		doActions(characters);
 	}
 	else
 	{

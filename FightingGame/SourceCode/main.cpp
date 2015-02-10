@@ -51,6 +51,8 @@ int main(int argc, char* argv[])
 					mainGame.quit = true;
 				}
 			}
+			stateMachine.handleEvent();
+
 			//update
 			stateMachine.update();
 

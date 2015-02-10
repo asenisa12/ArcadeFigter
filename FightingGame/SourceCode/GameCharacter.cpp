@@ -121,23 +121,23 @@ void GameCharacter::setGridAttributes(Location location)
 
 void GameCharacter::moveRight()
 {
-	currentCondition = MOVING;
 	//max x = 92% from screen w
 	if (posX_ < (screenW_*(0.92)) && moveDir.right)
 	{
 		posX_ += movSpeed;
 		shifting.X += movSpeed;
+		currentCondition = MOVING;
 	}
 	flipType = SDL_FLIP_NONE;
 }
 
 void GameCharacter::moveLeft()
 {
-	currentCondition = MOVING;
 	if (posX_ > 3 && moveDir.left)
 	{
 		posX_ -= movSpeed;
 		shifting.X -= movSpeed;
+		currentCondition = MOVING;
 	}
 		flipType = SDL_FLIP_HORIZONTAL;
 

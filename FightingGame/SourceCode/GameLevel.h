@@ -33,6 +33,7 @@ public:
 	~GameLevel();
 	GameLevel(int gameMode_, int level_);
 	bool LoadObjects();
+	virtual void handleEvent();
 	virtual void update(GameStateMachine *stateMachine);
 	virtual void render(SDL_Renderer* renderer);
 	virtual bool onEnter(GameBase *mainGame_);

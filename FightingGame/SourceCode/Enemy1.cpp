@@ -297,7 +297,7 @@ void Enemy1::punch_players()
 }
 
 
-void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
+void Enemy1::doActions(std::list<GameCharacter*> characters)
 {
 	punched = false;
 	collision(characters);
@@ -334,11 +334,11 @@ void Enemy1::doActions(SDL_Rect* camera, std::list<GameCharacter*> characters)
 	}
 
 }
-void Enemy1::update(SDL_Rect* camera, std::list<GameCharacter*> characters)
+void Enemy1::update(std::list<GameCharacter*> characters)
 {
 	if (health > 0)
 	{
-		doActions(camera, characters);
+		doActions(characters);
 	}
 	else
 	{

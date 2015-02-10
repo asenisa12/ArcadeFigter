@@ -16,20 +16,24 @@ const pKeys GameLevel::player2Keys =
 SDL_SCANCODE_RCTRL, SDL_SCANCODE_RSHIFT, SDL_SCANCODE_RALT };
 
 
-void GameLevel::update(GameStateMachine *stateMachine)
-	
+void GameLevel::handleEvent()
 {
 	players_.front()->handleEvent(player1Keys);
 	
 	manage_camera();
 	if (gameMode == p2Mode)
 		players_.back()->handleEvent(player2Keys);
+}
+
+void GameLevel::update(GameStateMachine *stateMachine)
+	
+{
 
 	charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)
 		{return (struct1->getBottomY()< struct2->getBottomY()); });
 
 	for (auto character : charactersList)
-		character->update(&camera, charactersList);
+		character->update(charactersList);
 }
 
 void GameLevel::render(SDL_Renderer* renderer)
@@ -81,6 +85,7 @@ void GameLevel::manage_camera()
 		if (playersAtEndOfCAmera == players.size()){
 			for (auto player : players_) player->manageCameraPos();
 			camera.x += mainGame->getScreenW();
+			cameraPosCount++;
 		}
 	}
 

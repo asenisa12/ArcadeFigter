@@ -55,7 +55,7 @@ class Enemy1 : public GameCharacter
 	void fall();
 	bool player_punching();
 	void punch_players();
-	void doActions(SDL_Rect* camera, std::list<GameCharacter*> characters);
+	void doActions(std::list<GameCharacter*> characters);
 	Location getGoalSquare();
 	std::string path_;
 	std::vector<Location> getPath();
@@ -65,7 +65,7 @@ public:
 	~Enemy1();
 	void loadData(std::string path);
 	bool loadMedia(SDL_Renderer* renderer);
-	void update(SDL_Rect* camera, std::list<GameCharacter*> characters);
+	void update(std::list<GameCharacter*> characters);
 };
 
 #endif // !ENEMY_ONE

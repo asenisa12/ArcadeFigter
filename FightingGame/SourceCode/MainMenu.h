@@ -12,13 +12,14 @@ static const std::string menuData ="Resources/menuData.json";
 
 class MainMenu : public GameState
 {
-	enum{Menu1, Menu2, Menu3};
+	enum{Menu1=0, Menu2=1, Menu3=2};
 	int gameMode, level;
 	int currentMenu;
 	BackGround *backGroundMenu;
 	std::map<int, GameButton*> button;
 	bool loadObjects();
 public:
+	virtual void handleEvent();
 	virtual void update(GameStateMachine *stateMachine);
 	virtual void render(SDL_Renderer* renderer);
 	virtual bool onEnter(GameBase *mainGame_);

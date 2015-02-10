@@ -59,3 +59,8 @@ GameBase* GameStateMachine::getGameBase()
 {
 	return mainGame;
 }
+
+void GameStateMachine::handleEvent()
+{
+	states.back()->handleEvent();
+}
