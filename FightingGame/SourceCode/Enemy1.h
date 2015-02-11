@@ -28,8 +28,6 @@ class Enemy1 : public GameCharacter
 
 	int MAX_HEALTH;
 	int DAMAGE;
-	int CLIP_H;
-	int CLIP_W;
 	int FALLING_CLIP_W;
 
 	int destX;
@@ -59,7 +57,6 @@ class Enemy1 : public GameCharacter
 	Location getGoalSquare();
 	std::string path_;
 	std::vector<Location> getPath();
-	SDL_Rect *Clips;
 public:
 	Enemy1(std::string path, Location startlocation, int screenW, int screenH, SquareGrid *grid, int id);
 	~Enemy1();

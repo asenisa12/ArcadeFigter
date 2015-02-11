@@ -44,7 +44,10 @@ void Enemy1::loadData(std::string path)
 		SHIFTING_PERCENTIGE = variables[U("SHIFTING_PERCENTIGE")].as_double();
 		DIFF_BY_X_PERCENTIGE = variables[U("DIFF_BY_X_PERCENTIGE")].as_double();
 		DIFF_BY_Y_PERCENTIGE = variables[U("DIFF_BY_Y_PERCENTIGE")].as_double();
-		Clips = new SDL_Rect[FALLING_ANIMATION_END];
+
+		animFrameSize.push_back(WALKING_ANIMATION_END);
+		animFrameSize.push_back(PUNCHING_ANIMATION_END);
+		animFrameSize.push_back(FALLING_ANIMATION_END);
 		health = MAX_HEALTH;
 	}
 	else
@@ -61,30 +64,8 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 		printf("Failed to load walking animation texture!\n");
 		return false;
 	}
-
-	int x = 0;
-	int y = 0;
-	for (int i = 0; i < FALLING_ANIMATION_END;i++)
-	{
-		if (i == WALKING_ANIMATION_END || i== PUNCHING_ANIMATION_END)
-		{
-			x = 0;
-			y += CLIP_H;
-		}
-		Clips[i] = { x, y, CLIP_W, CLIP_H };
-		if (i == 15 || i == 16)
-		{
-			x += FALLING_CLIP_W;
-		}
-		else x += CLIP_W;
-		
-	}
-
-	currentClip = &Clips[0];
-	frame = 0;
-
-	resizeClips(Clips);
-	posToSquareMiddle();
+	std::string animNames[] = { "WALLKING", "PUNCH", "FALLING" };
+	loadAnimation(animNames);
 	destY = posY_;
 	destX = posX_;
 
@@ -95,20 +76,21 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 
 Enemy1::~Enemy1()
 {
-	delete[] Clips;
 	free();
 }
 
 void Enemy1::punch()
 {
 	currentCondition = PUNCHING;
-	animation(PUNCHING_ANIMATION_END, WALKING_ANIMATION_END);
+	animation("PUNCH");
+	frame++;
 }
 
 void Enemy1::fall()
 {
 	currentCondition = PUNCHED;
-	animation(FALLING_ANIMATION_END, PUNCHING_ANIMATION_END);
+	animation("FALLING");
+	frame++;
 }
 
 void Enemy1::findDestination()
@@ -269,7 +251,6 @@ void Enemy1::getTarget()
 		{
 			if (std::get<AVAILABLE>(players[i]))
 			{
-				printf("psize%d\n",players.size());
 				playernum = i;
 				target_ = std::get<TARGET>(players[i]);
 				std::get<AVAILABLE>(players[i]) = false;
@@ -301,8 +282,6 @@ void Enemy1::doActions(std::list<GameCharacter*> characters)
 {
 	punched = false;
 	collision(characters);
-	/*otherLeft = player_->getX();
-	otherRight = player_->getX() + player_->getWidth() / 2;*/
 	currentCondition = STANDING;
 	action = false;
 	currentGoal = getGoalSquare();
@@ -313,8 +292,7 @@ void Enemy1::doActions(std::list<GameCharacter*> characters)
 	}
 	else
 	{
-		lastclip = WALKING_ANIMATION_END;
-		firstclip = 0;
+		animation("WALLKING");
 
 		if (currentGoal != currentSquare[0])
 		{
@@ -328,11 +306,10 @@ void Enemy1::doActions(std::list<GameCharacter*> characters)
 		else punch_players();
 
 	}
-	if (frame / 4 >= lastclip)
+	if (frame / 4 >= Clips.size())
 	{
 		frame = firstclip;
 	}
-
 }
 void Enemy1::update(std::list<GameCharacter*> characters)
 {
@@ -348,7 +325,8 @@ void Enemy1::update(std::list<GameCharacter*> characters)
 			target_ = NULL;
 		}
 		framesToEnd--;
-		frame = (PUNCHING_ANIMATION_END + 4) * 4;
+		animation("FALLING");
+		frame =4* 4;
 	}
-	resizeClips(Clips);
+	resizeClips(&Clips[frame/4]);
 }

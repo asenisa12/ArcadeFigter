@@ -12,6 +12,7 @@ Player::Player(std::string jsonPath, int screenW, int screenH, SquareGrid *grid,
 	movSpeed =screenW_*0.007;
 	objTexture = NULL;
 	setGridAttributes(grid->getLocation(Row_, Col_));
+	
 }
 
 void Player::loadData(std::string path)
@@ -37,12 +38,16 @@ void Player::loadData(std::string path)
 		JUMPING_ANIMATION_FRAMES_END = consts[U("JUMPING_ANIMATION_FRAMES_END")].as_integer();
 		PUNCH_ANIMATION_FRAMES_END = consts[U("PUNCH_ANIMATION_FRAMES_END")].as_integer();
 		FALLING_ANIMATION_FRAMES_END = consts[U("FALLING_ANIMATION_FRAMES_END")].as_integer();
+		animFrameSize.push_back(WALKING_ANIMATION_FRAMES_END);
+		animFrameSize.push_back(RUNING_ANIMATION_FRAMES_END);
+		animFrameSize.push_back(JUMPING_ANIMATION_FRAMES_END);
+		animFrameSize.push_back(PUNCH_ANIMATION_FRAMES_END);
+		animFrameSize.push_back(FALLING_ANIMATION_FRAMES_END);
 		MAX_HEALTH = consts[U("MAX_HEALTH")].as_integer();
 		DAMAGE = consts[U("DAMAGE")].as_integer();
 		CLIP_H = consts[U("CLIP_H")].as_integer();
 		CLIP_W = consts[U("CLIP_W")].as_integer();
 		health = MAX_HEALTH;
-		Clips = new SDL_Rect[FALLING_ANIMATION_FRAMES_END];
 
 	}
 	else
@@ -54,7 +59,6 @@ void Player::loadData(std::string path)
 
 Player::~Player()
 {
-	delete[] Clips;
 	free();
 }
 
@@ -66,23 +70,8 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 		printf("Failed to load walking animation texture!\n");
 		return false;
 	}
-	int x = 0;
-	int y = 0;
-	for (int i = 0; i < FALLING_ANIMATION_FRAMES_END; i++)
-	{
-
-		if (i == WALKING_ANIMATION_FRAMES_END ||
-			i == JUMPING_ANIMATION_FRAMES_END || 
-			i == RUNING_ANIMATION_FRAMES_END ||
-			i == PUNCH_ANIMATION_FRAMES_END )
-		{
-			x = 0;
-			y += CLIP_H;
-		}
-		Clips[i] = { x, y, CLIP_W, CLIP_H };
-		x += CLIP_W;
-	}
-	resizeClips(Clips);
+	std::string animNames[] = { "WALLKING", "RUNNING", "JUMPING", "PUNCH", "FALLING" };
+	loadAnimation(animNames);
 	posToSquareMiddle();
 	return true;
 }
@@ -91,23 +80,25 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 void Player::fall()
 {
 	currentCondition = PUNCHED;
-	animation(FALLING_ANIMATION_FRAMES_END, PUNCH_ANIMATION_FRAMES_END);
+	animation("FALLING");
+	frame++;
 }
 
 void Player::punch()
 {
 	currentCondition = PUNCHING;
-	animation(PUNCH_ANIMATION_FRAMES_END, JUMPING_ANIMATION_FRAMES_END);
+	animation("PUNCH");
+	frame++;
 }
 
 void Player::jump()
 {
-	firstclip = RUNING_ANIMATION_FRAMES_END * 4;
-	lastclip = JUMPING_ANIMATION_FRAMES_END;
-	if (frame / 4 < RUNING_ANIMATION_FRAMES_END || !jumping)
-	{
+	if (animationName != "JUMPING" || !jumping){
+		firstclip = 0;
+		Clips = animations["JUMPING"];
 		frame = firstclip;
 		jumping = true;
+		animationName = "JUMPING";
 	}
 
 	if (jumping)
@@ -132,12 +123,7 @@ void Player::jump()
 
 void Player::run()
 {
-	
-	firstclip = WALKING_ANIMATION_FRAMES_END * 4 + 1;
-	lastclip = RUNING_ANIMATION_FRAMES_END;
-	if (frame / 4 < WALKING_ANIMATION_FRAMES_END){
-		frame = firstclip;
-	}
+	animation("RUNNING");
 	movSpeed = 10;
 
 }
@@ -190,7 +176,7 @@ bool Player::punched(std::list<GameCharacter*> characters)
 			if ((characterInLeft(enemy) && flipType == SDL_FLIP_HORIZONTAL) ||
 				(characterInRigh(enemy) && flipType == SDL_FLIP_NONE))
 			{
-				if (frame / 4 == PUNCH_ANIMATION_FRAMES_END - 1)
+				if (frame / 4 == Clips.size()- 1)
 				{
 					printf("DAMAGE\n");
 					enemy->editHealth(DAMAGE);
@@ -271,7 +257,7 @@ void Player::doActions(std::list<GameCharacter*> characters)
 		}
 		else
 		{
-			lastclip = WALKING_ANIMATION_FRAMES_END;
+			animation("WALLKING");
 			firstclip = 5;
 		}
 		//checks if the moving kes are pressed
@@ -281,6 +267,8 @@ void Player::doActions(std::list<GameCharacter*> characters)
 		}
 		else
 		{
+			
+			animation("WALLKING");
 			currentCondition = STANDING;
 			frame = 0;
 		}
@@ -297,7 +285,7 @@ void Player::doActions(std::list<GameCharacter*> characters)
 	}
 	else if (playerEvent.moveUP && !jumping)
 	{
-		printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
+		//printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
 		moveUp();
 	}
 	else if (playerEvent.moveDown && !jumping)
@@ -306,12 +294,11 @@ void Player::doActions(std::list<GameCharacter*> characters)
 	}
 
 	//Cycle animation
-	if (frame / 4 >= lastclip)
+	if (frame / 4 >= Clips.size())
 	{
 		frame = firstclip;
 	}
 	movSpeed = 3;
-
 	manageSquareShift();
 }
 
@@ -324,9 +311,10 @@ void Player::update(std::list<GameCharacter*> characters)
 	else
 	{
 		framesToEnd--;
-		frame = (PUNCH_ANIMATION_FRAMES_END + 4)*4;
+		animation("FALLING");
+		frame = 4 * 4;
 	}
-	resizeClips(Clips);
+	resizeClips(&Clips[frame/4]);
 }
 
 

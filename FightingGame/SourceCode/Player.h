@@ -2,7 +2,8 @@
 #define PLAYER
 
 #include "GameCharacter.h"
-#include <cmath>  
+#include <cmath> 
+#include <map>
 
 enum {Player1=1, Player2=2};
 
@@ -50,10 +51,9 @@ class Player : public GameCharacter
 
 	int MAX_HEALTH;
 	int DAMAGE;
-	int CLIP_H;
-	int CLIP_W;
 
-	SDL_Rect *Clips;
+	//SDL_Rect *Clips;
+	
 	
 	std::string path_;
 

@@ -6,6 +6,7 @@
 #include <list>
 #include <cmath>
 #include <vector>
+#include <map>
 
 using namespace grid;
 
@@ -24,12 +25,20 @@ protected:
 	enum {PUNCHING, MOVING, PUNCHED, FALLING, STANDING};
 	enum { GPLAYER, GENEMY};
 
+	std::string animationName;
+	std::vector < SDL_Rect >  Clips;
+	enum{ WALLKING = 0, RUNNING = 1, JUMPING = 2, PUNCH = 3, FALLIN = 4 };
+	std::vector<int> animFrameSize;
+	std::map<std::string, std::vector < SDL_Rect >> animations;
 	Location currentSquare[CHARACTER_SQUARES_NUM];
 	direction moveDir;
 	SquareGrid *levelGrid;
 	SDL_Rect * currentClip;
 	SDL_RendererFlip flipType;
 	
+	int CLIP_H;
+	int CLIP_W;
+
 	double movSpeed;
 	int currentCondition;
 	int health;
@@ -62,12 +71,14 @@ protected:
 	bool characterInLeft(GameCharacter* character);
 	bool characterInRigh(GameCharacter* character);
 	void setGridAttributes(Location location);
-	void animation(int last, int first);
+	void animation(std::string name);
 	void moveRight();
 	void moveLeft();
 	void moveUp();
 	void moveDown();
-	void resizeClips(SDL_Rect Clips[]);
+	void loadAnimation(std::string animNames[]);
+	void loadClips(std::string name, int y, int endFrame);
+	void resizeClips(SDL_Rect *clip);
 	void collision(std::list<GameCharacter*> characters);
 public:
 	GameCharacter(SquareGrid *grid, int characterType_,

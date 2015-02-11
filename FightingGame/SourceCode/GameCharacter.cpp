@@ -170,22 +170,50 @@ void GameCharacter::moveDown()
 
 }
 
-void GameCharacter::animation(int last, int first)
+void GameCharacter::animation(std::string name)
 {
-	lastclip = last;
-	firstclip = first * 4;
-	if (frame / 4 < first ||
-		frame / 4 >= lastclip)
+	if (animationName!=name){
+		firstclip = 0;
+		Clips = animations[name];
+		animationName = name;
+	}
+	else if (frame/4 > Clips.size())
 	{
 		frame = firstclip;
 	}
-	frame++;
-
 }
 
-void GameCharacter::resizeClips(SDL_Rect Clips[])
+void GameCharacter::loadAnimation(std::string animNames[])
 {
-	currentClip = &Clips[frame / 4];
+	int y = 0;
+	for (int i = 0; i < animFrameSize.size(); i++)
+	{
+		loadClips(animNames[i], y, animFrameSize[i]);
+		y += CLIP_H;
+	}
+	animation("WALLKING");
+	currentClip = &Clips[0];
+	frame = 0;
+
+	resizeClips(&Clips[frame / 4]);
+	posToSquareMiddle();
+}
+
+void GameCharacter::loadClips(std::string name, int y, int endFrame)
+{
+	std::vector < SDL_Rect >  clips;
+	int x = 0;
+	for (int i = 0; i < endFrame; i++)
+	{
+		clips.push_back({ x, y, CLIP_W, CLIP_H });
+		x += CLIP_W;
+	}
+	animations[name] = clips;
+}
+
+void GameCharacter::resizeClips(SDL_Rect *clip)
+{
+	currentClip = clip;
 	//the height or width of the texture = clip w or h * 0.3% or 0.32% 
 	//+ additional x or y pos if the charracter gets closer or away
 	mWidth = (currentClip->w * (0.0030) *screenW_) + add;
