@@ -80,7 +80,9 @@ void GameLevel::manage_camera()
 		{
 			//last x position on screen = 90% from screen W 
 			if (player->getX() > mainGame->getScreenW()*(0.90))
+			{
 				playersAtEndOfCAmera++;
+			}
 		}
 		if (playersAtEndOfCAmera == players.size()){
 			for (auto player : players_) player->manageCameraPos();

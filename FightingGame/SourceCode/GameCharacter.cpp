@@ -133,7 +133,7 @@ void GameCharacter::moveRight()
 
 void GameCharacter::moveLeft()
 {
-	if (posX_ > 3 && moveDir.left)
+	if (posX_ > 10 && moveDir.left)
 	{
 		posX_ -= movSpeed;
 		shifting.X -= movSpeed;
