@@ -1,16 +1,16 @@
 {
 	"Ferrys":{
-		"texture" :"Textures/Ferrys.png", 
+		"texture" :"Textures/Raptor.png", 
 		"MAX_HEALTH" : 100,
 		"DAMAGE" : 4,
 		"CLIP_H" : 100,
-		"CLIP_W" : 100,
+		"CLIP_W" : 150,
 		"FALLING_CLIP_W" : 150
 	},
 	"variables":{
-		"WALKING_ANIMATION_END" : 7,
-		"PUNCHING_ANIMATION_END" : 5,
-		"FALLING_ANIMATION_END" : 6,
+		"WALKING_ANIMATION_END" : 5,
+		"PUNCHING_ANIMATION_END" : 4,
+		"FALLING_ANIMATION_END" : 5,
 		"SHIFTING_PERCENTIGE" : 0.1,
 		"DIFF_BY_X_PERCENTIGE" : 0.0046876,
 		"DIFF_BY_Y_PERCENTIGE" : 0.00625

@@ -4,6 +4,7 @@
 #include "GameCharacter.h"
 #include <cmath> 
 #include <map>
+#include <iostream>
 
 enum {Player1=1, Player2=2};
 
@@ -16,6 +17,7 @@ struct pEvent
 	bool moveRight;
 	bool moveUP;
 	bool moveDown;
+	bool grab;
 	bool jump;
 	bool run;
 };
@@ -26,6 +28,7 @@ struct pKeys
 	int moveL;
 	int moveU;
 	int moveD;
+	int grab;
 	int punch;
 	int run;
 	int jump;
@@ -49,6 +52,9 @@ class Player : public GameCharacter
 	int PUNCH_ANIMATION_FRAMES_END;
 	int FALLING_ANIMATION_FRAMES_END;
 
+	bool sPunch;
+	bool rPunch;
+	bool grabing;
 	int MAX_HEALTH;
 	int DAMAGE;
 
@@ -56,14 +62,19 @@ class Player : public GameCharacter
 	
 	
 	std::string path_;
-
+	std::list<std::string> combos;
 	bool punched(std::list<GameCharacter*> characters);
 	void fall();
+	void continuingAnim(bool &var, std::string name);
+	void superPunch();
+	void runPunch();
+	void grab();
 	void punch();
 	void jump();
 	void run();
 	void checkCondition();
 	bool checkMoveKeys();
+	void push_event(std::string name);
 	void loadData(std::string path);
 
 	void doActions(std::list<GameCharacter*> characters);

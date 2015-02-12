@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player(std::string jsonPath, int screenW, int screenH, SquareGrid *grid, int player)
-	:playerID(player), GameCharacter(grid, GPLAYER, screenW, screenH)
+	:playerID(player), GameCharacter(grid, GPLAYER, screenW, screenH), sPunch(false), rPunch(false)
 {
 	frame = 0;
 	int add = 0;
@@ -33,16 +33,14 @@ void Player::loadData(std::string path)
 		Col_ = attr[U("col")].as_integer();
 
 		jsonObj consts = player[U("Constants")];
-		WALKING_ANIMATION_FRAMES_END = consts[U("WALKING_ANIMATION_FRAMES_END")].as_integer();
-		RUNING_ANIMATION_FRAMES_END = consts[U("RUNING_ANIMATION_FRAMES_END")].as_integer();
-		JUMPING_ANIMATION_FRAMES_END = consts[U("JUMPING_ANIMATION_FRAMES_END")].as_integer();
-		PUNCH_ANIMATION_FRAMES_END = consts[U("PUNCH_ANIMATION_FRAMES_END")].as_integer();
-		FALLING_ANIMATION_FRAMES_END = consts[U("FALLING_ANIMATION_FRAMES_END")].as_integer();
-		animFrameSize.push_back(WALKING_ANIMATION_FRAMES_END);
-		animFrameSize.push_back(RUNING_ANIMATION_FRAMES_END);
-		animFrameSize.push_back(JUMPING_ANIMATION_FRAMES_END);
-		animFrameSize.push_back(PUNCH_ANIMATION_FRAMES_END);
-		animFrameSize.push_back(FALLING_ANIMATION_FRAMES_END);
+		animFrameSize.push_back(consts[U("WALKING_FRAMES_END")].as_integer());
+		animFrameSize.push_back(consts[U("RUNING_FRAMES_END")].as_integer());
+		animFrameSize.push_back(consts[U("JUMPING_FRAMES_END")].as_integer());
+		animFrameSize.push_back(consts[U("PUNCH_FRAMES_END")].as_integer());
+		animFrameSize.push_back(consts[U("FALLING_FRAMES_END")].as_integer());
+		animFrameSize.push_back(consts[U("RUNPUNCH_FRAMES_END")].as_integer());
+		animFrameSize.push_back(consts[U("SUPERPUNCH_FRAMES_END")].as_integer());
+		animFrameSize.push_back(consts[U("GRAB_FRAMES_END")].as_integer());
 		MAX_HEALTH = consts[U("MAX_HEALTH")].as_integer();
 		DAMAGE = consts[U("DAMAGE")].as_integer();
 		CLIP_H = consts[U("CLIP_H")].as_integer();
@@ -70,12 +68,45 @@ bool Player::loadMedia(SDL_Renderer* gRenderer)
 		printf("Failed to load walking animation texture!\n");
 		return false;
 	}
-	std::string animNames[] = { "WALLKING", "RUNNING", "JUMPING", "PUNCH", "FALLING" };
+	std::string animNames[] = { "WALLKING", "RUNNING", "JUMPING", 
+		"PUNCH", "FALLING", "RUNPUNCH", "SUPERPUNCH", "GRAB" };
 	loadAnimation(animNames);
 	posToSquareMiddle();
 	return true;
 }
 
+
+void Player::continuingAnim(bool &var, std::string name)
+{
+	if (animationName != name)
+	{
+		firstclip = 0;
+		Clips = animations[name];
+		frame = firstclip;
+		var = true;
+		animationName = name;
+	}
+	frame++;
+	if (frame / 4 >= Clips.size()) var = false;
+}
+
+void Player::grab()
+{
+	currentCondition = STANDING;
+	continuingAnim(grabing, "GRAB");
+}
+
+void Player::superPunch()
+{
+	currentCondition = PUNCHING;
+	continuingAnim(sPunch, "SUPERPUNCH");
+}
+void Player::runPunch()
+{
+	currentCondition = PUNCHING;
+	continuingAnim(rPunch, "RUNPUNCH");
+	movSpeed = 10;
+}
 
 void Player::fall()
 {
@@ -166,20 +197,28 @@ bool Player::punched(std::list<GameCharacter*> characters)
 			if ((characterInLeft(enemy) || characterInRigh(enemy)) &&
 				enemy->getRow() == Row_)
 			{
-				if (otherLeft > myLeft) flipType == SDL_FLIP_HORIZONTAL;
-				if (otherLeft < myLeft) flipType == SDL_FLIP_NONE;
+				if (otherLeft > myLeft) flipType = SDL_FLIP_HORIZONTAL;
+				if (otherLeft < myLeft) flipType = SDL_FLIP_NONE;
 				return true;
 			}
 		}
-		else if (playerEvent.normalPunch)
+
+		if ((characterInLeft(enemy) && flipType == SDL_FLIP_HORIZONTAL) ||
+			(characterInRigh(enemy) && flipType == SDL_FLIP_NONE))
 		{
-			if ((characterInLeft(enemy) && flipType == SDL_FLIP_HORIZONTAL) ||
-				(characterInRigh(enemy) && flipType == SDL_FLIP_NONE))
+			if (frame / 4 == Clips.size()- 1)
 			{
-				if (frame / 4 == Clips.size()- 1)
+				if (animationName == "PUNCH")
 				{
-					printf("DAMAGE\n");
 					enemy->editHealth(DAMAGE);
+				}
+				else if (animationName == "SUPERPUNCH")
+				{
+					enemy->editHealth(2*DAMAGE);
+				}
+				else if (animationName == "RUNPUNCH")
+				{
+					enemy->editHealth(3*DAMAGE);
 				}
 			}
 		}
@@ -187,47 +226,77 @@ bool Player::punched(std::list<GameCharacter*> characters)
 	return false;
 }
 
+void Player::push_event(std::string name)
+{
+	bool push = true;
+	if (combos.size() > 0)
+	{
+		if (combos.back() == name) push = false;
+	}
+	if(push)combos.push_back(name);
+}
+
 void Player::handleEvent(pKeys playerKey)
 {
 	playerEvent = { false, false, false, false, false, false, false, false, false };
 	auto currentKeyStates = SDL_GetKeyboardState(NULL);
 
-	if (currentKeyStates[playerKey.punch] && currentKeyStates[playerKey.jump])
-	{
-		playerEvent.superPunch = true;
-	}
-	else if (currentKeyStates[playerKey.punch] && currentKeyStates[playerKey.run])
-	{
-		playerEvent.runPunch = true;
-	}
-	else if (currentKeyStates[playerKey.punch])
+	if (currentKeyStates[playerKey.punch])
 	{
 		playerEvent.normalPunch = true;
+		push_event("PUNCH");
 	}
-	if (currentKeyStates[playerKey.jump])
+	if (currentKeyStates[playerKey.grab])
+	{
+		playerEvent.grab = true;
+		push_event("GRAB");
+	}
+	if (currentKeyStates[playerKey.jump] && !sPunch)
 	{
 		playerEvent.jump = true;
+		push_event("JUMP");
 	}
 	if (currentKeyStates[playerKey.run])
 	{
 		playerEvent.run = true;
+		push_event("RUN");
 	}
 	if (currentKeyStates[playerKey.moveD])
 	{
 		playerEvent.moveDown = true;
+		push_event("MOVE");
 	}
 	if (currentKeyStates[playerKey.moveU])
 	{
 		playerEvent.moveUP = true;
+		push_event("MOVE");
 	}
 	if (currentKeyStates[playerKey.moveL])
 	{
 		playerEvent.moveLeft = true;
+
+		push_event("MOVE");
 	}
 	if (currentKeyStates[playerKey.moveR])
 	{
 		playerEvent.moveRight = true;
+		push_event("MOVE");
 	}
+	if (combos.size() == 2)
+	{
+		if (combos.front() == "PUNCH" && !playerEvent.normalPunch)
+		{
+			if (combos.back() == "MOVE")
+			{
+				playerEvent.superPunch = true;
+			}
+			if (combos.back() == "RUN")
+			{
+				playerEvent.runPunch = true;
+			}
+		}
+	}
+	if (combos.size() >= 2)combos.pop_front();
 
 }
 
@@ -236,9 +305,21 @@ void Player::doActions(std::list<GameCharacter*> characters)
 	collision(characters);
 	bool ispunched = punched(characters);
 
-	if (playerEvent.jump || jumping)
+	if (playerEvent.superPunch || sPunch)
+	{
+		superPunch();
+	}
+	else if (playerEvent.runPunch || rPunch)
+	{
+		runPunch();
+	}
+	else if (playerEvent.jump || jumping)
 	{
 		jump();
+	}
+	else if (playerEvent.grab || grabing)
+	{
+		grab();
 	}
 	else if (currentCondition == PUNCHED)
 	{
@@ -276,7 +357,6 @@ void Player::doActions(std::list<GameCharacter*> characters)
 
 	if (playerEvent.moveRight && !playerEvent.normalPunch)
 	{
-		//printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
 		moveRight();
 	}
 	else if (playerEvent.moveLeft && !playerEvent.normalPunch)
@@ -285,7 +365,6 @@ void Player::doActions(std::list<GameCharacter*> characters)
 	}
 	else if (playerEvent.moveUP && !jumping)
 	{
-		//printf("posX: %d posY: %d Shift[X]: %d \n", posX_, /*getBottomY()*/posY_, shifting.X);
 		moveUp();
 	}
 	else if (playerEvent.moveDown && !jumping)
@@ -294,10 +373,7 @@ void Player::doActions(std::list<GameCharacter*> characters)
 	}
 
 	//Cycle animation
-	if (frame / 4 >= Clips.size())
-	{
-		frame = firstclip;
-	}
+	if (frame / 4 >= Clips.size()) frame = firstclip;
 	movSpeed = 3;
 	manageSquareShift();
 }
