@@ -7,7 +7,7 @@
 #include <tuple>
 #include <future>
 
-enum{ FERRIS };
+enum{ FERRIS =1 };
 enum{TARGET=0, AVAILABLE=1};
 extern std::vector < std::tuple<GameCharacter*, bool> > players;
 

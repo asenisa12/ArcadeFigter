@@ -147,7 +147,7 @@ void GameCharacter::moveUp()
 {
 	currentCondition = MOVING;
 	//max y = 42% form screen h
-	if (posY_ > (screenH_*(0.435)) && moveDir.up){
+	if (getBottomY() > (screenH_*(0.72)) && moveDir.up){
 		posY_ -= 2;
 		shifting.Y -= 2;
 		add--;
@@ -160,7 +160,7 @@ void GameCharacter::moveDown()
 {
 	currentCondition = MOVING;
 	//min y = 54% form screen h
-	if (posY_ < (screenH_*(0.56)) && moveDir.down)
+	if (getBottomY() < (screenH_*(0.95)) && moveDir.down)
 	{
 		posY_ += 2;
 		shifting.Y += 2;

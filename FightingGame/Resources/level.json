@@ -1,10 +1,362 @@
 {
 	"Level1":{
 		"background":"Textures/Level1.png",
-		"enemy"
+		"camera" : 
+		[
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 3,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 15,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 15,
+							"type" : 1
+						}
+					}
+				]
+
+			},
+			
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					}
+				]
+
+			},
+
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					}
+				]
+
+			},
+
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					}
+				]
+
+			},
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					}
+				]
+
+			}
+
+		]
 	},
 	"Level2":{
 		"background":"Textures/Level2.png",
+		"camera" :
+		[	
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					}
+				]
+
+			},
+			
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					}
+				]
+
+			},
+
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					}
+				]
+
+			},
+
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					}
+				]
+			},
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 2,
+							"col" : 25,
+							"type" : 1
+						}
+					}
+				]
+
+			}
+
+		]
 	},
 	"playerJSON" : "Resources/player.json",
 	"enemyJSON" : "Resources/enemy.json"

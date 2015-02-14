@@ -88,13 +88,65 @@ void GameLevel::manage_camera()
 			for (auto player : players_) player->manageCameraPos();
 			camera.x += mainGame->getScreenW();
 			cameraPosCount++;
+			charactersList.splice(charactersList.end(), enemies[cameraPosCount]);
 		}
 	}
 
 }
 
+GameCharacter* GameLevel::get_enemy(jsonObj data)
+{
+	int row = data[U("row")].as_integer();
+	int col = data[U("col")].as_integer();
+	int type = data[U("type")].as_integer();
+
+	Location position = levelgrid->getLocation(row, col);
+	int w = mainGame->getScreenW();
+	int h = mainGame->getScreenH();
+	Enemy1 enemy("Resources/enemy.json", position, w, h, levelgrid, type);
+	return &enemy;
+}
+
 bool GameLevel::createLevel()
 {
+	std::fstream levelData;
+	levelData.open("Resources/level.json");
+	if (levelData.is_open())
+	{
+		jsonObj file = jsonObj::parse(levelData);
+		jsonObj level;
+		if (level == Level1)
+		{
+		}
+		else if (level == Level2)
+		{
+			level = file[U("Level2")];
+		}
+			level = file[U("Level1")];
+		textureBgraund = utility::conversions::to_utf8string(
+			level[U("background")].as_string());
+
+		web::json::array cameraPos = level[U("camera")].as_array();
+		for (int i = 0;i<cameraPos.size();i++)
+		{
+			web::json::array enemyArr = ((cameraPos.at(i))[U("enemies")]).as_array();
+			std::list<GameCharacter*> enemiesAtPos;
+			for (int j = 0; j < enemies.size(); j++)
+			{
+				auto enemyData = (enemyArr.at(j))[U("enemy")];
+				enemiesAtPos.push_back(get_enemy(enemyData));
+			}
+			enemies.push_back(enemiesAtPos);
+		}
+	}
+	else
+	{
+		printf("Error: Can't open file: Resources/level.json\n");
+		return false;
+	}
+	levelData.close();
+
+
 	return true;
 }
 
@@ -103,14 +155,9 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 	cameraPosCount = 0;
 	mainGame = mainGame_;
 	camera = { 0, 0, mainGame->getScreenW(), mainGame->getScreenH()};
-	if (level==Level1){
-		backGroundLevel1 = new BackGround("Textures/Level1.png");
-	}
-	else if (level == Level2)
-	{
-		backGroundLevel1 = new BackGround("Textures/Level2.png");
-	}
 	levelgrid = new SquareGrid(mainGame->getScreenW(), mainGame->getScreenH());
+	createLevel();
+	backGroundLevel1 = new BackGround(textureBgraund);
 
 
 	players_.push_back(new Player("Resources/player.json", mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, Player1));
@@ -122,11 +169,11 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 		charactersList.push_back(players_.back());
 		players.push_back(std::make_tuple(players_.back(), true));
 	}
-	charactersList.push_back(new Enemy1("Resources/enemy.json", { 380, 350 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
-	charactersList.push_back(new Enemy1("Resources/enemy.json", { 500, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
-	charactersList.push_back(new Enemy1("Resources/enemy.json", { 560, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
-	charactersList.push_back(new Enemy1("Resources/enemy.json", { 300, 370 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
-	
+	//charactersList.push_back(new Enemy1("Resources/enemy.json", { 380, 350 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
+	//charactersList.push_back(new Enemy1("Resources/enemy.json", { 500, 350 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
+	//charactersList.push_back(new Enemy1("Resources/enemy.json", { 560, 350 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
+	//charactersList.push_back(new Enemy1("Resources/enemy.json", { 300, 350 }, mainGame->getScreenW(), mainGame->getScreenH(), levelgrid, FERRIS));
+	charactersList.splice(charactersList.end(), enemies[cameraPosCount]);
 
 	
 	return LoadObjects();

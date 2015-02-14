@@ -66,6 +66,8 @@ class Player : public GameCharacter
 	bool punched(std::list<GameCharacter*> characters);
 	void fall();
 	void continuingAnim(bool &var, std::string name);
+	bool actions();
+	void moving();
 	void superPunch();
 	void runPunch();
 	void grab();

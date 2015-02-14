@@ -286,7 +286,7 @@ void Player::handleEvent(pKeys playerKey)
 	{
 		if (combos.front() == "PUNCH" && !playerEvent.normalPunch)
 		{
-			if (combos.back() == "MOVE")
+			if (combos.back() == "GRAB")
 			{
 				playerEvent.superPunch = true;
 			}
@@ -300,37 +300,66 @@ void Player::handleEvent(pKeys playerKey)
 
 }
 
-void Player::doActions(std::list<GameCharacter*> characters)
+bool Player::actions()
 {
-	collision(characters);
-	bool ispunched = punched(characters);
-
 	if (playerEvent.superPunch || sPunch)
 	{
 		superPunch();
+		return true;
 	}
 	else if (playerEvent.runPunch || rPunch)
 	{
 		runPunch();
+		return true;
 	}
 	else if (playerEvent.jump || jumping)
 	{
 		jump();
+		return true;
 	}
 	else if (playerEvent.grab || grabing)
 	{
 		grab();
+		return true;
 	}
 	else if (currentCondition == PUNCHED)
 	{
 		fall();
+		return true;
 	}
 	else if (playerEvent.normalPunch)
 	{
 		punch();
-
+		return true;
 	}
-	else
+	return false;
+}
+
+void Player::moving()
+{
+	if (playerEvent.moveRight && !playerEvent.normalPunch)
+	{
+		moveRight();
+	}
+	else if (playerEvent.moveLeft && !playerEvent.normalPunch)
+	{
+		moveLeft();
+	}
+	else if (playerEvent.moveUP && !jumping)
+	{
+		moveUp();
+	}
+	else if (playerEvent.moveDown && !jumping)
+	{
+		moveDown();
+	}
+}
+
+void Player::doActions(std::list<GameCharacter*> characters)
+{
+	collision(characters);
+	bool ispunched = punched(characters);
+	if (!actions())
 	{
 		if (playerEvent.run)
 		{
@@ -348,29 +377,12 @@ void Player::doActions(std::list<GameCharacter*> characters)
 		}
 		else
 		{
-			
 			animation("WALLKING");
 			currentCondition = STANDING;
 			frame = 0;
 		}
 	}
-
-	if (playerEvent.moveRight && !playerEvent.normalPunch)
-	{
-		moveRight();
-	}
-	else if (playerEvent.moveLeft && !playerEvent.normalPunch)
-	{
-		moveLeft();
-	}
-	else if (playerEvent.moveUP && !jumping)
-	{
-		moveUp();
-	}
-	else if (playerEvent.moveDown && !jumping)
-	{
-		moveDown();
-	}
+	moving();
 
 	//Cycle animation
 	if (frame / 4 >= Clips.size()) frame = firstclip;

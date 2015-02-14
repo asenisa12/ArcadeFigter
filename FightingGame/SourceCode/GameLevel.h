@@ -17,9 +17,11 @@ class GameLevel : public GameState
 	static const pKeys player2Keys;
 	static const int CAMERA_POSITIONS = 5;
 
+	std::string textureBgraund;
 	int gameMode, level;
 	int cameraPosCount;
 
+	std::vector<std::list<GameCharacter*>> enemies;
 	grid::SquareGrid *levelgrid;
 	SDL_Rect camera;
 	BackGround *backGroundLevel1;
@@ -27,6 +29,7 @@ class GameLevel : public GameState
 	std::list<Player*> players_;
 	std::list<GameCharacter*> charactersList;
 	void drawPlayerHealthBar(int health);
+	GameCharacter* get_enemy(jsonObj eneym);
 	bool createLevel();
 	void manage_camera();
 public:
