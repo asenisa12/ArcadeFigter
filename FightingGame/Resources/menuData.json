@@ -1,64 +1,62 @@
 {
 	"backgroundTexture" : "Textures/MenuBackground.png",
-	"startButton":
-	{
-		"texture" : "Textures/StartButton.png",
-		"CLIP_W" : 200,
-		"CLIP_H" : 200,
-		"widthDivide" : 6,
-		"heightDivide" : 6,
-		"xDivide" : 5,
-		"yDivide" : 5
-	},
-	"exitButton":
-	{
-		"texture" : "Textures/ExitButton.png",
-		"CLIP_W" : 200,
-		"CLIP_H" : 200,
-		"widthDivide" : 6,
-		"heightDivide" : 6,
-		"xDivide" : 5,
-		"yDivide" : 1.5
-	},
-	"1pButton":
-	{
-		"texture" : "Textures/1pModeButton.png",
-		"CLIP_W" : 200,
-		"CLIP_H" : 200,
-		"widthDivide" : 6,
-		"heightDivide" : 6,
-		"xDivide" : 5,
-		"yDivide" : 5
-	},
-	"2pButton":
-	{
-		"texture" : "Textures/2pModeButton.png",
-		"CLIP_W" : 200,
-		"CLIP_H" : 200,
-		"widthDivide" : 6,
-		"heightDivide" : 6,
-		"xDivide" : 5,
-		"yDivide" : 2
-	},
-	"Level1":
-	{
-		"texture" : "Textures/streetLevelButton.png",
-		"CLIP_W" : 200,
-		"CLIP_H" : 200,
-		"widthDivide" : 3,
-		"heightDivide" : 3,
-		"xDivide" : 8,
-		"yDivide" : 5
-	},
-	"Level2":
-	{
-		"texture" : "Textures/baseLevelButton.png",
-		"CLIP_W" : 200,
-		"CLIP_H" : 200,
-		"widthDivide" : 3,
-		"heightDivide" : 3,
-		"xDivide" : 3,
-		"yDivide" : 5
-	}
+	"buttons" :
+	[
+		{
+			"texture" : "Textures/StartButton.png",
+			"CLIP_W" : 200,
+			"CLIP_H" : 200,
+			"widthDivide" : 6,
+			"heightDivide" : 6,
+			"xDivide" : 5,
+			"yDivide" : 5
+		},
+		{
+			"texture" : "Textures/ExitButton.png",
+			"CLIP_W" : 200,
+			"CLIP_H" : 200,
+			"widthDivide" : 6,
+			"heightDivide" : 6,
+			"xDivide" : 5,
+			"yDivide" : 1.5
+		},
+		{
+			"texture" : "Textures/1pModeButton.png",
+			"CLIP_W" : 200,
+			"CLIP_H" : 200,
+			"widthDivide" : 6,
+			"heightDivide" : 6,
+			"xDivide" : 5,
+			"yDivide" : 5
+		},
+		{
+			"texture" : "Textures/2pModeButton.png",
+			"CLIP_W" : 200,
+			"CLIP_H" : 200,
+			"widthDivide" : 6,
+			"heightDivide" : 6,
+			"xDivide" : 5,
+			"yDivide" : 2
+		},
+		{
+			"texture" : "Textures/streetLevelButton.png",
+			"CLIP_W" : 200,
+			"CLIP_H" : 200,
+			"widthDivide" : 3,
+			"heightDivide" : 3,
+			"xDivide" : 8,
+			"yDivide" : 5
+		},
+		{
+			"texture" : "Textures/baseLevelButton.png",
+			"CLIP_W" : 200,
+			"CLIP_H" : 200,
+			"widthDivide" : 3,
+			"heightDivide" : 3,
+			"xDivide" : 3,
+			"yDivide" : 5
+		}
+	]
+	
 
 }

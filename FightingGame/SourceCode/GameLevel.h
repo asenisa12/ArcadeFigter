@@ -8,7 +8,7 @@
 #include "GameCharacter.h" 
 #include <list>
 
-enum { Start, Exit, p2Mode, p1Mode, Level1, Level2 };
+enum { Start = 0, Exit = 1, p1Mode = 2, p2Mode = 3, Level1 = 4, Level2 = 5 };
 
 
 class GameLevel : public GameState
@@ -16,6 +16,9 @@ class GameLevel : public GameState
 	static const pKeys player1Keys;
 	static const pKeys player2Keys;
 	static const int CAMERA_POSITIONS = 5;
+	static const std::string levelJSON;
+	std::string playerJSON;
+	std::string enemyJSON;
 
 	std::string textureBgraund;
 	int gameMode, level;
@@ -31,6 +34,7 @@ class GameLevel : public GameState
 	void drawPlayerHealthBar(int health);
 	GameCharacter* get_enemy(jsonObj eneym);
 	bool createLevel();
+	void createPlayer(int id);
 	void manage_camera();
 public:
 	~GameLevel();

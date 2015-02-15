@@ -87,20 +87,21 @@ bool  MainMenu::loadObjects()
 bool MainMenu::onEnter(GameBase *mainGame_)
 {
 	mainGame = mainGame_;
-	int SCREEN_WIDTH = mainGame->getScreenW(), SCREEN_HEIGHT = mainGame->getScreenH();
+	int w = mainGame->getScreenW(), h = mainGame->getScreenH();
 	
 	std::fstream jsonFile;
 	jsonFile.open(menuData);
 	if (jsonFile.is_open())
 	{
 		jsonObj data = jsonObj::parse(jsonFile);
-		backGroundMenu = new BackGround(utility::conversions::to_utf8string(data[U("backgroundTexture")].as_string()));
-		button[Start] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("startButton")]);
-		button[Exit] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("exitButton")]);
-		button[p1Mode] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("1pButton")]);
-		button[p2Mode] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("2pButton")]);
-		button[Level1] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("Level1")]);
-		button[Level2] = new GameButton(SCREEN_WIDTH, SCREEN_HEIGHT, data[U("Level2")]);
+
+		backGroundMenu = new BackGround(utility::conversions::to_utf8string(
+			data[U("backgroundTexture")].as_string()));
+
+		web::json::array buttons = data[U("buttons")].as_array();
+
+		for (int i = 0; i < buttons.size(); i++)
+			button[i] = new GameButton(w, h, buttons.at(i));
 	}
 	else
 	{
