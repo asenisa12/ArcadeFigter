@@ -17,6 +17,7 @@
     <ClCompile Include="SourceCode\GameBase.cpp" />
     <ClCompile Include="SourceCode\GameButton.cpp" />
     <ClCompile Include="SourceCode\GameCharacter.cpp" />
+    <ClCompile Include="SourceCode\GameLabel.cpp" />
     <ClCompile Include="SourceCode\GameLevel.cpp" />
     <ClCompile Include="SourceCode\GameObject.cpp" />
     <ClCompile Include="SourceCode\GameState.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="SourceCode\Enemy1.h" />
     <ClInclude Include="SourceCode\GameBase.h" />
     <ClInclude Include="SourceCode\GameCharacter.h" />
+    <ClInclude Include="SourceCode\GameLabel.h" />
     <ClInclude Include="SourceCode\GameLevel.h" />
     <ClInclude Include="SourceCode\GameState.h" />
     <ClInclude Include="SourceCode\Grid.h" />
@@ -90,7 +92,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>

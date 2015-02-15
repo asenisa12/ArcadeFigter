@@ -27,9 +27,7 @@ void GameLevel::handleEvent()
 }
 
 void GameLevel::update(GameStateMachine *stateMachine)
-	
 {
-
 	charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)
 		{return (struct1->getBottomY()< struct2->getBottomY()); });
 
@@ -37,15 +35,15 @@ void GameLevel::update(GameStateMachine *stateMachine)
 		character->update(charactersList);
 }
 
-void GameLevel::render(SDL_Renderer* renderer)
+void GameLevel::ingame()
 {
-
 	std::list<GameCharacter*>::iterator it = charactersList.begin();
-	backGroundLevel1->renderBack(&camera, mainGame->getRenderer());
 	while (it != charactersList.end())
 	{
 		if ((*it)->ready_for_delete())
 		{
+			if ((*it)->CharacterType() == GPLAYER)
+				currentState = GAME_OVER;
 			it = charactersList.erase(it);
 		}
 		else
@@ -55,6 +53,28 @@ void GameLevel::render(SDL_Renderer* renderer)
 		}
 	}
 	drawPlayerHealthBar(players_.back()->getHealth());
+}
+
+void GameLevel::render(SDL_Renderer* renderer)
+{
+	backGroundLevel1->renderBack(&camera, mainGame->getRenderer());
+	switch (currentState)
+	{
+	case INGAME:
+		ingame();
+		break;
+	case GAME_OVER:
+		Mix_HaltMusic();
+		drawGameOver();
+		break;
+	}
+}
+
+void GameLevel::drawGameOver()
+{
+	int posX = mainGame->getScreenW() / 2 - gameOver->getW() / 2;
+	int posY = mainGame->getScreenH() / 2 - gameOver->getH() / 2;
+	gameOver->renderLabel(posX, posY, mainGame->getRenderer());
 }
 
 void GameLevel::drawPlayerHealthBar(int health)
@@ -75,7 +95,15 @@ bool  GameLevel::LoadObjects(){
 		for (auto enemy : enemyArr)
 			if (!enemy->loadMedia(mainGame->getRenderer())) return false;
 	}
+	gameOver->loadMedia(mainGame->getRenderer());
 	charactersList.splice(charactersList.end(), enemies[cameraPosCount]);
+
+	gMusic = Mix_LoadMUS("Resources/theme.mp3");
+	if (gMusic == NULL)
+	{
+		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+	}
+	Mix_PlayMusic(gMusic, -1);
 }
 
 void GameLevel::manage_camera()
@@ -148,6 +176,13 @@ bool GameLevel::createLevel()
 			}
 			enemies.push_back(enemiesAtPos);
 		}
+		backGroundLevel1 = new BackGround(textureBgraund);
+
+		createPlayer(Player1);
+		if (gameMode == p2Mode) createPlayer(Player2);
+
+		gameOver = new GameLabel(file[U("GameOverLabel")], 
+			mainGame->getScreenW(), mainGame->getScreenH());
 	}
 	else
 	{
@@ -156,10 +191,6 @@ bool GameLevel::createLevel()
 	}
 	levelFile.close();
 
-	backGroundLevel1 = new BackGround(textureBgraund);
-
-	createPlayer(Player1);
-	if (gameMode == p2Mode) createPlayer(Player2);
 
 	return true;
 }
@@ -177,10 +208,10 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 {
 	cameraPosCount = 0;
 	mainGame = mainGame_;
-	
+	currentState = INGAME;
+
 	camera = { 0, 0, mainGame->getScreenW(), mainGame->getScreenH()};
 	levelgrid = new SquareGrid(mainGame->getScreenW(), mainGame->getScreenH());
-	
 	if (!createLevel()) return false;
 	
 	return LoadObjects();
@@ -193,6 +224,9 @@ bool GameLevel::onExit()
 
 GameLevel::~GameLevel()
 {
+	Mix_FreeMusic(gMusic);
+	gMusic = NULL;
+	delete gameOver;
 	delete backGroundLevel1;
 	delete levelgrid;
 }

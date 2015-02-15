@@ -76,6 +76,7 @@ void Enemy1::punch()
 	currentCondition = PUNCHING;
 	animation("PUNCH");
 	frame++;
+
 }
 
 void Enemy1::fall()
@@ -227,10 +228,16 @@ bool Enemy1::player_punching()
 		auto target = std::get<TARGET>(player);
 		if (target->punching())
 		{
-			if (characterInLeft(target) && target->getFlipType() == SDL_FLIP_HORIZONTAL)
+			if (characterInLeft(target) && target->getFlipType() == SDL_FLIP_NONE)
+			{
+				flipType = SDL_FLIP_HORIZONTAL;
 				return true;
-			if (characterInRigh(target) && target->getFlipType() == SDL_FLIP_NONE)
+			}
+			if (characterInRigh(target) && target->getFlipType() == SDL_FLIP_HORIZONTAL)
+			{
+				flipType = SDL_FLIP_NONE;
 				return true;
+			}
 		}
 
 	}
@@ -260,11 +267,13 @@ void Enemy1::punch_players()
 	for (auto player : players)
 	{
 		GameCharacter *player_ = std::get<TARGET>(player);
-		if ((characterInLeft(player_) || characterInRigh(player_)) && !punched
+		if ((characterInLeft(player_) || characterInRigh(player_)) && !player_punching()
 			&& player_->getCondition() != MOVING && abs(player_->getRow()-Row_)<=1)
 		{
-			if (frame / 4 == Clips.size() - 1)
+			if (frame / 4 == 3)
+			{
 				player_->editHealth(DAMAGE);
+			}
 			hitPlayer = true;
 		}
 	}

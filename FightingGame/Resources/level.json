@@ -359,7 +359,14 @@
 		]
 	},
 	"playerJSON" : "Resources/player.json",
-	"enemyJSON" : "Resources/enemy.json"
-
+	"enemyJSON" : "Resources/enemy.json",
+	"GameOverLabel":
+	{
+		"texture" : "Textures/gameOver.png",
+		"wDelimiter":2,
+		"hDelimiter":2,
+		"clipW" : 454,
+		"clipH" : 340
+	}
 }
 

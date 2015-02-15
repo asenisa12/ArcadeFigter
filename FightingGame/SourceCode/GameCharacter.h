@@ -9,6 +9,7 @@
 #include <map>
 
 using namespace grid;
+enum { GPLAYER, GENEMY};
 
 class GameCharacter : public GameObject
 {
@@ -23,7 +24,6 @@ protected:
 	enum {FIRST_SQUARE_ID=0, SECOND_SQUARE_ID=1};
 	enum {LEFT, RIGHT, UP, DOWN};
 	enum {PUNCHING, MOVING, PUNCHED, FALLING, STANDING};
-	enum { GPLAYER, GENEMY};
 
 	std::string animationName;
 	std::vector < SDL_Rect >  Clips;

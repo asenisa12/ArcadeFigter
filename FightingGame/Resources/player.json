@@ -23,6 +23,7 @@
 		"RUNPUNCH_FRAMES_END" : 7,
 		"SUPERPUNCH_FRAMES_END": 10,
 		"GRAB_FRAMES_END": 3,
+		"animations_size":[12,9,4,11,9,7,10,3],
 		"MAX_HEALTH" : 200,
 		"DAMAGE" : 10,
 		"CLIP_H" : 100,

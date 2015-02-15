@@ -33,14 +33,9 @@ void Player::loadData(std::string path)
 		Col_ = attr[U("col")].as_integer();
 
 		jsonObj consts = player[U("Constants")];
-		animFrameSize.push_back(consts[U("WALKING_FRAMES_END")].as_integer());
-		animFrameSize.push_back(consts[U("RUNING_FRAMES_END")].as_integer());
-		animFrameSize.push_back(consts[U("JUMPING_FRAMES_END")].as_integer());
-		animFrameSize.push_back(consts[U("PUNCH_FRAMES_END")].as_integer());
-		animFrameSize.push_back(consts[U("FALLING_FRAMES_END")].as_integer());
-		animFrameSize.push_back(consts[U("RUNPUNCH_FRAMES_END")].as_integer());
-		animFrameSize.push_back(consts[U("SUPERPUNCH_FRAMES_END")].as_integer());
-		animFrameSize.push_back(consts[U("GRAB_FRAMES_END")].as_integer());
+		web::json::array end_frames  = consts[U("animations_size")].as_array();
+		for (auto it : end_frames)
+			animFrameSize.push_back(it.as_integer());
 		MAX_HEALTH = consts[U("MAX_HEALTH")].as_integer();
 		DAMAGE = consts[U("DAMAGE")].as_integer();
 		CLIP_H = consts[U("CLIP_H")].as_integer();
@@ -195,10 +190,11 @@ bool Player::punched(std::list<GameCharacter*> characters)
 		if (enemy->punching() && enemy->getCondition()!=PUNCHED)
 		{
 			if ((characterInLeft(enemy) || characterInRigh(enemy)) &&
-				enemy->getRow() == Row_)
+				abs(enemy->getRow() - Row_)<=1)
 			{
-				if (otherLeft > myLeft) flipType = SDL_FLIP_HORIZONTAL;
-				if (otherLeft < myLeft) flipType = SDL_FLIP_NONE;
+				if (otherLeft > myLeft) flipType = SDL_FLIP_NONE;
+				if (otherLeft < myLeft)  flipType = SDL_FLIP_HORIZONTAL;
+				currentCondition = PUNCHED;
 				return true;
 			}
 		}
@@ -322,14 +318,14 @@ bool Player::actions()
 		grab();
 		return true;
 	}
-	else if (currentCondition == PUNCHED)
-	{
-		fall();
-		return true;
-	}
 	else if (playerEvent.normalPunch)
 	{
 		punch();
+		return true;
+	}
+	else if (currentCondition == PUNCHED)
+	{
+		fall();
 		return true;
 	}
 	return false;

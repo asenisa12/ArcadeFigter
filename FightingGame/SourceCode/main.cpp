@@ -4,8 +4,8 @@
 
 using namespace std;
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 640;
 const int ENEMIES_LEVEL1 = 2;
 
 std::list<GameCharacter*> charactersList;

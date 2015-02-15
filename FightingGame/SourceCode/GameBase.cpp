@@ -6,6 +6,7 @@ GameBase::GameBase(int height, int width)
 
 GameBase::~GameBase()
 {
+	Mix_Quit();
 	SDL_DestroyWindow(gWindow_);
 	SDL_DestroyRenderer(gRenderer_);
 	gWindow_ = NULL;
@@ -66,7 +67,10 @@ bool GameBase::init()
 		return false;
 	}
 
-
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	}
 
 
 	return true;
