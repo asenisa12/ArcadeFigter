@@ -122,7 +122,7 @@ void GameCharacter::setGridAttributes(Location location)
 void GameCharacter::moveRight()
 {
 	//max x = 92% from screen w
-	if (posX_ < (screenW_*(0.92)) && moveDir.right)
+	if (posX_ < (screenW_*(0.98)) && moveDir.right)
 	{
 		posX_ += movSpeed;
 		shifting.X += movSpeed;
@@ -146,7 +146,7 @@ void GameCharacter::moveLeft()
 void GameCharacter::moveUp()
 {
 	currentCondition = MOVING;
-	//max y = 42% form screen h
+	//max y = 72% form screen h
 	if (getBottomY() > (screenH_*(0.72)) && moveDir.up){
 		posY_ -= 2;
 		shifting.Y -= 2;
@@ -159,8 +159,8 @@ void GameCharacter::moveUp()
 void GameCharacter::moveDown()
 {
 	currentCondition = MOVING;
-	//min y = 54% form screen h
-	if (getBottomY() < (screenH_*(0.95)) && moveDir.down)
+	//min y = 95% form screen h
+	if (getBottomY() < (screenH_*(0.98)) && moveDir.down)
 	{
 		posY_ += 2;
 		shifting.Y += 2;
@@ -309,6 +309,11 @@ void GameCharacter::editHealth(int damage)
 int GameCharacter::getHealth()
 {
 	return health;
+}
+
+SDL_RendererFlip GameCharacter::getFlipType()
+{
+	return flipType;
 }
 
 bool GameCharacter::ready_for_delete()

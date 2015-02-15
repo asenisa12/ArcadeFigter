@@ -22,32 +22,24 @@ void Enemy1::loadData(std::string path)
 	jsonFile.open(path);
 	if (jsonFile.is_open())
 	{
-		jsonObj enemy = jsonObj::parse(jsonFile);
-		jsonObj attr;
+		jsonObj allData = jsonObj::parse(jsonFile);
+		web::json::array enemyArr = allData[U("enemies")].as_array();
+		jsonObj attr = enemyArr.at(enemyID);
 
-		switch (enemyID)
-		{
-		case FERRIS:
-			attr = enemy[U("Ferrys")];
-			break;
-		}
 		path_ = utility::conversions::to_utf8string(attr[U("texture")].as_string());
 		MAX_HEALTH = attr[U("MAX_HEALTH")].as_integer();
 		DAMAGE = attr[U("DAMAGE")].as_integer();
 		CLIP_H = attr[U("CLIP_H")].as_integer();
 		CLIP_W = attr[U("CLIP_W")].as_integer();
-		FALLING_CLIP_W = attr[U("FALLING_CLIP_W")].as_integer();
-		jsonObj variables = enemy[U("variables")];
-		WALKING_ANIMATION_END = variables[U("WALKING_ANIMATION_END")].as_integer();
-		PUNCHING_ANIMATION_END = variables[U("PUNCHING_ANIMATION_END")].as_integer();
-		FALLING_ANIMATION_END = variables[U("FALLING_ANIMATION_END")].as_integer();
-		SHIFTING_PERCENTIGE = variables[U("SHIFTING_PERCENTIGE")].as_double();
-		DIFF_BY_X_PERCENTIGE = variables[U("DIFF_BY_X_PERCENTIGE")].as_double();
-		DIFF_BY_Y_PERCENTIGE = variables[U("DIFF_BY_Y_PERCENTIGE")].as_double();
 
-		animFrameSize.push_back(WALKING_ANIMATION_END);
-		animFrameSize.push_back(PUNCHING_ANIMATION_END);
-		animFrameSize.push_back(FALLING_ANIMATION_END);
+		animFrameSize.push_back(attr[U("WALKING_FRAMES_END")].as_integer());
+		animFrameSize.push_back(attr[U("PUNCHING_FRAMES_END")].as_integer());
+		animFrameSize.push_back(attr[U("FALLING_FRAMES_END")].as_integer());
+
+		SHIFTING_PERCENTIGE = allData[U("SHIFTING_PERCENTIGE")].as_double();
+		DIFF_BY_X_PERCENTIGE = allData[U("DIFF_BY_X_PERCENTIGE")].as_double();
+		DIFF_BY_Y_PERCENTIGE = allData[U("DIFF_BY_Y_PERCENTIGE")].as_double();
+
 		health = MAX_HEALTH;
 	}
 	else
@@ -232,10 +224,13 @@ bool Enemy1::player_punching()
 {
 	for (auto player : players)
 	{
-		if (std::get<TARGET>(player)->punching() &&
-			(characterInLeft(std::get<TARGET>(player)) || characterInRigh(std::get<TARGET>(player))))
+		auto target = std::get<TARGET>(player);
+		if (target->punching())
 		{
-			return true;
+			if (characterInLeft(target) && target->getFlipType() == SDL_FLIP_HORIZONTAL)
+				return true;
+			if (characterInRigh(target) && target->getFlipType() == SDL_FLIP_NONE)
+				return true;
 		}
 
 	}
@@ -246,7 +241,6 @@ void Enemy1::getTarget()
 {
 	if (target_ == NULL)
 	{
-
 		for (int i = 0;i<players.size();i++)
 		{
 			if (std::get<AVAILABLE>(players[i]))
@@ -269,7 +263,7 @@ void Enemy1::punch_players()
 		if ((characterInLeft(player_) || characterInRigh(player_)) && !punched
 			&& player_->getCondition() != MOVING && abs(player_->getRow()-Row_)<=1)
 		{
-			if (frame / 4 == PUNCHING_ANIMATION_END - 1)
+			if (frame / 4 == Clips.size() - 1)
 				player_->editHealth(DAMAGE);
 			hitPlayer = true;
 		}

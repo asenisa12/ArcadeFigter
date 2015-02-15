@@ -15,7 +15,7 @@ class GameLevel : public GameState
 {
 	static const pKeys player1Keys;
 	static const pKeys player2Keys;
-	static const int CAMERA_POSITIONS = 5;
+	static const int CAMERA_POSITIONS = 4;
 	static const std::string levelJSON;
 	std::string playerJSON;
 	std::string enemyJSON;

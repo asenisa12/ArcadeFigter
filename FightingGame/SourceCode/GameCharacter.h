@@ -93,6 +93,7 @@ public:
 	int getRow();
 	int getCondition();
 	int CharacterType();
+	SDL_RendererFlip getFlipType();
 	bool ready_for_delete();
 	virtual bool loadMedia(SDL_Renderer* gRenderer) = 0;
 	virtual void update(std::list<GameCharacter*> characters) = 0;

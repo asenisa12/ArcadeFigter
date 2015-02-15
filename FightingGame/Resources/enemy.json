@@ -1,20 +1,111 @@
 {
-	"Ferrys":{
-		"texture" :"Textures/private.png", 
+	
+	"enemies" :
+	[
+		{"texture" :"Textures/Enemies/punk.png", 
+		"MAX_HEALTH" : 80,
+		"DAMAGE" : 6,
+		"CLIP_H" : 100,
+		"CLIP_W" : 100,
+		"WALKING_FRAMES_END" : 6,
+		"PUNCHING_FRAMES_END" : 4,
+		"FALLING_FRAMES_END" : 7
+		},
+		{"texture" :"Textures/Enemies/thug.png", 
+		"MAX_HEALTH" : 100,
+		"DAMAGE" : 5,
+		"CLIP_H" : 100,
+		"CLIP_W" : 100,
+		"WALKING_FRAMES_END" : 6,
+		"PUNCHING_FRAMES_END" : 4,
+		"FALLING_FRAMES_END" : 7
+		},
+		{"texture" :"Textures/Enemies/FatThug.png", 
+		"MAX_HEALTH" : 200,
+		"DAMAGE" : 6,
+		"CLIP_H" : 100,
+		"CLIP_W" : 150,
+		"WALKING_FRAMES_END" : 5,
+		"PUNCHING_FRAMES_END" : 5,
+		"FALLING_FRAMES_END" : 5
+		},
+		{"texture" :"Textures/Enemies/fatBastard.png", 
+		"MAX_HEALTH" : 200,
+		"DAMAGE" : 6,
+		"CLIP_H" : 100,
+		"CLIP_W" : 150,
+		"WALKING_FRAMES_END" : 5,
+		"PUNCHING_FRAMES_END" : 6,
+		"FALLING_FRAMES_END" : 6
+		},
+		{"texture" :"Textures/Enemies/Raptor.png", 
+		"MAX_HEALTH" : 100,
+		"DAMAGE" : 10,
+		"CLIP_H" : 100,
+		"CLIP_W" : 150,
+		"WALKING_FRAMES_END" : 5,
+		"PUNCHING_FRAMES_END" : 4,
+		"FALLING_FRAMES_END" : 5
+		},
+		{"texture" :"Textures/Enemies/butcher.png", 
+		"MAX_HEALTH" : 250,
+		"DAMAGE" : 8,
+		"CLIP_H" : 150,
+		"CLIP_W" : 150,
+		"WALKING_FRAMES_END" : 7,
+		"PUNCHING_FRAMES_END" : 6,
+		"FALLING_FRAMES_END" : 5
+		},
+		{
+		"texture" :"Textures/Enemies/private.png", 
 		"MAX_HEALTH" : 100,
 		"DAMAGE" : 4,
 		"CLIP_H" : 100,
 		"CLIP_W" : 150,
-		"FALLING_CLIP_W" : 100
-	},
-	"variables":{
-		"WALKING_ANIMATION_END" : 6,
-		"PUNCHING_ANIMATION_END" : 6,
-		"FALLING_ANIMATION_END" : 6,
-		"SHIFTING_PERCENTIGE" : 0.1,
-		"DIFF_BY_X_PERCENTIGE" : 0.0046876,
-		"DIFF_BY_Y_PERCENTIGE" : 0.00625
-
-	}
+		"WALKING_FRAMES_END" : 6,
+		"PUNCHING_FRAMES_END" : 6,
+		"FALLING_FRAMES_END" : 6
+		},
+		{"texture" :"Textures/Enemies/corporal.png", 
+		"MAX_HEALTH" : 120,
+		"DAMAGE" : 6,
+		"CLIP_H" : 100,
+		"CLIP_W" : 150,
+		"WALKING_FRAMES_END" : 7,
+		"PUNCHING_FRAMES_END" : 8,
+		"FALLING_FRAMES_END" : 7
+		},
+		{"texture" :"Textures/Enemies/sergeant.png", 
+		"MAX_HEALTH" : 180,
+		"DAMAGE" : 8,
+		"CLIP_H" : 100,
+		"CLIP_W" : 150,
+		"WALKING_FRAMES_END" : 7,
+		"PUNCHING_FRAMES_END" : 8,
+		"FALLING_FRAMES_END" : 6
+		},
+		{"texture" :"Textures/Enemies/cyborg.png", 
+		"MAX_HEALTH" : 200,
+		"DAMAGE" : 10,
+		"CLIP_H" : 100,
+		"CLIP_W" : 150,
+		"WALKING_FRAMES_END" : 10,
+		"PUNCHING_FRAMES_END" : 10,
+		"FALLING_FRAMES_END" : 9
+		},
+		{"texture" :"Textures/Enemies/monster.png", 
+		"MAX_HEALTH" : 250,
+		"DAMAGE" : 12,
+		"CLIP_H" : 150,
+		"CLIP_W" : 150,
+		"WALKING_FRAMES_END" : 7,
+		"PUNCHING_FRAMES_END" : 4,
+		"FALLING_FRAMES_END" : 8
+		}
+	],
+	"SHIFTING_PERCENTIGE" : 0.1,
+	"DIFF_BY_X_PERCENTIGE" : 0.0046876,
+	"DIFF_BY_Y_PERCENTIGE" : 0.00625
+	
 }
 

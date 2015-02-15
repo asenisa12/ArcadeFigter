@@ -7,7 +7,19 @@
 #include <tuple>
 #include <future>
 
-enum{ FERRIS =1 };
+//PUNK=0
+//THUG=1
+//FAT THUG=2
+//FAT BASTARD=3
+//RAPTOR=4
+//BUTCHER=5
+//PRIVATE=6
+//CORPORAL=7
+//SERGEANT=8
+//CYBORG=9
+//MONSTER=10
+
+enum{ FERRIS =0 };
 enum{TARGET=0, AVAILABLE=1};
 extern std::vector < std::tuple<GameCharacter*, bool> > players;
 
