@@ -28,11 +28,18 @@ void GameLevel::handleEvent()
 
 void GameLevel::update(GameStateMachine *stateMachine)
 {
-	charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)
-		{return (struct1->getBottomY()< struct2->getBottomY()); });
+	switch (currentState)
+	{
+	case INGAME:
+		charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)
+			{return (struct1->getBottomY()< struct2->getBottomY()); });
+		for (auto character : charactersList)
+			character->update(charactersList);
+		break;
+	case GAME_OVER:
 
-	for (auto character : charactersList)
-		character->update(charactersList);
+		break;
+	}
 }
 
 void GameLevel::ingame()

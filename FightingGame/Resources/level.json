@@ -30,28 +30,28 @@
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 28,
+							"col" : 20,
 							"type" : 0
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 28,
+							"col" : 26,
 							"type" : 1
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 25,
+							"col" : 28,
 							"type" : 0
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 3,
-							"col" : 25,
+							"col" : 24,
 							"type" : 1
 						}
 					}
@@ -120,7 +120,7 @@
 					{"enemy": 
 						{
 							"row" : 3,
-							"col" : 25,
+							"col" : 27,
 							"type" : 3
 						}
 					}
@@ -210,27 +210,27 @@
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 25,
+							"col" : 15,
 							"type" : 6
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 25,
-							"type" : 6
-						}
-					},
-					{"enemy": 
-						{
-							"row" : 3,
-							"col" : 25,
+							"col" : 20,
 							"type" : 6
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 2,
+							"col" : 23,
+							"type" : 6
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 3,
 							"col" : 25,
 							"type" : 6
 						}
@@ -245,21 +245,21 @@
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 25,
+							"col" : 15,
 							"type" : 6
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 25,
+							"col" : 20,
 							"type" : 7
 						}
 					},
 					{"enemy": 
 						{
-							"row" : 1,
-							"col" : 25,
+							"row" : 2,
+							"col" : 23,
 							"type" : 7
 						}
 					},
@@ -280,21 +280,21 @@
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 25,
+							"col" : 15,
 							"type" : 9
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 25,
+							"col" : 20,
 							"type" : 7
 						}
 					},
 					{"enemy": 
 						{
-							"row" : 1,
-							"col" : 25,
+							"row" : 2,
+							"col" : 23,
 							"type" : 6
 						}
 					},
@@ -315,28 +315,28 @@
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 25,
+							"col" : 15,
 							"type" : 9
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 25,
+							"col" : 20,
 							"type" : 8
 						}
 					},
 					{"enemy": 
 						{
-							"row" : 1,
-							"col" : 25,
+							"row" : 2,
+							"col" : 23,
 							"type" : 7
 						}
 					},
 					{"enemy": 
 						{
-							"row" : 1,
-							"col" : 25,
+							"row" : 3,
+							"col" : 28,
 							"type" : 7
 						}
 					}
@@ -354,22 +354,22 @@
 					},
 					{"enemy": 
 						{
-							"row" : 2,
-							"col" : 25,
+							"row" : 1,
+							"col" : 20,
 							"type" : 9
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 2,
-							"col" : 25,
+							"col" : 23,
 							"type" : 10
 						}
 					},
 					{"enemy": 
 						{
-							"row" : 2,
-							"col" : 25,
+							"row" : 1,
+							"col" : 15,
 							"type" : 10
 						}
 					}

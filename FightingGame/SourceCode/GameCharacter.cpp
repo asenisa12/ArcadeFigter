@@ -134,7 +134,7 @@ void GameCharacter::setGridAttributes(Location location)
 void GameCharacter::moveRight()
 {
 	//max x = 92% from screen w
-	if (posX_ < (screenW_*(0.98)) && moveDir.right)
+	if (posX_ < (screenW_*0.96) && moveDir.right)
 	{
 		posX_ += movSpeed;
 		shifting.X += movSpeed;
@@ -172,7 +172,7 @@ void GameCharacter::moveDown()
 {
 	currentCondition = MOVING;
 	//min y = 95% form screen h
-	if (getBottomY() < (screenH_*(0.98)) && moveDir.down)
+	if (getBottomY() < (screenH_*(0.99)) && moveDir.down)
 	{
 		posY_ += 2;
 		shifting.Y += 2;
@@ -266,7 +266,7 @@ void GameCharacter::collision(std::list<GameCharacter*> characters)
 		myLeft = posX_ + mWidth / 5;
 		myRight = posX_ + mWidth / 2;
 
-		if (abs(otherBottom - myBottom) < screenW_*0.05)
+		if (abs(otherBottom - myBottom) < screenW_*0.03)
 		{
 			if (characterInLeft(otherCharacter))
 			{
@@ -277,7 +277,7 @@ void GameCharacter::collision(std::list<GameCharacter*> characters)
 				moveDir.right = false;
 			}
 
-			if (abs(myLeft - otherLeft) <screenW_*0.05)
+			if (myLeft>otherLeft && myLeft < otherRight)
 			{
 				if (otherBottom < myBottom)
 				{

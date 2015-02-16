@@ -1,23 +1,13 @@
-#include "MainGame.h"
-#include <cpprest/json.h> 
-#include <fstream>
+#include "GameBase.h"
+#include "GameState.h"
+#include "MainMenu.h"
 
 using namespace std;
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 640;
-const int ENEMIES_LEVEL1 = 2;
-
-std::list<GameCharacter*> charactersList;
-
-SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
 GameBase mainGame(SCREEN_HEIGHT,SCREEN_WIDTH);
-//grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-
-bool started;
-
 
 
 int main(int argc, char* argv[])
@@ -29,7 +19,6 @@ int main(int argc, char* argv[])
 	{	
 		GameStateMachine stateMachine(&mainGame);
 		stateMachine.changeState(new MainMenu());
-		started = false;
 		mainGame.quit = false;
 
 		//game loop
