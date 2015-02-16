@@ -4,6 +4,7 @@
 
 class GameLabel : public GameObject
 {
+protected:
 	int width_, height_;
 	SDL_Rect clip;
 	std::string path_;

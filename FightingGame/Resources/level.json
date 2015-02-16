@@ -1,5 +1,24 @@
 
 {
+
+	"playerJSON" : "Resources/player.json",
+	"enemyJSON" : "Resources/enemy.json",
+	"GameOverLabel":
+	{
+		"texture" : "Textures/gameOver.png",
+		"wDelimiter":2,
+		"hDelimiter":2,
+		"clipW" : 454,
+		"clipH" : 340
+	},
+	"MustafaHealthLabel":
+	{
+		"texture" : "Textures/MustafaHealthBar.png",
+		"wDelimiter":3,
+		"hDelimiter":12,
+		"clipW" : 128,
+		"clipH" : 26
+	},
 	"Level1":{
 		"levelTheme" : "Resources/sounds/themeLevel1.mp3",
 		"background":"Textures/Level1.png",
@@ -359,16 +378,7 @@
 			}
 
 		]
-	},
-	"playerJSON" : "Resources/player.json",
-	"enemyJSON" : "Resources/enemy.json",
-	"GameOverLabel":
-	{
-		"texture" : "Textures/gameOver.png",
-		"wDelimiter":2,
-		"hDelimiter":2,
-		"clipW" : 454,
-		"clipH" : 340
 	}
+	
 }
 

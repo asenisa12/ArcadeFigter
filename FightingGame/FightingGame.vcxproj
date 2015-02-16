@@ -22,6 +22,7 @@
     <ClCompile Include="SourceCode\GameObject.cpp" />
     <ClCompile Include="SourceCode\GameState.cpp" />
     <ClCompile Include="SourceCode\Grid.cpp" />
+    <ClCompile Include="SourceCode\HealthBar.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\MainGame.cpp" />
     <ClCompile Include="SourceCode\MainMenu.cpp" />
@@ -37,6 +38,8 @@
     <ClInclude Include="SourceCode\GameLevel.h" />
     <ClInclude Include="SourceCode\GameState.h" />
     <ClInclude Include="SourceCode\Grid.h" />
+    <ClInclude Include="SourceCode\Header.h" />
+    <ClInclude Include="SourceCode\HealthBar.h" />
     <ClInclude Include="SourceCode\MainMenu.h" />
     <ClInclude Include="SourceCode\PathFinding.h" />
     <ClInclude Include="SourceCode\PriorityQueue.h" />

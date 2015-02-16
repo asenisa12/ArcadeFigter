@@ -8,6 +8,7 @@
 #include "GameCharacter.h" 
 #include "GameLabel.h"
 #include <list>
+#include "HealthBar.h"
 
 enum { Start = 0, Exit = 1, p1Mode = 2, p2Mode = 3, Level1 = 4, Level2 = 5 };
 
@@ -37,6 +38,7 @@ class GameLevel : public GameState
 	Mix_Music *gMusic = NULL;
 	std::vector<std::list<GameCharacter*>> enemies;
 	grid::SquareGrid *levelgrid;
+	std::vector<HealthBar*> healthBars;
 	SDL_Rect camera;
 	BackGround *backGroundLevel1;
 	GameLabel *gameOver;
@@ -44,7 +46,7 @@ class GameLevel : public GameState
 	static const std::string levelID;
 	std::list<Player*> players_;
 	std::list<GameCharacter*> charactersList;
-	void drawPlayerHealthBar(int health);
+	void drawPlayerHealthBar();
 	GameCharacter* get_enemy(jsonObj eneym);
 	bool createLevel();
 	void drawGameOver();

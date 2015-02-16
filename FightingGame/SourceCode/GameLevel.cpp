@@ -52,7 +52,7 @@ void GameLevel::ingame()
 			++it;
 		}
 	}
-	drawPlayerHealthBar(players_.back()->getHealth());
+	drawPlayerHealthBar();
 }
 
 void GameLevel::render(SDL_Renderer* renderer)
@@ -77,13 +77,10 @@ void GameLevel::drawGameOver()
 	gameOver->renderLabel(posX, posY, mainGame->getRenderer());
 }
 
-void GameLevel::drawPlayerHealthBar(int health)
+void GameLevel::drawPlayerHealthBar()
 {
-	int healthBarW = mainGame->getScreenW()*0.0064*(players_.back()->getHealth() / 3);
-	SDL_Rect healthbar = { 5, 5, healthBarW, mainGame->getScreenH()*0.05 };
-	SDL_SetRenderDrawColor(mainGame->getRenderer(), 0xFF, 0, 0, 0);
-	SDL_RenderFillRect(mainGame->getRenderer(), &healthbar);
-	SDL_RenderDrawRect(mainGame->getRenderer(), &healthbar);
+	for (auto hBar : healthBars)
+		hBar->renderBar(mainGame->getRenderer(), players_.back()->getHealth(), 0);
 }
 
 bool  GameLevel::LoadObjects(){
@@ -104,6 +101,11 @@ bool  GameLevel::LoadObjects(){
 		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
 	}
 	Mix_PlayMusic(gMusic, -1);
+	for (auto hBar : healthBars)
+	{
+		hBar->loadMedia(mainGame->getRenderer());
+		hBar->setMaxHealth(players_.back()->getHealth());
+	}
 }
 
 void GameLevel::manage_camera()
@@ -164,6 +166,10 @@ bool GameLevel::createLevel()
 			levelData[U("background")].as_string());
 		levelTheme = utility::conversions::to_utf8string(
 			levelData[U("levelTheme")].as_string());
+
+		int w = mainGame->getScreenW();
+		int h = mainGame->getScreenH();
+		healthBars.push_back(new HealthBar(file[U("MustafaHealthLabel")],w,h));
 
 		web::json::array cameraPos = levelData[U("camera")].as_array();
 		for (int i = 0;i<cameraPos.size();i++)
