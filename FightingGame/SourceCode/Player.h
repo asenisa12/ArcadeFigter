@@ -57,6 +57,9 @@ class Player : public GameCharacter
 	bool grabing;
 	int MAX_HEALTH;
 	int DAMAGE;
+	Mix_Chunk *punchSound = NULL;
+	Mix_Chunk *wooshSound1 = NULL;
+	Mix_Chunk *wooshSound2 = NULL;
 
 	//SDL_Rect *Clips;
 	

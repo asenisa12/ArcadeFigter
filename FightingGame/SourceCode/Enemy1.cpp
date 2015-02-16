@@ -40,6 +40,11 @@ void Enemy1::loadData(std::string path)
 		DIFF_BY_X_PERCENTIGE = allData[U("DIFF_BY_X_PERCENTIGE")].as_double();
 		DIFF_BY_Y_PERCENTIGE = allData[U("DIFF_BY_Y_PERCENTIGE")].as_double();
 
+		wooshSound = loadWAV(utility::conversions::to_utf8string(
+			allData[U("wooshSound")].as_string()));
+		punchSound = loadWAV(utility::conversions::to_utf8string(
+			allData[U("punchSound")].as_string()));
+
 		health = MAX_HEALTH;
 	}
 	else
@@ -68,6 +73,10 @@ bool Enemy1::loadMedia(SDL_Renderer* gRenderer)
 
 Enemy1::~Enemy1()
 {
+	Mix_FreeChunk(punchSound);
+	punchSound = NULL;
+	Mix_FreeChunk(wooshSound);
+	wooshSound = NULL;
 	free();
 }
 
@@ -76,7 +85,7 @@ void Enemy1::punch()
 	currentCondition = PUNCHING;
 	animation("PUNCH");
 	frame++;
-
+	if (frame == 1) playSound(wooshSound);
 }
 
 void Enemy1::fall()
@@ -273,6 +282,7 @@ void Enemy1::punch_players()
 			if (frame / 4 == 3)
 			{
 				player_->editHealth(DAMAGE);
+				playSound(punchSound);
 			}
 			hitPlayer = true;
 		}

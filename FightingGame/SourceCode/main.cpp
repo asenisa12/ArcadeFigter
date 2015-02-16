@@ -13,7 +13,7 @@ std::list<GameCharacter*> charactersList;
 SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 GameBase mainGame(SCREEN_HEIGHT,SCREEN_WIDTH);
-grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
+//grid::SquareGrid levelgrid(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 
 bool started;

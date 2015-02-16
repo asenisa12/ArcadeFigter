@@ -12,6 +12,18 @@ void GameCharacter::renderCharacter(SDL_Renderer* gRenderer)
 	render(posX_, posY_, currentClip, 0, NULL, flipType, gRenderer, mWidth, mHigth);
 }
 
+Mix_Chunk* GameCharacter::loadWAV(std::string name)
+{
+	Mix_Chunk *chunk = Mix_LoadWAV(name.c_str());
+	if (chunk == NULL)
+		printf("Failed to load sound! SDL_mixer Error: %s\n", Mix_GetError());
+	return chunk;
+}
+
+int GameCharacter::playSound(Mix_Chunk* chunk)
+{
+	return Mix_PlayChannel(-1, chunk, 0);
+}
 int GameCharacter::squareSize()
 {
 	return screenW_/GRID_SIZE_X;
@@ -321,7 +333,6 @@ bool GameCharacter::ready_for_delete()
 	if (framesToEnd <= 0) return true;
 	return false;
 }
-
 
 int GameCharacter::CharacterType()
 {

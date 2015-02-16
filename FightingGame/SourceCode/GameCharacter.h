@@ -3,6 +3,8 @@
 
 #include "Grid.h"
 #include "GameObject.h"
+#include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <list>
 #include <cmath>
 #include <vector>
@@ -76,6 +78,8 @@ protected:
 	void moveLeft();
 	void moveUp();
 	void moveDown();
+	int playSound(Mix_Chunk* chunk);
+	Mix_Chunk* loadWAV(std::string name);
 	void loadAnimation(std::string animNames[]);
 	void loadClips(std::string name, int y, int endFrame);
 	void resizeClips(SDL_Rect *clip);

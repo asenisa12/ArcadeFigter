@@ -3,30 +3,26 @@
 	{
 		"texture" : "Textures/Mustafa1.png",
 		"col" : 3,
-		"row" : 2
-
+		"row" : 2,
+		"woosh2Sound" : "Resources/sounds/MustafaLash.wav"
 	},
 	"Player2" : 
 	{
 		"texture" : "Textures/Bradovich.png",
 		"col" : 3,
-		"row" : 3
-
+		"row" : 3,
+		"woosh2Sound" : "Resources/sounds/BradovichLash.wav"
 	},
 	"Constants":
 	{
-		"WALKING_FRAMES_END" : 12,
-		"RUNING_FRAMES_END" : 9,
-		"JUMPING_FRAMES_END" : 4,
-		"PUNCH_FRAMES_END" : 11,
-		"FALLING_FRAMES_END" : 9,
-		"RUNPUNCH_FRAMES_END" : 7,
-		"SUPERPUNCH_FRAMES_END": 10,
 		"GRAB_FRAMES_END": 3,
 		"animations_size":[12,9,4,11,9,7,10,3],
 		"MAX_HEALTH" : 200,
 		"DAMAGE" : 10,
 		"CLIP_H" : 100,
-		"CLIP_W" : 100
+		"CLIP_W" : 100,
+		"punchSound":"Resources/sounds/punch.wav",
+		"woosh1Sound":"Resources/sounds/lash.wav"
+
 	}	
 }

@@ -50,6 +50,8 @@ class Enemy1 : public GameCharacter
 	bool other_frame;
 	bool punched;
 	bool action;
+	Mix_Chunk *punchSound = NULL;
+	Mix_Chunk *wooshSound = NULL;
 
 	GameCharacter* target_;
 	Location lastPlayerSquare;

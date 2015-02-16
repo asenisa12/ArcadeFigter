@@ -12,7 +12,6 @@ Player::Player(std::string jsonPath, int screenW, int screenH, SquareGrid *grid,
 	movSpeed =screenW_*0.007;
 	objTexture = NULL;
 	setGridAttributes(grid->getLocation(Row_, Col_));
-	
 }
 
 void Player::loadData(std::string path)
@@ -28,19 +27,31 @@ void Player::loadData(std::string path)
 		if (playerID == Player1) attr = player[U("Player1")];
 		else if (playerID == Player2) attr = player[U("Player2")];
 	
-		path_ = utility::conversions::to_utf8string(attr[U("texture")].as_string());
+		path_ = utility::conversions::to_utf8string(
+			attr[U("texture")].as_string());
+
 		Row_ = attr[U("row")].as_integer();
 		Col_ = attr[U("col")].as_integer();
 
 		jsonObj consts = player[U("Constants")];
+
 		web::json::array end_frames  = consts[U("animations_size")].as_array();
+
 		for (auto it : end_frames)
 			animFrameSize.push_back(it.as_integer());
+
 		MAX_HEALTH = consts[U("MAX_HEALTH")].as_integer();
 		DAMAGE = consts[U("DAMAGE")].as_integer();
 		CLIP_H = consts[U("CLIP_H")].as_integer();
 		CLIP_W = consts[U("CLIP_W")].as_integer();
 		health = MAX_HEALTH;
+
+		wooshSound2 = loadWAV(utility::conversions::to_utf8string(
+			attr[U("woosh2Sound")].as_string()));
+		wooshSound1 = loadWAV(utility::conversions::to_utf8string(
+			consts[U("woosh1Sound")].as_string()));
+		punchSound = loadWAV(utility::conversions::to_utf8string(
+			consts[U("punchSound")].as_string()));
 
 	}
 	else
@@ -52,6 +63,12 @@ void Player::loadData(std::string path)
 
 Player::~Player()
 {
+	Mix_FreeChunk(punchSound);
+	punchSound = NULL;
+	Mix_FreeChunk(wooshSound1);
+	wooshSound1 = NULL;
+	Mix_FreeChunk(wooshSound2);
+	wooshSound2 = NULL;
 	free();
 }
 
@@ -95,11 +112,13 @@ void Player::superPunch()
 {
 	currentCondition = PUNCHING;
 	continuingAnim(sPunch, "SUPERPUNCH");
+	if (frame == 1) playSound(wooshSound1);
 }
 void Player::runPunch()
 {
 	currentCondition = PUNCHING;
 	continuingAnim(rPunch, "RUNPUNCH");
+	if (frame == 1)	playSound(wooshSound2);
 	movSpeed = 10;
 }
 
@@ -114,6 +133,7 @@ void Player::punch()
 {
 	currentCondition = PUNCHING;
 	animation("PUNCH");
+	if (frame == 1) playSound(wooshSound1);
 	frame++;
 }
 
@@ -202,8 +222,12 @@ bool Player::punched(std::list<GameCharacter*> characters)
 		if ((characterInLeft(enemy) && flipType == SDL_FLIP_HORIZONTAL) ||
 			(characterInRigh(enemy) && flipType == SDL_FLIP_NONE))
 		{
+			if ((animationName == "PUNCH" || animationName == "SUPERPUNCH") && 
+				frame / 4 == Clips.size() / 2) playSound(punchSound);	
+
 			if (frame / 4 == Clips.size()- 1)
 			{
+				playSound(punchSound);
 				if (animationName == "PUNCH")
 				{
 					enemy->editHealth(DAMAGE);

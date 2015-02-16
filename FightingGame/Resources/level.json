@@ -1,6 +1,7 @@
 
 {
 	"Level1":{
+		"levelTheme" : "Resources/sounds/themeLevel1.mp3",
 		"background":"Textures/Level1.png",
 		"camera" : 
 		[
@@ -180,6 +181,7 @@
 		]
 	},
 	"Level2":{
+		"levelTheme" : "Resources/sounds/themeLevel2.mp3",
 		"background":"Textures/Level2.png",
 		"camera" :
 		[	

@@ -105,7 +105,8 @@
 	],
 	"SHIFTING_PERCENTIGE" : 0.1,
 	"DIFF_BY_X_PERCENTIGE" : 0.0046876,
-	"DIFF_BY_Y_PERCENTIGE" : 0.00625
-	
+	"DIFF_BY_Y_PERCENTIGE" : 0.00625,
+	"punchSound":"Resources/sounds/punch.wav",
+	"wooshSound":"Resources/sounds/lash.wav"
 }
 

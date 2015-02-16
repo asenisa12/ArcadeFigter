@@ -27,6 +27,7 @@ class GameLevel : public GameState
 	std::string playerJSON;
 	std::string enemyJSON;
 
+	std::string levelTheme;
 	std::string textureBgraund;
 	int gameMode, level;
 	int cameraPosCount;

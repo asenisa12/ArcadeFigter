@@ -98,7 +98,7 @@ bool  GameLevel::LoadObjects(){
 	gameOver->loadMedia(mainGame->getRenderer());
 	charactersList.splice(charactersList.end(), enemies[cameraPosCount]);
 
-	gMusic = Mix_LoadMUS("Resources/theme.mp3");
+	gMusic = Mix_LoadMUS(levelTheme.c_str());
 	if (gMusic == NULL)
 	{
 		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
@@ -162,7 +162,8 @@ bool GameLevel::createLevel()
 		}
 		textureBgraund = utility::conversions::to_utf8string(
 			levelData[U("background")].as_string());
-		
+		levelTheme = utility::conversions::to_utf8string(
+			levelData[U("levelTheme")].as_string());
 
 		web::json::array cameraPos = levelData[U("camera")].as_array();
 		for (int i = 0;i<cameraPos.size();i++)
