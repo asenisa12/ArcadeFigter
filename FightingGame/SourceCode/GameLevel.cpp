@@ -86,8 +86,14 @@ void GameLevel::drawGameOver()
 
 void GameLevel::drawPlayerHealthBar()
 {
+	int y = 0;
+	std::list<Player*>::iterator it = players_.begin();
 	for (auto hBar : healthBars)
-		hBar->renderBar(mainGame->getRenderer(), players_.back()->getHealth(), 0);
+	{
+		hBar->renderBar(mainGame->getRenderer(), (*it)->getHealth(), y);
+		y += hBar->getH();
+		if (gameMode == p2Mode) it++;
+	}
 }
 
 bool  GameLevel::LoadObjects(){
@@ -176,7 +182,13 @@ bool GameLevel::createLevel()
 
 		int w = mainGame->getScreenW();
 		int h = mainGame->getScreenH();
-		healthBars.push_back(new HealthBar(file[U("MustafaHealthLabel")],w,h));
+		
+		int healthsCount = 1;
+		if (gameMode == p2Mode) healthsCount++;
+
+		web::json::array hBars = file[U("healthBar")].as_array();
+		for (int i = 0; i < healthsCount; i++)
+			healthBars.push_back(new HealthBar(hBars.at(i), w, h));
 
 		web::json::array cameraPos = levelData[U("camera")].as_array();
 		for (int i = 0;i<cameraPos.size();i++)

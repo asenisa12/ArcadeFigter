@@ -11,7 +11,7 @@ class HealthBar : public GameLabel
 	static const double wPercentige;
 	static const double hPercentige;
 	int maxHealth;
-	void renderHealth(SDL_Renderer *renderer, int health);
+	void renderHealth(SDL_Renderer *renderer, int health, int y);
 public:
 	HealthBar(jsonObj data, int scrW, int scrH);
 	void renderBar(SDL_Renderer *renderer, int health, int y);

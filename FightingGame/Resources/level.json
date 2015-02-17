@@ -11,14 +11,23 @@
 		"clipW" : 454,
 		"clipH" : 340
 	},
-	"MustafaHealthLabel":
-	{
-		"texture" : "Textures/MustafaHealthBar.png",
-		"wDelimiter":3,
-		"hDelimiter":12,
-		"clipW" : 128,
-		"clipH" : 26
-	},
+	"healthBar":
+	[
+		{
+			"texture" : "Textures/MustafaHealthBar.png",
+			"wDelimiter":3,
+			"hDelimiter":12,
+			"clipW" : 128,
+			"clipH" : 26
+		},
+		{
+			"texture" : "Textures/bradovichBar.png",
+			"wDelimiter":3,
+			"hDelimiter":12,
+			"clipW" : 128,
+			"clipH" : 26
+		}
+	],
 	"Level1":{
 		"levelTheme" : "Resources/sounds/themeLevel1.mp3",
 		"background":"Textures/Level1.png",

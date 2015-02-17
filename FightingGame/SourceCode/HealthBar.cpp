@@ -9,11 +9,11 @@ HealthBar::HealthBar(jsonObj data, int scrW, int scrH)
 	:GameLabel(data, scrW, scrH)
 {}
 
-void HealthBar::renderHealth(SDL_Renderer *renderer, int health)
+void HealthBar::renderHealth(SDL_Renderer *renderer, int health, int y)
 {
 	if (health == NULL) health = 0;
 	double healthBarW = width_*wPercentige * ((double)health / (double)maxHealth);
-	SDL_Rect healthbar = { width_*xPercentige, height_*yPercentige, healthBarW, height_*hPercentige };
+	SDL_Rect healthbar = { width_*xPercentige,y+posY_+ height_*yPercentige, healthBarW, height_*hPercentige };
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0);
 	SDL_RenderFillRect(renderer, &healthbar);
 	SDL_RenderDrawRect(renderer, &healthbar);
@@ -22,7 +22,7 @@ void HealthBar::renderHealth(SDL_Renderer *renderer, int health)
 void HealthBar::renderBar(SDL_Renderer *renderer, int health, int y)
 {
 	renderLabel(0, y, renderer);
-	renderHealth(renderer, health);
+	renderHealth(renderer, health, y);
 }
 
 void HealthBar::setMaxHealth(int health)
