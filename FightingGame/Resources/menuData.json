@@ -9,7 +9,11 @@
 			"widthDivide" : 6,
 			"heightDivide" : 6,
 			"xDivide" : 5,
-			"yDivide" : 5
+			"yDivide" : 5,
+			"buttonDiv_x" : 0.05,
+			"buttonDiv_y" : 0.375,
+			"buttonDiv_w" : 0.9,
+			"buttonDiv_h" : 0.25
 		},
 		{
 			"texture" : "Textures/ExitButton.png",
@@ -18,7 +22,11 @@
 			"widthDivide" : 6,
 			"heightDivide" : 6,
 			"xDivide" : 5,
-			"yDivide" : 1.5
+			"yDivide" : 1.5,
+			"buttonDiv_x" : 0.05,
+			"buttonDiv_y" : 0.375,
+			"buttonDiv_w" : 0.9,
+			"buttonDiv_h" : 0.25
 		},
 		{
 			"texture" : "Textures/1pModeButton.png",
@@ -27,7 +35,11 @@
 			"widthDivide" : 6,
 			"heightDivide" : 6,
 			"xDivide" : 5,
-			"yDivide" : 5
+			"yDivide" : 5,
+			"buttonDiv_x" : 0.05,
+			"buttonDiv_y" : 0.375,
+			"buttonDiv_w" : 0.9,
+			"buttonDiv_h" : 0.25
 		},
 		{
 			"texture" : "Textures/2pModeButton.png",
@@ -36,7 +48,11 @@
 			"widthDivide" : 6,
 			"heightDivide" : 6,
 			"xDivide" : 5,
-			"yDivide" : 2
+			"yDivide" : 2,
+			"buttonDiv_x" : 0.05,
+			"buttonDiv_y" : 0.375,
+			"buttonDiv_w" : 0.9,
+			"buttonDiv_h" : 0.25
 		},
 		{
 			"texture" : "Textures/streetLevelButton.png",
@@ -45,7 +61,11 @@
 			"widthDivide" : 3,
 			"heightDivide" : 3,
 			"xDivide" : 8,
-			"yDivide" : 5
+			"yDivide" : 5,
+			"buttonDiv_x" : 0.2,
+			"buttonDiv_y" : 0.2,
+			"buttonDiv_w" : 0.6,
+			"buttonDiv_h" : 0.6
 		},
 		{
 			"texture" : "Textures/baseLevelButton.png",
@@ -54,7 +74,11 @@
 			"widthDivide" : 3,
 			"heightDivide" : 3,
 			"xDivide" : 3,
-			"yDivide" : 5
+			"yDivide" : 5,
+			"buttonDiv_x" : 0.2,
+			"buttonDiv_y" : 0.2,
+			"buttonDiv_w" : 0.6,
+			"buttonDiv_h" : 0.6
 		}
 	]
 	

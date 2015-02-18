@@ -13,6 +13,7 @@ static const std::string menuData ="Resources/menuData.json";
 class MainMenu : public GameState
 {
 	enum{Menu1=0, Menu2=1, Menu3=2};
+	bool esckapePressed;
 	int gameMode, level;
 	int currentMenu;
 	BackGround *backGroundMenu;

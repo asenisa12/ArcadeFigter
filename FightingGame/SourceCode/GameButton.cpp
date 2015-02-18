@@ -1,7 +1,7 @@
 #include "GameButton.h"
 
 GameButton::GameButton(int screenW, int screenH, jsonObj buttonData)
-	:framesToEnd(0)
+	:framesToEnd(0), buttonPressed(false)
 {
 	width = screenW / buttonData[U("widthDivide")].as_integer();
 	height = screenH / buttonData[U("heightDivide")].as_integer();
@@ -10,6 +10,10 @@ GameButton::GameButton(int screenW, int screenH, jsonObj buttonData)
 	path_ = utility::conversions::to_utf8string(buttonData[U("texture")].as_string());
 	posX_ = screenW / buttonData[U("xDivide")].as_double();
 	posY_ = screenH / buttonData[U("yDivide")].as_double();
+	button.x = width * buttonData[U("buttonDiv_x")].as_double()+posX_;
+	button.y = height * buttonData[U("buttonDiv_y")].as_double()+posY_;
+	button.w = width * buttonData[U("buttonDiv_w")].as_double();
+	button.h = height * buttonData[U("buttonDiv_h")].as_double();
 }
 
 
@@ -36,48 +40,26 @@ bool GameButton::loadMedia(SDL_Renderer* gRender)
 
 bool GameButton::isPressed(SDL_Event* Event)
 {
-	if (Event->type == SDL_MOUSEMOTION || Event->type == SDL_MOUSEBUTTONDOWN)
-	{
-		int x, y;
-		SDL_GetMouseState(&x, &y);
-		bool inside = true;
+	int x, y;
+	SDL_GetMouseState(&x, &y);
 
-		//Mouse is left of the button
-		if (x < posX_)
+	if ((x > button.x) && (x < button.x + button.w) && 
+		(y > button.y) && (y < button.y + button.h))
+	{
+		currentState = MOUSE_OVER;
+		if(Event->type == SDL_MOUSEBUTTONDOWN)
 		{
-			inside = false;
+			currentState = MOUSE_CLICK;
+			buttonPressed = true;
 		}
-		//Mouse is right of the button
-		else if (x > posX_ + width)
+		if (Event->type == SDL_MOUSEBUTTONUP && buttonPressed)
 		{
-			inside = false;
+			buttonPressed = false;
+			return true;
 		}
-		//Mouse above the button
-		else if (y < posY_)
-		{
-			inside = false;
-		}
-		//Mouse below the button
-		else if (y > posY_ + height)
-		{
-			inside = false;
-		}
-		if (inside)
-		{
-			currentState = MOUSE_OVER;
-			if(Event->type == SDL_MOUSEBUTTONDOWN)
-			{
-				currentState = MOUSE_CLICK;
-				framesToEnd++;
-				if (framesToEnd > 5){
-					framesToEnd = 0;
-					return true;
-				}
-			}
-		}
-		else currentState = MOUSE_OUT;
-	
 	}
+	else currentState = MOUSE_OUT;
+
 	return false;
 }
 

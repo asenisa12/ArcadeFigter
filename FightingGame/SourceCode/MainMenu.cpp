@@ -42,12 +42,18 @@ void MainMenu::handleEvent()
 	switch (mainGame->gameEvent.type)
 	{
 	case SDL_KEYUP:
-		switch (mainGame->gameEvent.key.keysym.sym){
-		case SDLK_ESCAPE:
-			mainGame->quit = true;
-			break;
-		default:
-			break;
+		if (mainGame->gameEvent.key.keysym.sym == SDLK_ESCAPE){
+			esckapePressed = true;
+		}
+		break;
+	case SDL_KEYDOWN:
+		if (mainGame->gameEvent.key.keysym.sym == SDLK_ESCAPE &&
+			esckapePressed){
+
+			esckapePressed = false;
+
+			if (currentMenu > 0) currentMenu--;
+			else mainGame->quit = true;
 		}
 		break;
 	}
@@ -87,6 +93,8 @@ bool  MainMenu::loadObjects()
 bool MainMenu::onEnter(GameBase *mainGame_)
 {
 	mainGame = mainGame_;
+	esckapePressed = false;
+
 	int w = mainGame->getScreenW(), h = mainGame->getScreenH();
 	
 	std::fstream jsonFile;

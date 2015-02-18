@@ -10,6 +10,8 @@ class GameButton :public GameObject
 	static const int BUTTON_CLIPS = 3;
 	int CLIP_W;
 	int CLIP_H;
+	bool buttonPressed;
+	SDL_Rect button;
 
 	std::string path_;
 	int framesToEnd;
