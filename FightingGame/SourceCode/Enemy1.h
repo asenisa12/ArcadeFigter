@@ -28,7 +28,6 @@ typedef std::list<std::tuple<GameCharacter*, bool>>::iterator playerIter;
 class Enemy1 : public GameCharacter
 {
 	int playersCOUNT;
-	int playernum;
 	int enemyID;
 	int WALKING_ANIMATION_END;
 	int PUNCHING_ANIMATION_END;
@@ -53,14 +52,12 @@ class Enemy1 : public GameCharacter
 	Mix_Chunk *punchSound = NULL;
 	Mix_Chunk *wooshSound = NULL;
 
-	GameCharacter* target_;
 	Location lastPlayerSquare;
 	Location currentGoal;
 	Location PrevSquare;
 	std::vector<Location> path;
 
 	void findDestination();
-	void getTarget();
 	void moveToPosition(int X, int Y);
 	void moving();
 	void punch();

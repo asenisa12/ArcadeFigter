@@ -48,6 +48,17 @@ int  GameCharacter::getLocationRow(Location location)
 	return (location.Y - levelGrid->getStartingY()) / squareSize();
 }
 
+GameCharacter* GameCharacter::getTarget()
+{
+	return target_;
+}
+
+void GameCharacter::setTarget(GameCharacter* target, int num)
+{
+	target_ = target;
+	playernum = num;
+}
+
 void GameCharacter::posToSquareMiddle()
 {
 	posX_ = currentSquare[FIRST_SQUARE_ID].X + squareSize() / 2;
@@ -266,7 +277,7 @@ void GameCharacter::collision(std::list<GameCharacter*> characters)
 		myLeft = posX_ + mWidth / 5;
 		myRight = posX_ + mWidth / 2;
 
-		if (abs(otherBottom - myBottom) < screenW_*0.03)
+		if (abs(otherBottom - myBottom) < screenW_*0.04)
 		{
 			if (characterInLeft(otherCharacter))
 			{

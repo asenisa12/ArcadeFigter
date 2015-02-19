@@ -12,6 +12,7 @@ Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screen
 	PrevSquare = currentSquare[FIRST_SQUARE_ID];
 	Row_ = getLocationRow(startlocation);
 	Col_ = getLocationCol(startlocation);
+	//target_ = NULL;
 }
 
 
@@ -196,7 +197,7 @@ void Enemy1::moving()
 Location Enemy1::getGoalSquare()
 {
 
-	getTarget();
+	//getTarget();
 	if (target_ != NULL)
 	{
 		if (target_->getHealth() > 0)
@@ -253,22 +254,7 @@ bool Enemy1::player_punching()
 	return false;
 }
 
-void Enemy1::getTarget()
-{
-	if (target_ == NULL)
-	{
-		for (int i = 0;i<players.size();i++)
-		{
-			if (std::get<AVAILABLE>(players[i]))
-			{
-				playernum = i;
-				target_ = std::get<TARGET>(players[i]);
-				std::get<AVAILABLE>(players[i]) = false;
-				break;
-			}
-		}
-	}
-}
+
 
 void Enemy1::punch_players()
 {

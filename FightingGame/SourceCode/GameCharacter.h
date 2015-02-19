@@ -37,11 +37,13 @@ protected:
 	SquareGrid *levelGrid;
 	SDL_Rect * currentClip;
 	SDL_RendererFlip flipType;
+	GameCharacter* target_;
 	
 	int CLIP_H;
 	int CLIP_W;
 
 	double movSpeed;
+	int playernum;
 	int currentCondition;
 	int health;
 	int add;
@@ -85,6 +87,8 @@ protected:
 	void resizeClips(SDL_Rect *clip);
 	void collision(std::list<GameCharacter*> characters);
 public:
+	GameCharacter* getTarget();
+	void setTarget(GameCharacter* target, int num);
 	GameCharacter(SquareGrid *grid, int characterType_,
 		int screenW, int screenH);
 	bool punching();

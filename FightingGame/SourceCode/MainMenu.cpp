@@ -93,7 +93,7 @@ bool  MainMenu::loadObjects()
 bool MainMenu::onEnter(GameBase *mainGame_)
 {
 	mainGame = mainGame_;
-	esckapePressed = false;
+	esckapePressed = true;
 
 	int w = mainGame->getScreenW(), h = mainGame->getScreenH();
 	

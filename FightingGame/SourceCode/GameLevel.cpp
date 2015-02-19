@@ -68,6 +68,7 @@ void GameLevel::render(SDL_Renderer* renderer)
 	switch (currentState)
 	{
 	case INGAME:
+		enemy_add_target();
 		ingame();
 		break;
 	case GAME_OVER:
@@ -106,7 +107,8 @@ bool  GameLevel::LoadObjects(){
 			if (!enemy->loadMedia(mainGame->getRenderer())) return false;
 	}
 	gameOver->loadMedia(mainGame->getRenderer());
-	charactersList.splice(charactersList.end(), enemies[cameraPosCount]);
+	/*charactersList.splice(charactersList.end(), enemies[cameraPosCount]);*/
+	charactersList.insert(charactersList.end(), enemies[cameraPosCount].begin(), enemies[cameraPosCount].end());
 
 	gMusic = Mix_LoadMUS(levelTheme.c_str());
 	if (gMusic == NULL)
@@ -138,7 +140,8 @@ void GameLevel::manage_camera()
 			for (auto player : players_) player->manageCameraPos();
 			camera.x += mainGame->getScreenW();
 			cameraPosCount++;
-			charactersList.splice(charactersList.end(), enemies[cameraPosCount]);
+			//charactersList.splice(charactersList.end(), enemies[cameraPosCount]);
+			charactersList.insert(charactersList.end(), enemies[cameraPosCount].begin(), enemies[cameraPosCount].end());
 		}
 	}
 
@@ -153,6 +156,31 @@ GameCharacter* GameLevel::get_enemy(jsonObj data)
 	int w = mainGame->getScreenW();
 	int h = mainGame->getScreenH();
 	return new Enemy1(enemyJSON, position, w, h, levelgrid, type);
+}
+
+void GameLevel::enemy_add_target()
+{
+	for(int i = 0; i<players.size(); i++)
+	{
+		if (std::get<AVAILABLE>(players[i]))
+		{
+			enemies[cameraPosCount].sort([](GameCharacter* struct1, GameCharacter* struct2)
+			{return (struct1->getX()< struct2->getX()); });
+
+			for (auto enemy : enemies[cameraPosCount])
+			{
+				if (enemy->getTarget() == NULL && enemy->getHealth()>0)
+				{
+					enemy->setTarget(std::get<TARGET>(players[i]), i);
+					std::get<AVAILABLE>(players[i]) = false;
+					break;
+				}
+
+			}
+			//playernum = i;
+			//target_ = std::get<TARGET>(players[i]);
+		}
+	}
 }
 
 bool GameLevel::createLevel()

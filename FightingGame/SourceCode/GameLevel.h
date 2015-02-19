@@ -42,7 +42,6 @@ class GameLevel : public GameState
 	SDL_Rect camera;
 	BackGround *backGroundLevel1;
 	GameLabel *gameOver;
-
 	static const std::string levelID;
 	std::list<Player*> players_;
 	std::list<GameCharacter*> charactersList;
@@ -53,6 +52,7 @@ class GameLevel : public GameState
 	void createPlayer(int id);
 	void manage_camera();
 	void ingame();
+	void enemy_add_target();
 public:
 	~GameLevel();
 	GameLevel(int gameMode_, int level_);
