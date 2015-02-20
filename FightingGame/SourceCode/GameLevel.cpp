@@ -20,6 +20,14 @@ const std::string GameLevel::levelJSON = "Resources/level.json";
 void GameLevel::handleEvent()
 {
 	players_.front()->handleEvent(player1Keys);
+
+	switch (mainGame->gameEvent.type)
+	{
+	case SDL_KEYUP:
+		if (mainGame->gameEvent.key.keysym.sym == SDLK_ESCAPE){
+			quitLevel = true;
+		}
+	}
 	
 	manage_camera();
 	if (gameMode == p2Mode)
@@ -31,6 +39,7 @@ void GameLevel::update(GameStateMachine *stateMachine)
 	switch (currentState)
 	{
 	case INGAME:
+		enemy_add_target();
 		charactersList.sort([](GameCharacter* struct1, GameCharacter* struct2)
 			{return (struct1->getBottomY()< struct2->getBottomY()); });
 		for (auto character : charactersList)
@@ -39,6 +48,12 @@ void GameLevel::update(GameStateMachine *stateMachine)
 	case GAME_OVER:
 
 		break;
+	}
+	if (quitLevel)
+	{
+		Mix_HaltMusic();
+		stateMachine->popState();
+		players.clear();
 	}
 }
 
@@ -68,7 +83,6 @@ void GameLevel::render(SDL_Renderer* renderer)
 	switch (currentState)
 	{
 	case INGAME:
-		enemy_add_target();
 		ingame();
 		break;
 	case GAME_OVER:
@@ -175,10 +189,7 @@ void GameLevel::enemy_add_target()
 					std::get<AVAILABLE>(players[i]) = false;
 					break;
 				}
-
 			}
-			//playernum = i;
-			//target_ = std::get<TARGET>(players[i]);
 		}
 	}
 }
@@ -261,6 +272,7 @@ void GameLevel::createPlayer(int id)
 bool GameLevel::onEnter(GameBase *mainGame_)
 {
 	cameraPosCount = 0;
+	quitLevel = false;
 	mainGame = mainGame_;
 	currentState = INGAME;
 

@@ -25,6 +25,7 @@ class GameLevel : public GameState
 	static const pKeys player2Keys;
 	static const int CAMERA_POSITIONS = 4;
 	static const std::string levelJSON;
+	bool quitLevel;
 	std::string playerJSON;
 	std::string enemyJSON;
 

@@ -99,14 +99,26 @@ void Enemy1::fall()
 void Enemy1::findDestination()
 {
 	path = (std::async(&Enemy1::getPath, this)).get();
-
-	for (;;){
-		if (currentSquare[FIRST_SQUARE_ID] == path.back() && path.back() != currentGoal)
-		{
-			path.pop_back();
+	if (abs(target_->getCol() - Col_) > 2)
+	{
+		for (;;){
+			if (currentSquare[FIRST_SQUARE_ID] == path.back() && path.back() != currentGoal)
+			{
+				path.pop_back();
+			}
+			else break;
 		}
-		else break;
+		if (target_->getX() > posX_ && currentSquare[FIRST_SQUARE_ID].X == path.back().X && path.size()>1)
+			path.pop_back();
+
 	}
+	else {
+		for (int i = 0; i < path.size() / 2; i++)
+			path.pop_back();
+	}
+
+	/*for (auto it : path)
+		printf("X:%dY:%d\n", it.X, it.Y);*/
 	destX = path.back().X + squareSize() / 2;
 	destY = path.back().Y - squareSize() / 2 - mHigth + mHigth/5;
 }
@@ -189,6 +201,7 @@ void Enemy1::moving()
 		else
 		{	
 				findDestination();
+				printf("posX: %d posY: %d\n", posX_, posY_);
 				printf("DESTINATION posX: %d posY: %d\n", destX, destY);
 		}
 	}
@@ -205,9 +218,16 @@ Location Enemy1::getGoalSquare()
 			Location playerLocation = target_->getCurrSquare()[FIRST_SQUARE_ID];
 			int playerRow = getLocationRow(playerLocation);
 			int playerCol = getLocationCol(playerLocation);
-			playerCol += 4;
-			return levelGrid->getLocation(playerRow - 1, playerCol);
-
+			
+			if (target_->getX() > posX_)
+			{
+				playerCol -= 4;
+			}
+			else
+			{
+				playerCol += 4;
+			}
+			return levelGrid->getLocation(playerRow-1, playerCol);
 		}
 		else
 		{
@@ -280,7 +300,8 @@ void Enemy1::punch_players()
 void Enemy1::doActions(std::list<GameCharacter*> characters)
 {
 	punched = false;
-	collision(characters);
+	moveDir = { true, true, true, true };
+	//collision(characters);
 	currentCondition = STANDING;
 	action = false;
 	currentGoal = getGoalSquare();
