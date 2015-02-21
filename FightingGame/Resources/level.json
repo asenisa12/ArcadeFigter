@@ -3,6 +3,51 @@
 
 	"playerJSON" : "Resources/player.json",
 	"enemyJSON" : "Resources/enemy.json",
+	"Items":
+	[
+		[
+			{
+				"texture" : "Textures/salad.png",
+				"wDelimiter":15,
+				"hDelimiter":15,
+				"clipW" : 39,
+				"clipH" : 30
+			},
+			{
+				"row" : 3,
+				"col" : 13,
+				"health" : 10
+			}
+		],
+		[
+			{
+				"texture" : "Textures/bureger.png",
+				"wDelimiter":15,
+				"hDelimiter":15,
+				"clipW" : 40,
+				"clipH" : 27
+			},
+			{
+				"row" : 3,
+				"col" : 13,	
+				"health" : 15
+			}
+		],
+		[
+			{
+				"texture" : "Textures/lobster.png",
+				"wDelimiter":15,
+				"hDelimiter":15,
+				"clipW" : 50,
+				"clipH" : 38
+			},
+			{
+				"row" : 3,
+				"col" : 13,
+				"health" : 20
+			}
+		]
+	],
 	"GameOverLabel":
 	{
 		"texture" : "Textures/gameOver.png",

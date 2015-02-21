@@ -57,6 +57,9 @@ void GameLevel::update(GameStateMachine *stateMachine)
 void GameLevel::ingame()
 {
 	std::list<GameCharacter*>::iterator it = charactersList.begin();
+	Item *itm = (*items)[currentState];
+	itm->render(mainGame->getRenderer());
+
 	while (it != charactersList.end())
 	{
 		if ((*it)->ready_for_delete())
@@ -82,6 +85,7 @@ void GameLevel::render(SDL_Renderer* renderer)
 	switch (currentState)
 	{
 	case INGAME:
+	
 		ingame();
 		break;
 	case GAME_OVER:
@@ -140,6 +144,7 @@ bool  GameLevel::LoadObjects(){
 		hBar->loadMedia(mainGame->getRenderer());
 		hBar->setMaxHealth(players_.back()->getHealth());
 	}
+	items->loadMedia(mainGame->getRenderer());
 }
 
 void GameLevel::manage_camera()
@@ -260,6 +265,7 @@ bool GameLevel::createLevel()
 			mainGame->getScreenW(), mainGame->getScreenH());
 		youWin = new GameLabel(file[U("YouWinLabel")],
 			mainGame->getScreenW(), mainGame->getScreenH());
+		items = new Items(file[U("Items")], levelgrid, CAMERA_POSITIONS);
 	}
 	else
 	{
@@ -310,4 +316,5 @@ GameLevel::~GameLevel()
 	delete youWin;
 	delete backGroundLevel1;
 	delete levelgrid;
+	delete items;
 }

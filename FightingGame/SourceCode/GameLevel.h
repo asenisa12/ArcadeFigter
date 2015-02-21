@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "GameCharacter.h" 
 #include "GameLabel.h"
+#include "Items.h"
 #include <list>
 #include "HealthBar.h"
 
@@ -36,6 +37,7 @@ class GameLevel : public GameState
 	int cameraPosCount;
 	int currentState;
 	int playersCount;
+	Items *items;
 
 	Mix_Music *gMusic = NULL;
 	std::vector<std::list<GameCharacter*>> enemies;
