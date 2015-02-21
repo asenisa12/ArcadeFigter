@@ -25,6 +25,7 @@ class GameLevel : public GameState
 	static const pKeys player2Keys;
 	static const int CAMERA_POSITIONS = 4;
 	static const std::string levelJSON;
+	int livingEnemies;
 	bool quitLevel;
 	std::string playerJSON;
 	std::string enemyJSON;
@@ -43,13 +44,14 @@ class GameLevel : public GameState
 	SDL_Rect camera;
 	BackGround *backGroundLevel1;
 	GameLabel *gameOver;
+	GameLabel *youWin;
 	static const std::string levelID;
 	std::list<Player*> players_;
 	std::list<GameCharacter*> charactersList;
 	void drawPlayerHealthBar();
 	GameCharacter* get_enemy(jsonObj eneym);
 	bool createLevel();
-	void drawGameOver();
+	void drawLabel(GameLabel *label);
 	void createPlayer(int id);
 	void manage_camera();
 	void ingame();

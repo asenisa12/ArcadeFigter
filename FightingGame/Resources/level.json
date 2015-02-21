@@ -11,6 +11,14 @@
 		"clipW" : 454,
 		"clipH" : 340
 	},
+	"YouWinLabel":
+	{
+		"texture" : "Textures/you_win.png",
+		"wDelimiter":2,
+		"hDelimiter":3,
+		"clipW" : 650,
+		"clipH" : 154
+	},
 	"healthBar":
 	[
 		{

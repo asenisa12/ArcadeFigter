@@ -38,7 +38,6 @@
     <ClInclude Include="SourceCode\GameLevel.h" />
     <ClInclude Include="SourceCode\GameState.h" />
     <ClInclude Include="SourceCode\Grid.h" />
-    <ClInclude Include="SourceCode\Header.h" />
     <ClInclude Include="SourceCode\HealthBar.h" />
     <ClInclude Include="SourceCode\MainMenu.h" />
     <ClInclude Include="SourceCode\PathFinding.h" />

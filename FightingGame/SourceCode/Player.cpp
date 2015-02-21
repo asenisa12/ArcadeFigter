@@ -207,7 +207,7 @@ bool Player::punched(std::list<GameCharacter*> characters)
 		myBottom = posY_ + mHigth;
 		myLeft = posX_ + mWidth / 5;
 
-		if (enemy->punching() && enemy->getCondition()!=PUNCHED)
+		if (enemy->punching())
 		{
 			if ((characterInLeft(enemy) || characterInRigh(enemy)) &&
 				abs(enemy->getRow() - Row_)<=1)
@@ -377,6 +377,7 @@ void Player::moving()
 
 void Player::doActions(std::list<GameCharacter*> characters)
 {
+	currentCondition = STANDING;
 	collision(characters);
 	bool ispunched = punched(characters);
 	if (!actions())
@@ -398,7 +399,6 @@ void Player::doActions(std::list<GameCharacter*> characters)
 		else
 		{
 			animation("WALLKING");
-			currentCondition = STANDING;
 			frame = 0;
 		}
 	}

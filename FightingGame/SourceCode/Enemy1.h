@@ -67,6 +67,7 @@ class Enemy1 : public GameCharacter
 	void doActions(std::list<GameCharacter*> characters);
 	Location getGoalSquare();
 	std::string path_;
+	bool synchroniseFlip(GameCharacter* player);
 	std::vector<Location> getPath();
 public:
 	Enemy1(std::string path, Location startlocation, int screenW, int screenH, SquareGrid *grid, int id);

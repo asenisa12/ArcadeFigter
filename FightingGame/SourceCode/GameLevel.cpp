@@ -45,9 +45,6 @@ void GameLevel::update(GameStateMachine *stateMachine)
 		for (auto character : charactersList)
 			character->update(charactersList);
 		break;
-	case GAME_OVER:
-
-		break;
 	}
 	if (quitLevel)
 	{
@@ -66,6 +63,8 @@ void GameLevel::ingame()
 		{
 			if ((*it)->CharacterType() == GPLAYER)
 				currentState = GAME_OVER;
+			if ((*it)->CharacterType() == GENEMY)
+				livingEnemies--;
 			it = charactersList.erase(it);
 		}
 		else
@@ -87,16 +86,20 @@ void GameLevel::render(SDL_Renderer* renderer)
 		break;
 	case GAME_OVER:
 		Mix_HaltMusic();
-		drawGameOver();
+		drawLabel(gameOver);
+		break;
+	case WIN:
+		Mix_HaltMusic();
+		drawLabel(youWin);
 		break;
 	}
 }
 
-void GameLevel::drawGameOver()
+void GameLevel::drawLabel(GameLabel *label)
 {
-	int posX = mainGame->getScreenW() / 2 - gameOver->getW() / 2;
-	int posY = mainGame->getScreenH() / 2 - gameOver->getH() / 2;
-	gameOver->renderLabel(posX, posY, mainGame->getRenderer());
+	int posX = mainGame->getScreenW() / 2 - label->getW() / 2;
+	int posY = mainGame->getScreenH() / 2 - label->getH() / 2;
+	label->renderLabel(posX, posY, mainGame->getRenderer());
 }
 
 void GameLevel::drawPlayerHealthBar()
@@ -121,8 +124,10 @@ bool  GameLevel::LoadObjects(){
 			if (!enemy->loadMedia(mainGame->getRenderer())) return false;
 	}
 	gameOver->loadMedia(mainGame->getRenderer());
-	/*charactersList.splice(charactersList.end(), enemies[cameraPosCount]);*/
-	charactersList.insert(charactersList.end(), enemies[cameraPosCount].begin(), enemies[cameraPosCount].end());
+	youWin->loadMedia(mainGame->getRenderer());
+
+	charactersList.insert(charactersList.end(), 
+		enemies[cameraPosCount].begin(), enemies[cameraPosCount].end());
 
 	gMusic = Mix_LoadMUS(levelTheme.c_str());
 	if (gMusic == NULL)
@@ -139,6 +144,10 @@ bool  GameLevel::LoadObjects(){
 
 void GameLevel::manage_camera()
 {
+	if (cameraPosCount == CAMERA_POSITIONS-1 && livingEnemies <= 0)
+	{
+		currentState = WIN;
+	}
 	if (cameraPosCount < CAMERA_POSITIONS)
 	{
 		int playersAtEndOfCAmera = 0;
@@ -150,12 +159,13 @@ void GameLevel::manage_camera()
 				playersAtEndOfCAmera++;
 			}
 		}
-		if (playersAtEndOfCAmera == players.size()){
+		if (playersAtEndOfCAmera == players.size() && livingEnemies<=0){
 			for (auto player : players_) player->manageCameraPos();
-			camera.x += mainGame->getScreenW();
+			camera.x +=backGroundLevel1->getWidth()/5;
 			cameraPosCount++;
-			//charactersList.splice(charactersList.end(), enemies[cameraPosCount]);
-			charactersList.insert(charactersList.end(), enemies[cameraPosCount].begin(), enemies[cameraPosCount].end());
+			livingEnemies = enemies[cameraPosCount].size();
+			charactersList.insert(charactersList.end(), 
+				enemies[cameraPosCount].begin(), enemies[cameraPosCount].end());
 		}
 	}
 
@@ -248,6 +258,8 @@ bool GameLevel::createLevel()
 
 		gameOver = new GameLabel(file[U("GameOverLabel")], 
 			mainGame->getScreenW(), mainGame->getScreenH());
+		youWin = new GameLabel(file[U("YouWinLabel")],
+			mainGame->getScreenW(), mainGame->getScreenH());
 	}
 	else
 	{
@@ -278,8 +290,10 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 
 	camera = { 0, 0, mainGame->getScreenW(), mainGame->getScreenH()};
 	levelgrid = new SquareGrid(mainGame->getScreenW(), mainGame->getScreenH());
+
 	if (!createLevel()) return false;
-	
+
+	livingEnemies = enemies[cameraPosCount].size();
 	return LoadObjects();
 }
 
@@ -293,6 +307,7 @@ GameLevel::~GameLevel()
 	Mix_FreeMusic(gMusic);
 	gMusic = NULL;
 	delete gameOver;
+	delete youWin;
 	delete backGroundLevel1;
 	delete levelgrid;
 }

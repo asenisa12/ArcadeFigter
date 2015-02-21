@@ -251,6 +251,21 @@ std::vector<Location> Enemy1::getPath()
 	return path;
 }
 
+bool Enemy1::synchroniseFlip(GameCharacter* player)
+{
+	if (characterInLeft(player) && player->getFlipType() == SDL_FLIP_NONE)
+	{
+		flipType = SDL_FLIP_HORIZONTAL;
+		return true;
+	}
+	if (characterInRigh(player) && player->getFlipType() == SDL_FLIP_HORIZONTAL)
+	{
+		flipType = SDL_FLIP_NONE;
+		return true;
+	}
+	return false;
+}
+
 bool Enemy1::player_punching()
 {
 	for (auto player : players)
@@ -258,16 +273,7 @@ bool Enemy1::player_punching()
 		auto target = std::get<TARGET>(player);
 		if (target->punching())
 		{
-			if (characterInLeft(target) && target->getFlipType() == SDL_FLIP_NONE)
-			{
-				flipType = SDL_FLIP_HORIZONTAL;
-				return true;
-			}
-			if (characterInRigh(target) && target->getFlipType() == SDL_FLIP_HORIZONTAL)
-			{
-				flipType = SDL_FLIP_NONE;
-				return true;
-			}
+			return synchroniseFlip(target);
 		}
 
 	}
@@ -283,8 +289,9 @@ void Enemy1::punch_players()
 	{
 		GameCharacter *player_ = std::get<TARGET>(player);
 		if ((characterInLeft(player_) || characterInRigh(player_)) && !player_punching()
-			&& player_->getCondition() != MOVING && abs(player_->getRow()-Row_)<=1)
+			&& player_->getCondition() != MOVING && abs(player_->getRow() - Row_) <= 1 && abs(player_->getCol() - Col_)>3)
 		{
+			synchroniseFlip(player_);
 			if (frame / 4 == 3)
 			{
 				player_->editHealth(DAMAGE);

@@ -110,9 +110,6 @@
     <ClInclude Include="SourceCode\GameLabel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\HealthBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
