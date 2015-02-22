@@ -5,8 +5,10 @@
 #include <cmath> 
 #include <map>
 #include <iostream>
+#include "Items.h"
 
 enum {Player1=1, Player2=2};
+extern Item *itm;
 
 struct pEvent
 {

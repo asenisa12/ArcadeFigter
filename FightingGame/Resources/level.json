@@ -8,43 +8,35 @@
 		[
 			{
 				"texture" : "Textures/salad.png",
-				"wDelimiter":15,
-				"hDelimiter":15,
+				"wDelimiter":12,
+				"hDelimiter":12,
 				"clipW" : 39,
 				"clipH" : 30
 			},
-			{
-				"row" : 3,
-				"col" : 13,
-				"health" : 10
-			}
+			{"health" : 20}
 		],
 		[
 			{
 				"texture" : "Textures/bureger.png",
-				"wDelimiter":15,
-				"hDelimiter":15,
+				"wDelimiter":12,
+				"hDelimiter":12,
 				"clipW" : 40,
 				"clipH" : 27
 			},
 			{
-				"row" : 3,
-				"col" : 13,	
-				"health" : 15
+				"health" : 30
 			}
 		],
 		[
 			{
 				"texture" : "Textures/lobster.png",
-				"wDelimiter":15,
-				"hDelimiter":15,
+				"wDelimiter":12,
+				"hDelimiter":12,
 				"clipW" : 50,
 				"clipH" : 38
 			},
 			{
-				"row" : 3,
-				"col" : 13,
-				"health" : 20
+				"health" : 40
 			}
 		]
 	],

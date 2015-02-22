@@ -1,6 +1,7 @@
 #include "GameLevel.h"
 
 std::vector < std::tuple<GameCharacter*, bool> > players;
+Item *itm;
 
 GameLevel::GameLevel(int gameMode_, int level_)
 	: gameMode(gameMode_), level(level_)
@@ -57,8 +58,9 @@ void GameLevel::update(GameStateMachine *stateMachine)
 void GameLevel::ingame()
 {
 	std::list<GameCharacter*>::iterator it = charactersList.begin();
-	Item *itm = (*items)[currentState];
-	itm->render(mainGame->getRenderer());
+	
+	itm = (*items)[cameraPosCount];
+	if(!itm->grabed) itm->render(mainGame->getRenderer());
 
 	while (it != charactersList.end())
 	{
@@ -168,6 +170,7 @@ void GameLevel::manage_camera()
 			for (auto player : players_) player->manageCameraPos();
 			camera.x +=backGroundLevel1->getWidth()/5;
 			cameraPosCount++;
+			itm = (*items)[cameraPosCount];
 			livingEnemies = enemies[cameraPosCount].size();
 			charactersList.insert(charactersList.end(), 
 				enemies[cameraPosCount].begin(), enemies[cameraPosCount].end());
@@ -298,7 +301,6 @@ bool GameLevel::onEnter(GameBase *mainGame_)
 	levelgrid = new SquareGrid(mainGame->getScreenW(), mainGame->getScreenH());
 
 	if (!createLevel()) return false;
-
 	livingEnemies = enemies[cameraPosCount].size();
 	return LoadObjects();
 }

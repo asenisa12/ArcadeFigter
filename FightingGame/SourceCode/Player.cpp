@@ -106,6 +106,16 @@ void Player::grab()
 {
 	currentCondition = STANDING;
 	continuingAnim(grabing, "GRAB");
+	if (itm != NULL && !itm->grabed)
+	{
+		if ((posX_ + mWidth / 2 > itm->getX()) && (posX_  + mWidth / 2 < itm->getX() + itm->getW()) &&
+			(getBottomY() > itm->getY()) && (getBottomY() < itm->getY() + itm->getH()))
+		{
+			itm->grabed = true;
+			health += itm->getHealth();
+			if (health > MAX_HEALTH)health = MAX_HEALTH;
+		}
+	}
 }
 
 void Player::superPunch()

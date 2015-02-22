@@ -6,44 +6,39 @@
 #include <time.h>
 using namespace grid;
 static int scrW=640, scrH= 480;
+static const int ITEM_TYPES = 3;
 
-class Item
+class Item : public GameLabel
 {
-	GameLabel *label;
 	int health_;
-	int posX_;
-	int posY_;
 public:
 	bool grabed;
 	Item(jsonObj data, int pX, int pY, int health)
-		:label(new GameLabel(data, scrW, scrH)), posX_(pX), posY_(pY),
+		:GameLabel(data, scrW, scrH),
 		health_(health), grabed(false)
-	{}
+	{
+		posX_ = pX; 
+		posY_ = pY;
+	}
 	void render(SDL_Renderer *gRenderer)
 	{
-		if (!grabed) label->renderLabel(posX_, posY_, gRenderer);
+		if (!grabed) renderLabel(posX_, posY_, gRenderer);
 	}
-	bool loadMedia(SDL_Renderer *gRenderer)
+	bool loadmedia(SDL_Renderer *gRenderer)
 	{
-		if (!label->loadMedia(gRenderer)) return false;
-		return true;
+		return loadMedia(gRenderer);
 	}
 	int getHealth()
 	{
 		return health_;
-	}
-	~Item()
-	{
-		delete label;
 	}
 };
 
 class Items
 {
 	SquareGrid *grid_;
-
+	enum{Data = 0, Health = 1};
 	std::vector<Item*> items;
-	void createItems(jsonObj data, SquareGrid *grid);
 public:
 	Items(jsonObj data, SquareGrid *grid, int itemsCount);
 	Item* operator[](int i);
