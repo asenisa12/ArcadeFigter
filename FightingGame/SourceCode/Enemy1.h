@@ -1,5 +1,5 @@
-#ifndef ENEMY_ONE
-#define ENEMY_ONE
+#ifndef ENEMY
+#define ENEMY
 
 #include "GameCharacter.h"
 #include "PathFinding.h"
@@ -7,6 +7,7 @@
 #include <tuple>
 #include <future>
 
+//The ids of the enemies are:
 //PUNK=0
 //THUG=1
 //FAT THUG=2
@@ -57,11 +58,15 @@ class Enemy1 : public GameCharacter
 	Location PrevSquare;
 	std::vector<Location> path;
 
+	//finds the next destination square and optimises the path
 	void findDestination();
 	void moveToPosition(int X, int Y);
+
 	void moving();
 	void punch();
 	void fall();
+
+	//checks if the player is punching
 	bool player_punching();
 	void punch_players();
 	void doActions(std::list<GameCharacter*> characters);
@@ -77,4 +82,4 @@ public:
 	void update(std::list<GameCharacter*> characters);
 };
 
-#endif // !ENEMY_ONE
+#endif

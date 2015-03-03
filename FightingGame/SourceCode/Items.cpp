@@ -12,7 +12,7 @@ Items::Items(jsonObj data, SquareGrid *grid, int itemsCount)
 		jsonObj attr = itemData.at(Health);
 
 		int row = rand() % GRID_SIZE_Y - 1 + 1;
-		int col = rand() % GRID_SIZE_X - 10 + 10;
+		int col = rand() % GRID_SIZE_X - 10 + 20;
 		Location location = grid->getLocation(row, col);
 		int pX = location.X;
 		int pY = location.Y;

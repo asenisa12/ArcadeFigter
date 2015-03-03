@@ -25,11 +25,11 @@ protected:
 
 	enum {FIRST_SQUARE_ID=0, SECOND_SQUARE_ID=1};
 	enum {LEFT, RIGHT, UP, DOWN};
-	enum {PUNCHING, MOVING, PUNCHED, FALLING, STANDING};
+	enum {PUNCHING, MOVING, PUNCHED, FALLING, STANDING, JUMPING};
 
 	std::string animationName;
 	std::vector < SDL_Rect >  Clips;
-	enum{ WALLKING = 0, RUNNING = 1, JUMPING = 2, PUNCH = 3, FALLIN = 4 };
+
 	std::vector<int> animFrameSize;
 	std::map<std::string, std::vector < SDL_Rect >> animations;
 	Location currentSquare[CHARACTER_SQUARES_NUM];

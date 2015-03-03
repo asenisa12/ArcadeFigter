@@ -28,7 +28,6 @@ namespace grid
 		{
 			return b.X != X || Y != b.Y;
 		}
-		//Location(int X_, int Y_);
 		
 	};
 
@@ -59,14 +58,12 @@ namespace grid
 		void create_grid();
 	public:
 		SquareGrid(int length_, int hight_);
-		//~SquareGrid();
 		int cost(Location id);
 		void change_cost(Location id, int cost);
 		const std::vector<Location*> neighbors(Location id);
 		int getStartingY();
 		int getStartingX();
 		Location getLocation(int Row, int Col);
-		//Location **getSquares();
 	};
 
 

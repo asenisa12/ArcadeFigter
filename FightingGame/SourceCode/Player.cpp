@@ -8,8 +8,10 @@ Player::Player(std::string jsonPath, int screenW, int screenH, SquareGrid *grid,
 	camera_pos = 1;
 
 	loadData(jsonPath);
+
 	//movement speed == 0.7% from screen w
 	movSpeed =screenW_*0.007;
+	runSpeed = movSpeed * 3;
 	objTexture = NULL;
 	setGridAttributes(grid->getLocation(Row_, Col_));
 }
@@ -99,7 +101,7 @@ void Player::continuingAnim(bool &var, std::string name)
 		animationName = name;
 	}
 	frame++;
-	if (frame / 4 >= Clips.size()) var = false;
+	if (frame / FRAMES_DELIMITOR >= Clips.size()) var = false;
 }
 
 void Player::grab()
@@ -109,7 +111,7 @@ void Player::grab()
 	if (itm != NULL && !itm->grabed)
 	{
 		if ((posX_ + mWidth / 2 > itm->getX()) && (posX_  + mWidth / 2 < itm->getX() + itm->getW()) &&
-			(getBottomY() > itm->getY()) && (getBottomY() < itm->getY() + itm->getH()))
+			(getBottomY() > itm->getY()) && (getBottomY() < itm->getY() + itm->getH()*1.5))
 		{
 			itm->grabed = true;
 			health += itm->getHealth();
@@ -129,7 +131,7 @@ void Player::runPunch()
 	currentCondition = PUNCHING;
 	continuingAnim(rPunch, "RUNPUNCH");
 	if (frame == 1)	playSound(wooshSound2);
-	movSpeed = 10;
+	movSpeed = runSpeed;
 }
 
 void Player::fall()
@@ -160,27 +162,28 @@ void Player::jump()
 	if (jumping)
 	{
 		jumpH++;
-		if (jumpH <= 20){
-			posY_ -= 10;
+		if (jumpH <= Max_jumpH/2){
+			posY_ -= runSpeed;
 		}
 		else
 		{
-			if (jumpH == 40){
+			if (jumpH == Max_jumpH){
 				jumping = false;
 				jumpH = 0;
 			}
-			posY_ += 10;
+			posY_ += runSpeed;
 		}
 
 	}
 	if (jumpH % 3 == 0)
 		frame++;
+	currentCondition = JUMPING;
 }
 
 void Player::run()
 {
 	animation("RUNNING");
-	movSpeed = 10;
+	movSpeed = runSpeed;
 
 }
 
@@ -233,9 +236,9 @@ bool Player::punched(std::list<GameCharacter*> characters)
 			(characterInRigh(enemy) && flipType == SDL_FLIP_NONE))
 		{
 			if ((animationName == "PUNCH" || animationName == "SUPERPUNCH") && 
-				frame / 4 == Clips.size() / 2) playSound(punchSound);	
+				frame / FRAMES_DELIMITOR == Clips.size() / 2) playSound(punchSound);
 
-			if (frame / 4 == Clips.size()- 1)
+			if (frame / FRAMES_DELIMITOR  == Clips.size() - 1)
 			{
 				playSound(punchSound);
 				if (animationName == "PUNCH")
@@ -312,7 +315,7 @@ void Player::handleEvent(pKeys playerKey)
 		playerEvent.moveRight = true;
 		push_event("MOVE");
 	}
-	if (combos.size() == 2)
+	if (combos.size() == ComboMoves)
 	{
 		if (combos.front() == "PUNCH" && !playerEvent.normalPunch)
 		{
@@ -326,7 +329,7 @@ void Player::handleEvent(pKeys playerKey)
 			}
 		}
 	}
-	if (combos.size() >= 2)combos.pop_front();
+	if (combos.size() >= ComboMoves)combos.pop_front();
 
 }
 
@@ -337,27 +340,27 @@ bool Player::actions()
 		superPunch();
 		return true;
 	}
-	else if (playerEvent.runPunch || rPunch)
+	if (playerEvent.runPunch || rPunch)
 	{
 		runPunch();
 		return true;
 	}
-	else if (playerEvent.jump || jumping)
+	if (playerEvent.jump || jumping)
 	{
 		jump();
 		return true;
 	}
-	else if (playerEvent.grab || grabing)
+	if (playerEvent.grab || grabing)
 	{
 		grab();
 		return true;
 	}
-	else if (playerEvent.normalPunch)
+	if (playerEvent.normalPunch)
 	{
 		punch();
 		return true;
 	}
-	else if (currentCondition == PUNCHED)
+	if (currentCondition == PUNCHED)
 	{
 		fall();
 		return true;
@@ -399,7 +402,7 @@ void Player::doActions(std::list<GameCharacter*> characters)
 		else
 		{
 			animation("WALLKING");
-			firstclip = 5;
+			firstclip = StandingFRAME;
 		}
 		//checks if the moving kes are pressed
 		if (checkMoveKeys())
@@ -415,8 +418,10 @@ void Player::doActions(std::list<GameCharacter*> characters)
 	moving();
 
 	//Cycle animation
-	if (frame / 4 >= Clips.size()) frame = firstclip;
-	movSpeed = 3;
+	if (frame / FRAMES_DELIMITOR >= Clips.size()) frame = firstclip;
+
+	//calculating the movement speed by geting 0,7% from the screen W
+	movSpeed = screenW_*0.007;
 	manageSquareShift();
 }
 
@@ -430,9 +435,9 @@ void Player::update(std::list<GameCharacter*> characters)
 	{
 		framesToEnd--;
 		animation("FALLING");
-		frame = 4 * 4;
+		frame = DyingFRAME *FRAMES_DELIMITOR;
 	}
-	resizeClips(&Clips[frame/4]);
+	resizeClips(&Clips[frame/FRAMES_DELIMITOR]);
 }
 
 

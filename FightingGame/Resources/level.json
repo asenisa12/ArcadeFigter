@@ -8,35 +8,43 @@
 		[
 			{
 				"texture" : "Textures/salad.png",
-				"wDelimiter":12,
-				"hDelimiter":12,
+				"wDelimiter":15,
+				"hDelimiter":15,
 				"clipW" : 39,
 				"clipH" : 30
 			},
-			{"health" : 20}
+			{
+				"row" : 3,
+				"col" : 13,
+				"health" : 10
+			}
 		],
 		[
 			{
 				"texture" : "Textures/bureger.png",
-				"wDelimiter":12,
-				"hDelimiter":12,
+				"wDelimiter":15,
+				"hDelimiter":15,
 				"clipW" : 40,
 				"clipH" : 27
 			},
 			{
-				"health" : 30
+				"row" : 3,
+				"col" : 13,	
+				"health" : 15
 			}
 		],
 		[
 			{
 				"texture" : "Textures/lobster.png",
-				"wDelimiter":12,
-				"hDelimiter":12,
+				"wDelimiter":15,
+				"hDelimiter":15,
 				"clipW" : 50,
 				"clipH" : 38
 			},
 			{
-				"health" : 40
+				"row" : 3,
+				"col" : 13,
+				"health" : 20
 			}
 		]
 	],
@@ -276,15 +284,15 @@
 					},
 					{"enemy": 
 						{
-							"row" : 2,
-							"col" : 23,
+							"row" : 1,
+							"col" : 24,
 							"type" : 6
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 3,
-							"col" : 25,
+							"col" : 28,
 							"type" : 6
 						}
 					}
@@ -311,78 +319,8 @@
 					},
 					{"enemy": 
 						{
-							"row" : 2,
-							"col" : 23,
-							"type" : 7
-						}
-					},
-					{"enemy": 
-						{
-							"row" : 3,
-							"col" : 25,
-							"type" : 6
-						}
-					}
-				]
-
-			},
-
-			{
-				"enemies":
-				[
-					{"enemy": 
-						{
 							"row" : 1,
-							"col" : 15,
-							"type" : 9
-						}
-					},
-					{"enemy": 
-						{
-							"row" : 1,
-							"col" : 20,
-							"type" : 7
-						}
-					},
-					{"enemy": 
-						{
-							"row" : 2,
-							"col" : 23,
-							"type" : 6
-						}
-					},
-					{"enemy": 
-						{
-							"row" : 3,
-							"col" : 25,
-							"type" : 6
-						}
-					}
-				]
-
-			},
-
-			{
-				"enemies":
-				[
-					{"enemy": 
-						{
-							"row" : 1,
-							"col" : 15,
-							"type" : 9
-						}
-					},
-					{"enemy": 
-						{
-							"row" : 1,
-							"col" : 20,
-							"type" : 8
-						}
-					},
-					{"enemy": 
-						{
-							"row" : 2,
-							"col" : 23,
+							"col" : 24,
 							"type" : 7
 						}
 					},
@@ -390,7 +328,77 @@
 						{
 							"row" : 3,
 							"col" : 28,
+							"type" : 6
+						}
+					}
+				]
+
+			},
+
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 1,
+							"col" : 15,
 							"type" : 7
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 1,
+							"col" : 20,
+							"type" : 7
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 1,
+							"col" : 24,
+							"type" : 6
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 3,
+							"col" : 28,
+							"type" : 9
+						}
+					}
+				]
+
+			},
+
+			{
+				"enemies":
+				[
+					{"enemy": 
+						{
+							"row" : 1,
+							"col" : 15,
+							"type" : 9
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 1,
+							"col" : 20,
+							"type" : 9
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 1,
+							"col" : 24,
+							"type" : 10
+						}
+					},
+					{"enemy": 
+						{
+							"row" : 1,
+							"col" : 28,
+							"type" : 10
 						}
 					}
 				]
@@ -414,15 +422,15 @@
 					},
 					{"enemy": 
 						{
-							"row" : 2,
-							"col" : 23,
+							"row" : 1,
+							"col" : 24,
 							"type" : 10
 						}
 					},
 					{"enemy": 
 						{
 							"row" : 1,
-							"col" : 15,
+							"col" : 28,
 							"type" : 10
 						}
 					}

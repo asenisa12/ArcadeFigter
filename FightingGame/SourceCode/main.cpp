@@ -4,6 +4,9 @@
 
 using namespace std;
 
+const int FPS = 60;
+const int DELAY_TIME = 1000.0f / FPS;
+
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
@@ -12,6 +15,7 @@ GameBase mainGame(SCREEN_HEIGHT,SCREEN_WIDTH);
 
 int main(int argc, char* argv[])
 {
+	Uint32 frameStart, frameTime;
 	if (!mainGame.init()){
 		printf("Can't init!");
 	}
@@ -31,6 +35,7 @@ int main(int argc, char* argv[])
 					mainGame.quit = true;
 				}
 			}
+			frameStart = SDL_GetTicks();
 			stateMachine.handleEvent();
 
 			//update
@@ -38,8 +43,13 @@ int main(int argc, char* argv[])
 
 			//render
 			stateMachine.render(mainGame.getRenderer());
+
+			frameTime = SDL_GetTicks() - frameStart;
+			if (frameTime< DELAY_TIME)
+			{
+				SDL_Delay((int)(DELAY_TIME - frameTime));
+			}
 		}
 	}
-	//system("pause");
 	return 0;
 }

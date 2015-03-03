@@ -45,15 +45,15 @@ class Player : public GameCharacter
 	int jumpH;
 	int playerID;
 	bool jumping;
+	static const int Max_jumpH = 40;
+	static const int StandingFRAME = 5;
+	static const int DyingFRAME = 4;
+	static const int ComboMoves = 2;
+
 	const Uint8* currentKeyStates;
 	pEvent playerEvent;
-
-	int WALKING_ANIMATION_FRAMES_END;
-	int RUNING_ANIMATION_FRAMES_END;
-	int JUMPING_ANIMATION_FRAMES_END;
-	int PUNCH_ANIMATION_FRAMES_END;
-	int FALLING_ANIMATION_FRAMES_END;
-
+	
+	int runSpeed;
 	bool sPunch;
 	bool rPunch;
 	bool grabing;

@@ -16,19 +16,9 @@ bool grid::Equal::operator()(const Location &id1, const Location &id2) const
 grid::SquareGrid::SquareGrid(int length_, int hight_)
 	:length(length_), hight(hight_)
 {
-	/*GridSquares = new Location*[GRID_SIZE_Y];
-	for (int i = 0; i < GRID_SIZE_Y; i++)
-		GridSquares[i] = new Location[GRID_SIZE_X];*/
-
 	create_grid();
 }
 
-//grid::SquareGrid::~SquareGrid()
-//{
-//	for (int i = 0; i<GRID_SIZE_Y; i++)
-//		delete[] GridSquares[i];
-//	delete[] GridSquares;
-//}
 
 const std::vector<grid::Location*> grid::SquareGrid::neighbors(Location id)
 {
@@ -42,16 +32,9 @@ int grid::SquareGrid::cost(Location id)
 
 void grid::SquareGrid::change_cost(Location id, int cost)
 {
-	if (edges.count(id) > 0){
-		printf("Changing cost to: ");
-		printf("current square X %d Y %d\n\n", id.X, id.Y);
-
-		std::get<COST_ID>(edges[id]) = cost;
-	}
-	else
+	if (edges.count(id) > 0)
 	{
-		printf("Error there is not such ID in the map!!!");
-		printf("current square X %d Y %d\n\n", id.X, id.Y);
+		std::get<COST_ID>(edges[id]) = cost;
 	}
 }
 
@@ -61,26 +44,11 @@ void grid::SquareGrid::add_neighbors(int row, int col)
 	if (col < GRID_SIZE_X - 1)
 	{
 		neigh.push_back(&GridSquares[row][col + 1]);
-		/*if (row < GRID_SIZE_Y - 1)
-		{
-			neigh.push_back(&squares[row + 1][col + 1]);
-		}
-		if (row > 0)
-		{
-			neigh.push_back(&squares[row - 1][col + 1]);
-		}*/
 	}
 	if (col > 0)
 	{
 		neigh.push_back(&GridSquares[row][col - 1]);
-		/*if (row < GRID_SIZE_Y - 1)
-		{
-			neigh.push_back(&squares[row + 1][col - 1]);
-		}
-		if (row > 0)
-		{
-			neigh.push_back(&squares[row - 1][col - 1]);
-		}*/
+	
 	}
 	if (row < GRID_SIZE_Y - 1)
 	{
@@ -108,7 +76,6 @@ void grid::SquareGrid::create_grid()
 	{
 		for (int j = 0; j < GRID_SIZE_X; j++)
 		{
-			//printf("aaaa--x%d, y%d\n", x, y);
 			GridSquares[i][j] = { x, y };
 			add_neighbors(i, j);
 			x += squareSize;
@@ -130,12 +97,15 @@ int grid::SquareGrid::getStartingX()
 	return startX;
 }
 
-//grid::Location **grid::SquareGrid::getSquares()
-//{
-//	return GridSquares;
-//}
 
 grid::Location grid::SquareGrid::getLocation(int Row, int Col)
 {
+	if (Row > GRID_SIZE_Y-1)
+	{
+		Row = GRID_SIZE_Y - 1;
+	}else if (Row < 1)
+	{
+		Row = 0;
+	}
 	return GridSquares[Row][Col];
 }

@@ -9,6 +9,7 @@
 #include <fstream>
 #include <vector>
 
+static const int FRAMES_DELIMITOR = 4;
 typedef web::json::value jsonObj;
 
 class GameObject

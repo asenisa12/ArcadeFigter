@@ -112,13 +112,12 @@ void Enemy1::findDestination()
 			path.pop_back();
 
 	}
-	else {
+	else 
+	{
 		for (int i = 0; i < path.size() / 2; i++)
 			path.pop_back();
 	}
 
-	/*for (auto it : path)
-		printf("X:%dY:%d\n", it.X, it.Y);*/
 	destX = path.back().X + squareSize() / 2;
 	destY = path.back().Y - squareSize() / 2 - mHigth + mHigth/5;
 }
@@ -201,16 +200,12 @@ void Enemy1::moving()
 		else
 		{	
 				findDestination();
-				printf("posX: %d posY: %d\n", posX_, posY_);
-				printf("DESTINATION posX: %d posY: %d\n", destX, destY);
 		}
 	}
 }
 
 Location Enemy1::getGoalSquare()
 {
-
-	//getTarget();
 	if (target_ != NULL)
 	{
 		if (target_->getHealth() > 0)
@@ -289,10 +284,11 @@ void Enemy1::punch_players()
 	{
 		GameCharacter *player_ = std::get<TARGET>(player);
 		if ((characterInLeft(player_) || characterInRigh(player_)) && !player_punching()
-			&& player_->getCondition() != MOVING && abs(player_->getRow() - Row_) <= 1 && abs(player_->getCol() - Col_)>3)
+			&& (player_->getCondition() != MOVING && player_->getCondition() != JUMPING) &&
+			abs(player_->getRow() - Row_) <= 1 && abs(player_->getCol() - Col_)>3)
 		{
 			synchroniseFlip(player_);
-			if (frame / 4 == 3)
+			if (frame / FRAMES_DELIMITOR == 3)
 			{
 				player_->editHealth(DAMAGE);
 				playSound(punchSound);
@@ -308,7 +304,7 @@ void Enemy1::doActions(std::list<GameCharacter*> characters)
 {
 	punched = false;
 	moveDir = { true, true, true, true };
-	//collision(characters);
+	collision(characters);
 	currentCondition = STANDING;
 	action = false;
 	currentGoal = getGoalSquare();
@@ -333,7 +329,7 @@ void Enemy1::doActions(std::list<GameCharacter*> characters)
 		else punch_players();
 
 	}
-	if (frame / 4 >= Clips.size())
+	if (frame / FRAMES_DELIMITOR >= Clips.size())
 	{
 		frame = firstclip;
 	}
@@ -353,7 +349,7 @@ void Enemy1::update(std::list<GameCharacter*> characters)
 		}
 		framesToEnd--;
 		animation("FALLING");
-		frame =4* 4;
+		frame = 4 * FRAMES_DELIMITOR;
 	}
-	resizeClips(&Clips[frame/4]);
+	resizeClips(&Clips[frame / FRAMES_DELIMITOR]);
 }
