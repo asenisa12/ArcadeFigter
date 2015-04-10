@@ -42,6 +42,7 @@ class Enemy1 : public GameCharacter
 	int DAMAGE;
 	int FALLING_CLIP_W;
 
+	Location prevTargetLocation;
 	int destX;
 	int destY;
 	int diffrenceY;

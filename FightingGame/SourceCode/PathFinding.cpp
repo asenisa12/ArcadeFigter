@@ -46,6 +46,7 @@ std::vector<Location> reconstruct_path(Location start, Location goal,
 	do
 	{
 		current = came_from[current];
+		printf("X:%d Y:%d\n", current.X, current.Y);
 		path.push_back(current);
 	} while (current != start);
 	return path;

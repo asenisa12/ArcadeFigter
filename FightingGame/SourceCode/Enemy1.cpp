@@ -12,6 +12,7 @@ Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screen
 	PrevSquare = currentSquare[FIRST_SQUARE_ID];
 	Row_ = getLocationRow(startlocation);
 	Col_ = getLocationCol(startlocation);
+	prevTargetLocation = {0,0};
 	//target_ = NULL;
 }
 
@@ -98,28 +99,14 @@ void Enemy1::fall()
 
 void Enemy1::findDestination()
 {
-	path = (std::async(&Enemy1::getPath, this)).get();
-	if (abs(target_->getCol() - Col_) > 2)
-	{
-		for (;;){
-			if (currentSquare[FIRST_SQUARE_ID] == path.back() && path.back() != currentGoal)
-			{
-				path.pop_back();
-			}
-			else break;
-		}
-		if (target_->getX() > posX_ && currentSquare[FIRST_SQUARE_ID].X == path.back().X && path.size()>1)
-			path.pop_back();
+	if (prevTargetLocation != currentGoal || path.empty())
+		path = (std::async(&Enemy1::getPath, this)).get();
 
+	if (!path.empty()){
+		destX = path.back().X + squareSize() / 2;
+		destY = path.back().Y - squareSize() / 2 - mHigth + mHigth / 5;
+		path.pop_back();
 	}
-	else 
-	{
-		for (int i = 0; i < path.size() / 2; i++)
-			path.pop_back();
-	}
-
-	destX = path.back().X + squareSize() / 2;
-	destY = path.back().Y - squareSize() / 2 - mHigth + mHigth/5;
 }
 
 void Enemy1::moveToPosition(int X, int Y)
@@ -190,7 +177,7 @@ void Enemy1::moving()
 		{
 			moveToPosition(destX, destY);
 
-			if (posX_ == destX && posY_ == destY)
+			if (posX_ == destX && posY_ == destY && !path.empty())
 			{
 				changeSquare(getLocationRow(path.back()), getLocationCol(path.back()));
 				Row_ = getLocationRow(currentSquare[FIRST_SQUARE_ID]);
@@ -216,7 +203,7 @@ Location Enemy1::getGoalSquare()
 			
 			if (target_->getX() > posX_)
 			{
-				playerCol -= 4;
+				playerCol -=4;
 			}
 			else
 			{
@@ -333,6 +320,7 @@ void Enemy1::doActions(std::list<GameCharacter*> characters)
 	{
 		frame = firstclip;
 	}
+	prevTargetLocation = currentGoal;
 }
 void Enemy1::update(std::list<GameCharacter*> characters)
 {
