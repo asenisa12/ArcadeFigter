@@ -51,7 +51,7 @@ class GameLevel : public GameState
 	std::list<Player*> players_;
 	std::list<GameCharacter*> charactersList;
 	void drawPlayerHealthBar();
-	GameCharacter* get_enemy(jsonObj eneym);
+	GameCharacter* get_enemy(Value& eneym);
 	bool createLevel();
 	void drawLabel(GameLabel *label);
 	void createPlayer(int id);

@@ -13,7 +13,7 @@ class HealthBar : public GameLabel
 	int maxHealth;
 	void renderHealth(SDL_Renderer *renderer, int health, int y);
 public:
-	HealthBar(jsonObj data, int scrW, int scrH);
+	HealthBar(Value& data, int scrW, int scrH);
 	void renderBar(SDL_Renderer *renderer, int health, int y);
 	void setMaxHealth(int health);
 };

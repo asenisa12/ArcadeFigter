@@ -1,19 +1,19 @@
 #include "GameButton.h"
 
-GameButton::GameButton(int screenW, int screenH, jsonObj buttonData)
+GameButton::GameButton(int screenW, int screenH, Value& buttonData)
 	:framesToEnd(0), buttonPressed(false)
 {
-	width = screenW / buttonData[U("widthDivide")].as_integer();
-	height = screenH / buttonData[U("heightDivide")].as_integer();
-	CLIP_W = buttonData[U("CLIP_W")].as_integer();
-	CLIP_H = buttonData[U("CLIP_H")].as_integer();
-	path_ = utility::conversions::to_utf8string(buttonData[U("texture")].as_string());
-	posX_ = screenW / buttonData[U("xDivide")].as_double();
-	posY_ = screenH / buttonData[U("yDivide")].as_double();
-	button.x = width * buttonData[U("buttonDiv_x")].as_double()+posX_;
-	button.y = height * buttonData[U("buttonDiv_y")].as_double()+posY_;
-	button.w = width * buttonData[U("buttonDiv_w")].as_double();
-	button.h = height * buttonData[U("buttonDiv_h")].as_double();
+	width = screenW / buttonData["widthDivide"].GetInt();
+	height = screenH / buttonData["heightDivide"].GetInt();
+	CLIP_W = buttonData["CLIP_W"].GetInt();
+	CLIP_H = buttonData["CLIP_H"].GetInt();
+	path_ = buttonData["texture"].GetString();
+	posX_ = screenW / buttonData["xDivide"].GetDouble();
+	posY_ = screenH / buttonData["yDivide"].GetDouble();
+	button.x = width * buttonData["buttonDiv_x"].GetDouble()+posX_;
+	button.y = height * buttonData["buttonDiv_y"].GetDouble()+posY_;
+	button.w = width * buttonData["buttonDiv_w"].GetDouble();
+	button.h = height * buttonData["buttonDiv_h"].GetDouble();
 }
 
 

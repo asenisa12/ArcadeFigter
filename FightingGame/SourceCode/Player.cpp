@@ -24,36 +24,34 @@ void Player::loadData(std::string path)
 	if (jsonFile.is_open())
 	{
 
-		jsonObj player = jsonObj::parse(jsonFile);
-		jsonObj attr;
-		if (playerID == Player1) attr = player[U("Player1")];
-		else if (playerID == Player2) attr = player[U("Player2")];
+		Document player;
+		std::string content((std::istreambuf_iterator<char>(jsonFile)), std::istreambuf_iterator<char>());
+		player.Parse(content.c_str());
+		Value attr;
+		if (playerID == Player1) attr = player["Player1"];
+		else if (playerID == Player2) attr = player["Player2"];
 	
-		path_ = utility::conversions::to_utf8string(
-			attr[U("texture")].as_string());
+		path_ = attr["texture"].GetString();
 
-		Row_ = attr[U("row")].as_integer();
-		Col_ = attr[U("col")].as_integer();
+		Row_ = attr["row"].GetInt();
+		Col_ = attr["col"].GetInt();
 
-		jsonObj consts = player[U("Constants")];
+		Value& consts = player["Constants"];
 
-		web::json::array end_frames  = consts[U("animations_size")].as_array();
+		Value& end_frames  = consts["animations_size"];
 
-		for (auto it : end_frames)
-			animFrameSize.push_back(it.as_integer());
+		for (int i = 0; i < end_frames.Size(); i++)
+			animFrameSize.push_back(end_frames[i].GetInt());
 
-		MAX_HEALTH = consts[U("MAX_HEALTH")].as_integer();
-		DAMAGE = consts[U("DAMAGE")].as_integer();
-		CLIP_H = consts[U("CLIP_H")].as_integer();
-		CLIP_W = consts[U("CLIP_W")].as_integer();
+		MAX_HEALTH = consts["MAX_HEALTH"].GetInt();
+		DAMAGE = consts["DAMAGE"].GetInt();
+		CLIP_H = consts["CLIP_H"].GetInt();
+		CLIP_W = consts["CLIP_W"].GetInt();
 		health = MAX_HEALTH;
 
-		wooshSound2 = loadWAV(utility::conversions::to_utf8string(
-			attr[U("woosh2Sound")].as_string()));
-		wooshSound1 = loadWAV(utility::conversions::to_utf8string(
-			consts[U("woosh1Sound")].as_string()));
-		punchSound = loadWAV(utility::conversions::to_utf8string(
-			consts[U("punchSound")].as_string()));
+		wooshSound2 = loadWAV(attr["woosh2Sound"].GetString());
+		wooshSound1 = loadWAV(consts["woosh1Sound"].GetString());
+		punchSound = loadWAV(consts["punchSound"].GetString());
 
 	}
 	else

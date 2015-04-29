@@ -5,7 +5,7 @@ const double HealthBar::yPercentige = 0.6538;
 const double HealthBar::wPercentige = 0.78906;
 const double HealthBar::hPercentige = 0.2692307;
 
-HealthBar::HealthBar(jsonObj data, int scrW, int scrH)
+HealthBar::HealthBar(Value& data, int scrW, int scrH)
 	:GameLabel(data, scrW, scrH)
 {}
 

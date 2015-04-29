@@ -13,7 +13,7 @@ class Item : public GameLabel
 	int health_;
 public:
 	bool grabed;
-	Item(jsonObj data, int pX, int pY, int health)
+	Item(Value& data, int pX, int pY, int health)
 		:GameLabel(data, scrW, scrH),
 		health_(health), grabed(false)
 	{
@@ -40,7 +40,7 @@ class Items
 	enum{Data = 0, Health = 1};
 	std::vector<Item*> items;
 public:
-	Items(jsonObj data, SquareGrid *grid, int itemsCount);
+	Items(Value& data, SquareGrid *grid, int itemsCount);
 	Item* operator[](int i);
 	bool loadMedia(SDL_Renderer *gRenderer);
 

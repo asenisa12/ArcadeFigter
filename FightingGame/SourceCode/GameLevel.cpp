@@ -179,11 +179,11 @@ void GameLevel::manage_camera()
 
 }
 
-GameCharacter* GameLevel::get_enemy(jsonObj data)
+GameCharacter* GameLevel::get_enemy(Value& data)
 {
-	int row = data[U("row")].as_integer();
-	int col = data[U("col")].as_integer();
-	int type = data[U("type")].as_integer();
+	int row = data["row"].GetInt();
+	int col = data["col"].GetInt();
+	int type = data["type"].GetInt();
 	Location position = levelgrid->getLocation(row, col);
 	int w = mainGame->getScreenW();
 	int h = mainGame->getScreenH();
@@ -218,24 +218,22 @@ bool GameLevel::createLevel()
 	levelFile.open(levelJSON);
 	if (levelFile.is_open())
 	{
-		jsonObj file = jsonObj::parse(levelFile);
-		jsonObj levelData;
-		playerJSON = utility::conversions::to_utf8string(
-			file[U("playerJSON")].as_string());
-		enemyJSON = utility::conversions::to_utf8string(
-			file[U("enemyJSON")].as_string());
+		Document file;
+		std::string content((std::istreambuf_iterator<char>(levelFile)), std::istreambuf_iterator<char>());
+		file.Parse(content.c_str());
+		Value levelData;
+		playerJSON = file["playerJSON"].GetString();
+		enemyJSON = file["enemyJSON"].GetString();
 		if (level == Level1)
 		{
-			levelData = file[U("Level1")];
+			levelData = file["Level1"];
 		}
 		else if (level == Level2)
 		{
-			levelData = file[U("Level2")];
+			levelData = file["Level2"];
 		}
-		textureBgraund = utility::conversions::to_utf8string(
-			levelData[U("background")].as_string());
-		levelTheme = utility::conversions::to_utf8string(
-			levelData[U("levelTheme")].as_string());
+		textureBgraund = levelData["background"].GetString();
+		levelTheme = levelData["levelTheme"].GetString();
 
 		int w = mainGame->getScreenW();
 		int h = mainGame->getScreenH();
@@ -243,18 +241,18 @@ bool GameLevel::createLevel()
 		int healthsCount = 1;
 		if (gameMode == p2Mode) healthsCount++;
 
-		web::json::array hBars = file[U("healthBar")].as_array();
+		Value& hBars = file["healthBar"];
 		for (int i = 0; i < healthsCount; i++)
-			healthBars.push_back(new HealthBar(hBars.at(i), w, h));
+			healthBars.push_back(new HealthBar(hBars[i], w, h));
 
-		web::json::array cameraPos = levelData[U("camera")].as_array();
-		for (int i = 0;i<cameraPos.size();i++)
+		Value& cameraPos = levelData["camera"];
+		for (int i = 0;i<cameraPos.Size();i++)
 		{
-			web::json::array enemyArr = ((cameraPos.at(i))[U("enemies")]).as_array();
+			Value& enemyArr = ((cameraPos[i])["enemies"]);
 			std::list<GameCharacter*> enemiesAtPos;
-			for (int j = 0; j < enemyArr.size(); j++)
+			for (int j = 0; j < enemyArr.Size(); j++)
 			{
-				auto enemyData = (enemyArr.at(j))[U("enemy")];
+				Value& enemyData = enemyArr[j]["enemy"];
 				enemiesAtPos.push_back(get_enemy(enemyData));
 			}
 			enemies.push_back(enemiesAtPos);
@@ -264,11 +262,11 @@ bool GameLevel::createLevel()
 		createPlayer(Player1);
 		if (gameMode == p2Mode) createPlayer(Player2);
 
-		gameOver = new GameLabel(file[U("GameOverLabel")], 
+		gameOver = new GameLabel(file["GameOverLabel"], 
 			mainGame->getScreenW(), mainGame->getScreenH());
-		youWin = new GameLabel(file[U("YouWinLabel")],
+		youWin = new GameLabel(file["YouWinLabel"],
 			mainGame->getScreenW(), mainGame->getScreenH());
-		items = new Items(file[U("Items")], levelgrid, CAMERA_POSITIONS);
+		items = new Items(file["Items"], levelgrid, CAMERA_POSITIONS);
 	}
 	else
 	{

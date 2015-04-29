@@ -19,7 +19,7 @@ class GameButton :public GameObject
 	int width, height;
 	SDL_Rect buttonState[BUTTON_CLIPS];
 public:
-	GameButton(int screenW, int screenH, jsonObj buttonData);
+	GameButton(int screenW, int screenH, Value& buttonData);
 	bool loadMedia(SDL_Renderer* gRenderer);
 	bool isPressed(SDL_Event *keyEvent);
 	void renderButton(SDL_Renderer *gRender);

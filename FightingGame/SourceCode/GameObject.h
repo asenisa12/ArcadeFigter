@@ -5,12 +5,17 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
-#include <cpprest/json.h> 
+//#include <cpprest/json.h> 
+#include "document.h"
+#include "writer.h"
+#include "stringbuffer.h"
 #include <fstream>
 #include <vector>
 
+using namespace rapidjson;
+
 static const int FRAMES_DELIMITOR = 4;
-typedef web::json::value jsonObj;
+//typedef web::json::value jsonObj;
 
 class GameObject
 {	

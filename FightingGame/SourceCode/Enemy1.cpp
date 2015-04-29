@@ -24,28 +24,28 @@ void Enemy1::loadData(std::string path)
 	jsonFile.open(path);
 	if (jsonFile.is_open())
 	{
-		jsonObj allData = jsonObj::parse(jsonFile);
-		web::json::array enemyArr = allData[U("enemies")].as_array();
-		jsonObj attr = enemyArr.at(enemyID);
+		Document allData;
+		std::string content((std::istreambuf_iterator<char>(jsonFile)), std::istreambuf_iterator<char>());
+		allData.Parse(content.c_str());
+		Value& enemyArr = allData["enemies"];
+		Value& attr = enemyArr[enemyID];
 
-		path_ = utility::conversions::to_utf8string(attr[U("texture")].as_string());
-		MAX_HEALTH = attr[U("MAX_HEALTH")].as_integer();
-		DAMAGE = attr[U("DAMAGE")].as_integer();
-		CLIP_H = attr[U("CLIP_H")].as_integer();
-		CLIP_W = attr[U("CLIP_W")].as_integer();
+		path_ = attr["texture"].GetString();
+		MAX_HEALTH = attr["MAX_HEALTH"].GetInt();
+		DAMAGE = attr["DAMAGE"].GetInt();
+		CLIP_H = attr["CLIP_H"].GetInt();
+		CLIP_W = attr["CLIP_W"].GetInt();
 
-		animFrameSize.push_back(attr[U("WALKING_FRAMES_END")].as_integer());
-		animFrameSize.push_back(attr[U("PUNCHING_FRAMES_END")].as_integer());
-		animFrameSize.push_back(attr[U("FALLING_FRAMES_END")].as_integer());
+		animFrameSize.push_back(attr["WALKING_FRAMES_END"].GetInt());
+		animFrameSize.push_back(attr["PUNCHING_FRAMES_END"].GetInt());
+		animFrameSize.push_back(attr["FALLING_FRAMES_END"].GetInt());
 
-		SHIFTING_PERCENTIGE = allData[U("SHIFTING_PERCENTIGE")].as_double();
-		DIFF_BY_X_PERCENTIGE = allData[U("DIFF_BY_X_PERCENTIGE")].as_double();
-		DIFF_BY_Y_PERCENTIGE = allData[U("DIFF_BY_Y_PERCENTIGE")].as_double();
+		SHIFTING_PERCENTIGE = allData["SHIFTING_PERCENTIGE"].GetDouble();
+		DIFF_BY_X_PERCENTIGE = allData["DIFF_BY_X_PERCENTIGE"].GetDouble();
+		DIFF_BY_Y_PERCENTIGE = allData["DIFF_BY_Y_PERCENTIGE"].GetDouble();
 
-		wooshSound = loadWAV(utility::conversions::to_utf8string(
-			allData[U("wooshSound")].as_string()));
-		punchSound = loadWAV(utility::conversions::to_utf8string(
-			allData[U("punchSound")].as_string()));
+		wooshSound = loadWAV(allData["wooshSound"].GetString());
+		punchSound = loadWAV(allData["punchSound"].GetString());
 
 		health = MAX_HEALTH;
 	}
@@ -291,7 +291,7 @@ void Enemy1::doActions(std::list<GameCharacter*> characters)
 {
 	punched = false;
 	moveDir = { true, true, true, true };
-	collision(characters);
+	//collision(characters);
 	currentCondition = STANDING;
 	action = false;
 	currentGoal = getGoalSquare();

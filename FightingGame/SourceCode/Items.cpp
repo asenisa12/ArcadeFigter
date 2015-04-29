@@ -1,15 +1,15 @@
 #include "Items.h"
 
 
-Items::Items(jsonObj data, SquareGrid *grid, int itemsCount)
+Items::Items(Value& data, SquareGrid *grid, int itemsCount)
 {
-	web::json::array itemArr = data.as_array();
+	Value& itemArr = data;
 	srand(time(NULL));
 	for (int i = 0; i < itemsCount; i++)
 	{
 		int itemType = rand() % ITEM_TYPES;
-		web::json::array itemData = itemArr.at(itemType).as_array();
-		jsonObj attr = itemData.at(Health);
+		Value& itemData = itemArr[itemType];
+		Value& attr = itemData[Health];
 
 		int row = rand() % GRID_SIZE_Y - 1 + 1;
 		int col = rand() % GRID_SIZE_X - 10 + 20;
@@ -17,7 +17,7 @@ Items::Items(jsonObj data, SquareGrid *grid, int itemsCount)
 		int pX = location.X;
 		int pY = location.Y;
 
-		items.push_back(new Item(itemData.at(Data), pX, pY, attr[U("health")].as_integer()));
+		items.push_back(new Item(itemData[Data], pX, pY, attr["health"].GetInt()));
 	}
 }
 Item* Items::operator[](int i)

@@ -1,12 +1,11 @@
 #include "GameLabel.h"
 
-GameLabel::GameLabel(jsonObj data, int scrW, int scrH)
+GameLabel::GameLabel(Value& data, int scrW, int scrH)
 {
-	path_ = utility::conversions::to_utf8string(
-		data[U("texture")].as_string());
-	width_ = scrW / data[U("wDelimiter")].as_integer();
-	height_ = scrH / data[U("hDelimiter")].as_integer();
-	clip = { 0, 0, data[U("clipW")].as_integer(), data[U("clipH")].as_integer() };
+	path_ = data["texture"].GetString();
+	width_ = scrW / data["wDelimiter"].GetInt();
+	height_ = scrH / data["hDelimiter"].GetInt();
+	clip = { 0, 0, data["clipW"].GetInt(), data["clipH"].GetInt() };
 }
 bool GameLabel::loadMedia(SDL_Renderer* gRenderer)
 {

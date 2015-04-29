@@ -1,8 +1,13 @@
 #include "GameBase.h"
 #include "GameState.h"
 #include "MainMenu.h"
+#include "document.h"
+#include "writer.h"
+#include <fstream>
+#include "stringbuffer.h"
 
 using namespace std;
+using namespace rapidjson;
 
 const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
@@ -15,6 +20,18 @@ GameBase mainGame(SCREEN_HEIGHT,SCREEN_WIDTH);
 
 int main(int argc, char* argv[])
 {
+
+	const char* json = "{\"project\":\"rapidjson\",\"stars\":10}";
+	fstream file("Resources/menuData.json");
+	string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+	Document d;
+	d.Parse(str.c_str());
+	const Value& arrr = d["buttons"];
+	assert(arrr.IsArray());
+	for (SizeType i = 0; i < arrr.Size(); i++)
+		printf("ludnica %s\n", arrr[i]["texture"].GetString());
+
+	file.close();
 	Uint32 frameStart, frameTime;
 	if (!mainGame.init()){
 		printf("Can't init!");

@@ -97,19 +97,20 @@ bool MainMenu::onEnter(GameBase *mainGame_)
 
 	int w = mainGame->getScreenW(), h = mainGame->getScreenH();
 	
-	std::fstream jsonFile;
-	jsonFile.open(menuData);
+	std::fstream jsonFile(menuData);
 	if (jsonFile.is_open())
 	{
-		jsonObj data = jsonObj::parse(jsonFile);
+		Document data;
+		std::string content((std::istreambuf_iterator<char>(jsonFile)), std::istreambuf_iterator<char>());
+		data.Parse(content.c_str());
 
-		backGroundMenu = new BackGround(utility::conversions::to_utf8string(
-			data[U("backgroundTexture")].as_string()));
+		backGroundMenu = new BackGround(data["backgroundTexture"].GetString());
 
-		web::json::array buttons = data[U("buttons")].as_array();
-
-		for (int i = 0; i < buttons.size(); i++)
-			button[i] = new GameButton(w, h, buttons.at(i));
+		Value& buttons = data["buttons"];
+		
+		assert(buttons.IsArray());
+		for (SizeType i = 0; i < buttons.Size(); i++)
+			button[i] = new GameButton(w, h, buttons[i]);
 	}
 	else
 	{
