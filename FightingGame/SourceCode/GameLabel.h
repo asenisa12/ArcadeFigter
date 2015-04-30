@@ -8,6 +8,7 @@ protected:
 	int width_, height_;
 	SDL_Rect clip;
 	std::string path_;
+
 public:
 	GameLabel(Value& data, int scrW, int scrH);
 	bool loadMedia(SDL_Renderer* gRenderer);

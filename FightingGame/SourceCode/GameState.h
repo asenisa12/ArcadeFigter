@@ -7,6 +7,7 @@
 
 class GameStateMachine;
 
+
 class GameState
 {
 protected:

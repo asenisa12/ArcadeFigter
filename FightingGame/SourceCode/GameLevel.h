@@ -11,7 +11,7 @@
 #include <list>
 #include "HealthBar.h"
 
-enum { Start = 0, Exit = 1, p1Mode = 2, p2Mode = 3, Level1 = 4, Level2 = 5 };
+enum { Start = 0, Exit = 1, p1Mode = 2, p2Mode = 3, Level1 = 4, Level2 = 5, settings };
 
 class GameLevel : public GameState
 {

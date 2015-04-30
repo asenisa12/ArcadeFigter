@@ -7,12 +7,16 @@
 #include "BackGround.h"
 #include "GameButton.h"
 #include "GameLevel.h"
+#include "GameLabel.h"
+#include "JsonReader.h"
 
 static const std::string menuData ="Resources/menuData.json";
 
 class MainMenu : public GameState
 {
-	enum{Menu1=0, Menu2=1, Menu3=2};
+	int backLabeY, backLabeX;
+	GameLabel* back;
+	enum{Menu1=0, Menu2=1, Menu3=2, Settings=3};
 	bool esckapePressed;
 	int gameMode, level;
 	int currentMenu;

@@ -9,12 +9,15 @@ void MainMenu::update(GameStateMachine *stateMachine)
 	case Menu1:
 		if (button[Start]->isPressed(&mainGame->gameEvent))
 			currentMenu = Menu2;
+		if (button[settings]->isPressed(&mainGame->gameEvent))
+			currentMenu = Settings;
 		break;
 	case Menu2:
 		if (button[p1Mode]->isPressed(&mainGame->gameEvent))
 		{
 			gameMode = p1Mode;
 			currentMenu = Menu3;
+			SDL_SetWindowFullscreen(mainGame->getWindow(), SDL_WINDOW_FULLSCREEN);
 		}
 		if (button[p2Mode]->isPressed(&mainGame->gameEvent))
 		{
@@ -52,8 +55,9 @@ void MainMenu::handleEvent()
 
 			esckapePressed = false;
 
-			if (currentMenu > 0) currentMenu--;
-			else mainGame->quit = true;
+			if (currentMenu > 0 && currentMenu<3) currentMenu--;
+			else if (currentMenu == 3) currentMenu = Menu1;
+			else if (currentMenu == 0) mainGame->quit = true;
 		}
 		break;
 	}
@@ -64,10 +68,13 @@ void MainMenu::render(SDL_Renderer* renderer)
 
 	SDL_Rect camera = {0, 0, mainGame->getScreenW(), mainGame->getScreenH()};
 	backGroundMenu->renderBack(&camera, renderer);
+	
+
 	switch (currentMenu)
 	{
 	case Menu1:
 		button[Start]->renderButton(renderer);
+		button[settings]->renderButton(renderer);
 		break;
 	case Menu2:
 		button[p2Mode]->renderButton(renderer);
@@ -77,13 +84,18 @@ void MainMenu::render(SDL_Renderer* renderer)
 		button[Level1]->renderButton(renderer);
 		button[Level2]->renderButton(renderer);
 		break;
+	case Settings:
+		back->renderLabel(backLabeX, backLabeY, renderer);
+		break;
 	}
-	button[Exit]->renderButton(renderer);
+	if (currentMenu != Settings)
+		button[Exit]->renderButton(renderer);
 }
 
 bool  MainMenu::loadObjects()
 {
 	if (!backGroundMenu->loadMedia(mainGame->getRenderer())) return false;
+	if (!back->loadMedia(mainGame->getRenderer())) return false;
 	for (auto const it : button)
 		if (!(it.second)->loadMedia(mainGame->getRenderer())) return false;
 
@@ -97,25 +109,30 @@ bool MainMenu::onEnter(GameBase *mainGame_)
 
 	int w = mainGame->getScreenW(), h = mainGame->getScreenH();
 	
-	std::fstream jsonFile(menuData);
-	if (jsonFile.is_open())
-	{
-		Document data;
-		std::string content((std::istreambuf_iterator<char>(jsonFile)), std::istreambuf_iterator<char>());
-		data.Parse(content.c_str());
+	//std::fstream jsonFile(menuData);
+	Document data/* = parse_jsonFile(menuData)*/;
+	/*std::string content((std::istreambuf_iterator<char>(jsonFile)), std::istreambuf_iterator<char>());
+	data.Parse(content.c_str());*/
 
-		backGroundMenu = new BackGround(data["backgroundTexture"].GetString());
+	backGroundMenu = new BackGround(data["backgroundTexture"].GetString());
 
-		Value& buttons = data["buttons"];
+
+	back = new GameLabel(data["backLabel"], mainGame_->getScreenW(), mainGame_->getScreenH());
+	backLabeY = mainGame->getScreenH() / 2 - back->getH() / 2;
+	backLabeX = mainGame->getScreenW() /2 - back->getW() / 2;
+
+	Value& buttons = data["buttons"];
 		
-		assert(buttons.IsArray());
-		for (SizeType i = 0; i < buttons.Size(); i++)
-			button[i] = new GameButton(w, h, buttons[i]);
+	assert(buttons.IsArray());
+	for (SizeType i = 0; i < buttons.Size(); i++)
+		button[i] = new GameButton(w, h, buttons[i]);
+	/*if (jsonFile.is_open())
+	{
 	}
 	else
 	{
 		printf("Error: Can't open file %s\n", menuData.c_str());
-	}
+	}*/
 
 	currentMenu = Menu1;
 	return loadObjects();
@@ -124,5 +141,7 @@ bool MainMenu::onEnter(GameBase *mainGame_)
 bool MainMenu::onExit()
 {
 	printf("exiting MainMenu state\n");
+	delete backGroundMenu;
+	delete back;
 	return true;
 }

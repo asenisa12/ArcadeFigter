@@ -1,5 +1,13 @@
 {
 	"backgroundTexture" : "Textures/MenuBackground.png",
+	"backLabel":
+	{
+		"texture" : "Textures/backGround.png",
+		"wDelimiter":1,
+		"hDelimiter":1,
+		"clipW" : 800,
+		"clipH" : 600
+	},
 	"buttons" :
 	[
 		{
@@ -79,6 +87,19 @@
 			"buttonDiv_y" : 0.2,
 			"buttonDiv_w" : 0.6,
 			"buttonDiv_h" : 0.6
+		},
+		{
+			"texture" : "Textures/settingsButton.png",
+			"CLIP_W" : 200,
+			"CLIP_H" : 200,
+			"widthDivide" : 6,
+			"heightDivide" : 6,
+			"xDivide" : 5,
+			"yDivide" : 2,
+			"buttonDiv_x" : 0.05,
+			"buttonDiv_y" : 0.375,
+			"buttonDiv_w" : 0.9,
+			"buttonDiv_h" : 0.25
 		}
 	]
 	
