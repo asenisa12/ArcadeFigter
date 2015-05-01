@@ -6,9 +6,11 @@ Enemy1::Enemy1(std::string path, Location startlocation, int screenW, int screen
 	flipType = SDL_FLIP_HORIZONTAL;
 	loadData(path);
 	punchStart_count = 0;
+
 	//movement speed == 0.5% from screen width
 	movSpeed = screenW_*0.005;	
 	setGridAttributes(startlocation);
+
 	PrevSquare = currentSquare[FIRST_SQUARE_ID];
 	Row_ = getLocationRow(startlocation);
 	Col_ = getLocationCol(startlocation);

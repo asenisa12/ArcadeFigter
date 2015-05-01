@@ -1,5 +1,6 @@
 {
 	"backgroundTexture" : "Textures/MenuBackground.png",
+	"settingsPath" : "Resources/settings.json",
 	"backLabel":
 	{
 		"texture" : "Textures/backGround.png",

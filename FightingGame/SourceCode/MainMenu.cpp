@@ -17,7 +17,7 @@ void MainMenu::update(GameStateMachine *stateMachine)
 		{
 			gameMode = p1Mode;
 			currentMenu = Menu3;
-			SDL_SetWindowFullscreen(mainGame->getWindow(), SDL_WINDOW_FULLSCREEN);
+			
 		}
 		if (button[p2Mode]->isPressed(&mainGame->gameEvent))
 		{
@@ -31,6 +31,10 @@ void MainMenu::update(GameStateMachine *stateMachine)
 		if (button[Level2]->isPressed(&mainGame->gameEvent))
 			stateMachine->pushState(new GameLevel(gameMode, Level2));
 		break;
+	case Settings:
+		settingsMenu->update();
+		break;
+
 	}
 
 	if (!mainGame->quit)
@@ -86,6 +90,7 @@ void MainMenu::render(SDL_Renderer* renderer)
 		break;
 	case Settings:
 		back->renderLabel(backLabeX, backLabeY, renderer);
+		settingsMenu->render();
 		break;
 	}
 	if (currentMenu != Settings)
@@ -95,6 +100,7 @@ void MainMenu::render(SDL_Renderer* renderer)
 bool  MainMenu::loadObjects()
 {
 	if (!backGroundMenu->loadMedia(mainGame->getRenderer())) return false;
+	if (!settingsMenu->loadMedia()) return false;
 	if (!back->loadMedia(mainGame->getRenderer())) return false;
 	for (auto const it : button)
 		if (!(it.second)->loadMedia(mainGame->getRenderer())) return false;
@@ -108,31 +114,24 @@ bool MainMenu::onEnter(GameBase *mainGame_)
 	esckapePressed = true;
 
 	int w = mainGame->getScreenW(), h = mainGame->getScreenH();
-	
-	//std::fstream jsonFile(menuData);
-	Document data/* = parse_jsonFile(menuData)*/;
-	/*std::string content((std::istreambuf_iterator<char>(jsonFile)), std::istreambuf_iterator<char>());
-	data.Parse(content.c_str());*/
+
+	Document data = parse_jsonFile(menuData);
 
 	backGroundMenu = new BackGround(data["backgroundTexture"].GetString());
 
 
 	back = new GameLabel(data["backLabel"], mainGame_->getScreenW(), mainGame_->getScreenH());
 	backLabeY = mainGame->getScreenH() / 2 - back->getH() / 2;
-	backLabeX = mainGame->getScreenW() /2 - back->getW() / 2;
+	backLabeX = mainGame->getScreenW() /3 - back->getW() / 2;
 
 	Value& buttons = data["buttons"];
-		
+	
+	settingsMenu = new SettingsMenu(data["settingsPath"].GetString(),mainGame_);
+
 	assert(buttons.IsArray());
 	for (SizeType i = 0; i < buttons.Size(); i++)
 		button[i] = new GameButton(w, h, buttons[i]);
-	/*if (jsonFile.is_open())
-	{
-	}
-	else
-	{
-		printf("Error: Can't open file %s\n", menuData.c_str());
-	}*/
+
 
 	currentMenu = Menu1;
 	return loadObjects();
@@ -142,6 +141,7 @@ bool MainMenu::onExit()
 {
 	printf("exiting MainMenu state\n");
 	delete backGroundMenu;
+	delete settingsMenu;
 	delete back;
 	return true;
 }

@@ -39,8 +39,13 @@ bool GameBase::init()
 		printf("Warning: Linear texture filtering not enabled!");
 	}
 
+	rapidjson::Document data = parse_jsonFile("Resources/settings.json");
+	int windowFlag;
+	if (data["fullScreen"].GetBool()) windowFlag = SDL_WINDOW_FULLSCREEN;
+	else windowFlag = SDL_WINDOW_SHOWN;
+
 	gWindow_ = SDL_CreateWindow("Arcade Fighter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		windowWidth, windowHeight, SDL_WINDOW_SHOWN);
+		windowWidth, windowHeight, windowFlag);
 	if (gWindow_ == NULL)
 	{
 		printf("Window could not be created! SDL Error: %s\n", SDL_GetError());

@@ -6,11 +6,14 @@
 
 #include <string>
 #include <fstream>
+#include <vector>
 
-
+enum{FullScr=0, Windowed=1};
 class SettingsMenu
 {
-	std::fstream dataFile;
+	std::vector<GameButton*> button;
+	std::string filePath;
+	Document dataSettings;
 	GameBase* mainGame;
 	GameButton* fScr_button;
 	GameButton* windo_button;

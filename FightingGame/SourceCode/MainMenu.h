@@ -9,11 +9,13 @@
 #include "GameLevel.h"
 #include "GameLabel.h"
 #include "JsonReader.h"
+#include "SettingsMenu.h"
 
 static const std::string menuData ="Resources/menuData.json";
 
 class MainMenu : public GameState
 {
+	SettingsMenu* settingsMenu;
 	int backLabeY, backLabeX;
 	GameLabel* back;
 	enum{Menu1=0, Menu2=1, Menu3=2, Settings=3};

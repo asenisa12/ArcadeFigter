@@ -6,6 +6,8 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <stdio.h>
+#include "JsonReader.h"
+#include "document.h"
 
 class GameBase
 {
