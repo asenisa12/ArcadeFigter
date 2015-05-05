@@ -37,7 +37,7 @@ void MainMenu::update(GameStateMachine *stateMachine)
 
 	}
 
-	if (!mainGame->quit)
+	if (!mainGame->quit && currentMenu!=Settings)
 		mainGame->quit = button[Exit]->isPressed(&mainGame->gameEvent);
 
 	return;
@@ -89,7 +89,7 @@ void MainMenu::render(SDL_Renderer* renderer)
 		button[Level2]->renderButton(renderer);
 		break;
 	case Settings:
-		back->renderLabel(backLabeX, backLabeY, renderer);
+		//back->renderLabel(backLabeX, backLabeY, renderer);
 		settingsMenu->render();
 		break;
 	}

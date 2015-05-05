@@ -23,6 +23,7 @@ public:
 	bool loadMedia(SDL_Renderer* gRenderer);
 	bool isPressed(SDL_Event *keyEvent);
 	void renderButton(SDL_Renderer *gRender);
+	SDL_Rect getButtonRect(){ return button; }
 };
 
 #endif

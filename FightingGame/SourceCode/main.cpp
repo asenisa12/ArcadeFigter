@@ -1,6 +1,7 @@
 #include "GameBase.h"
 #include "GameState.h"
 #include "MainMenu.h"
+#include <SDL_mixer.h>
 
 using namespace std;
 using namespace rapidjson;
@@ -16,7 +17,6 @@ GameBase mainGame(SCREEN_HEIGHT,SCREEN_WIDTH);
 
 int main(int argc, char* argv[])
 {
-
 	Uint32 frameStart, frameTime;
 	if (!mainGame.init()){
 		printf("Can't init!");

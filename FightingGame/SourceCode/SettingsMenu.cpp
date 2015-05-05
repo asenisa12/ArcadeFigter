@@ -11,7 +11,10 @@ void SettingsMenu::render(){
 	if (dataSettings["fullScreen"].GetBool())
 		button[Windowed]->renderButton(mainGame->getRenderer());
 	else button[FullScr]->renderButton(mainGame->getRenderer());
-
+	
+	button[Plus]->renderButton(mainGame->getRenderer());
+	button[Minus]->renderButton(mainGame->getRenderer());
+	volumeBar->drawBar(mainGame->getRenderer());
 }
 
 void SettingsMenu::update()
@@ -20,7 +23,7 @@ void SettingsMenu::update()
 	{
 		if (button[Windowed]->isPressed(&mainGame->gameEvent))
 		{
-			SDL_SetWindowFullscreen(mainGame->getWindow(), SDL_WINDOW_SHOWN);
+			SDL_SetWindowFullscreen(mainGame->getWindow(), 0);
 			dataSettings["fullScreen"].SetBool(false);
 			write_json_to_File(filePath, dataSettings);
 		}
@@ -34,6 +37,18 @@ void SettingsMenu::update()
 			write_json_to_File(filePath, dataSettings);
 		}
 	}
+	
+	if (button[Plus]->isPressed(&mainGame->gameEvent))
+	{
+		volumeBar->incrVal();
+		Mix_Volume(-1, 0);
+	}
+	if (button[Minus]->isPressed(&mainGame->gameEvent))
+	{
+		volumeBar->reduceVal();
+		Mix_Volume(-1, 0);
+	}
+
 }
 
 SettingsMenu::SettingsMenu(std::string path, GameBase *mainGame_)
@@ -41,12 +56,22 @@ SettingsMenu::SettingsMenu(std::string path, GameBase *mainGame_)
 {
 	Value& buttons = dataSettings["buttons"];
 	int w = mainGame_->getScreenW(), h = mainGame_->getScreenH();
-	
+
 	assert(buttons.IsArray());
 	for (SizeType i = 0; i < buttons.Size(); i++)
 		button.push_back(new GameButton(w, h, buttons[i]));
+
+	int barX = button[Plus]->getButtonRect().x;
+	int barY = button[Plus]->getButtonRect().y - button[Plus]->getButtonRect().h * 1.5;
+	int barW = button[Minus]->getButtonRect().x + button[Minus]->getButtonRect().w + 20 - button[Plus]->getButtonRect().x;
+	int barH = mainGame_->getScreenH()/25;
+	
+	volumeBar = new VolumeBar(barX, barY, barW, barH, 
+		dataSettings["volume"].GetInt(), mainGame_->getRenderer());
+
+	volume = dataSettings["volume"].GetInt();
 }
 SettingsMenu::~SettingsMenu()
 {
-
+	delete volumeBar;
 }
