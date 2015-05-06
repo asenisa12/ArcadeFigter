@@ -41,14 +41,22 @@ void SettingsMenu::update()
 	if (button[Plus]->isPressed(&mainGame->gameEvent))
 	{
 		volumeBar->incrVal();
-		Mix_Volume(-1, 0);
+		if (volume < MIX_MAX_VOLUME) volume += MIX_MAX_VOLUME / 8;
+		if (volume > MIX_MAX_VOLUME) volume = MIX_MAX_VOLUME;
+		dataSettings["volume"].SetInt(volume);
+		write_json_to_File(filePath, dataSettings);
 	}
 	if (button[Minus]->isPressed(&mainGame->gameEvent))
 	{
 		volumeBar->reduceVal();
-		Mix_Volume(-1, 0);
+		if (volume > 0) volume -= MIX_MAX_VOLUME / 8;
+		if (volume < 0) volume = 0;
+		dataSettings["volume"].SetInt(volume);
+		write_json_to_File(filePath, dataSettings);
 	}
-
+	
+	Mix_VolumeMusic(volume);
+	Mix_Volume(-1,volume);
 }
 
 SettingsMenu::SettingsMenu(std::string path, GameBase *mainGame_)
@@ -66,10 +74,10 @@ SettingsMenu::SettingsMenu(std::string path, GameBase *mainGame_)
 	int barW = button[Minus]->getButtonRect().x + button[Minus]->getButtonRect().w + 20 - button[Plus]->getButtonRect().x;
 	int barH = mainGame_->getScreenH()/25;
 	
-	volumeBar = new VolumeBar(barX, barY, barW, barH, 
-		dataSettings["volume"].GetInt(), mainGame_->getRenderer());
-
 	volume = dataSettings["volume"].GetInt();
+	volumeBar = new VolumeBar(barX, barY, barW, barH, 
+		&volume, mainGame_->getRenderer());
+
 }
 SettingsMenu::~SettingsMenu()
 {
