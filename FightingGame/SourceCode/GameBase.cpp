@@ -46,7 +46,7 @@ bool GameBase::init()
 	else windowFlag = SDL_WINDOW_SHOWN;
 
 	gWindow_ = SDL_CreateWindow("Arcade Fighter", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		windowWidth, windowHeight, windowFlag);
+		windowWidth, windowHeight, SDL_WINDOW_SHOWN);
 	if (gWindow_ == NULL)
 	{
 		printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
@@ -82,7 +82,7 @@ bool GameBase::init()
 	{
 		printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 	}
-
+	SDL_SetWindowFullscreen(gWindow_, windowFlag);
 	return true;
 }
 
