@@ -9,8 +9,8 @@ using namespace rapidjson;
 const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
 
-const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 768;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
 GameBase mainGame(SCREEN_HEIGHT,SCREEN_WIDTH);
 

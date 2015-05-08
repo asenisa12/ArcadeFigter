@@ -84,8 +84,8 @@
     <NuGetPackageImportStamp>4a9d83ad</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\Game Project SDL\FightingGame\FightingGame\rapidjson;E:\Game Project SDL\FightingGame\FightingGame\SDL2.0\include;C:\Users\joro\Source\Repos\ArcadeFigter\FightingGame\SDL2.0\include;D:\Game Project SDL\FightingGame\FightingGame;D:\Game Project SDL\FightingGame\FightingGame\headers;D:\Game Project SDL\FightingGame\FightingGame\SDL2.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\Game Project SDL\FightingGame\FightingGame\SDL2.0\lib;C:\Users\joro\Source\Repos\ArcadeFigter\FightingGame\SDL2.0\lib;D:\Game Project SDL\FightingGame\FightingGame\SDL2.0\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\joro\Source\Repos\ArcadeFigter\FightingGame\SDL2.0\include;C:\Users\joro\Source\Repos\ArcadeFigter\FightingGame\rapidjson;E:\Game Project SDL\FightingGame\FightingGame\rapidjson;E:\Game Project SDL\FightingGame\FightingGame\SDL2.0\include;D:\Game Project SDL\FightingGame\FightingGame;D:\Game Project SDL\FightingGame\FightingGame\headers;D:\Game Project SDL\FightingGame\FightingGame\SDL2.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\joro\Source\Repos\ArcadeFigter\FightingGame\SDL2.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -98,7 +98,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
