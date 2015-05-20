@@ -11,8 +11,8 @@ Items::Items(Value& data, SquareGrid *grid, int itemsCount)
 		Value& itemData = itemArr[itemType];
 		Value& attr = itemData[Health];
 
-		int row = rand() % GRID_SIZE_Y - 1 + 1;
-		int col = rand() % GRID_SIZE_X - 10 + 20;
+		int row = rand() % (GRID_SIZE_Y - 1) + 1;
+		int col = rand() % (GRID_SIZE_X - 10) + 5;
 		Location location = grid->getLocation(row, col);
 		int pX = location.X;
 		int pY = location.Y;

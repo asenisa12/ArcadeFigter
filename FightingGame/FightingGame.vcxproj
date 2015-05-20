@@ -85,7 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\Users\joro\Source\Repos\ArcadeFigter\FightingGame\SDL2.0\include;C:\Users\joro\Source\Repos\ArcadeFigter\FightingGame\rapidjson;E:\Game Project SDL\FightingGame\FightingGame\rapidjson;E:\Game Project SDL\FightingGame\FightingGame\SDL2.0\include;D:\Game Project SDL\FightingGame\FightingGame;D:\Game Project SDL\FightingGame\FightingGame\headers;D:\Game Project SDL\FightingGame\FightingGame\SDL2.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\joro\Source\Repos\ArcadeFigter\FightingGame\SDL2.0\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>E:\Game Project SDL\FightingGame\FightingGame\SDL2.0\lib;C:\Users\joro\Source\Repos\ArcadeFigter\FightingGame\SDL2.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

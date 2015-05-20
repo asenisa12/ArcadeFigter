@@ -8,7 +8,7 @@
 		[
 			{
 				"texture" : "Textures/salad.png",
-				"wDelimiter":15,
+				"wDelimiter":12,
 				"hDelimiter":15,
 				"clipW" : 39,
 				"clipH" : 30
@@ -22,7 +22,7 @@
 		[
 			{
 				"texture" : "Textures/bureger.png",
-				"wDelimiter":15,
+				"wDelimiter":12,
 				"hDelimiter":15,
 				"clipW" : 40,
 				"clipH" : 27
@@ -36,7 +36,7 @@
 		[
 			{
 				"texture" : "Textures/lobster.png",
-				"wDelimiter":15,
+				"wDelimiter":12,
 				"hDelimiter":15,
 				"clipW" : 50,
 				"clipH" : 38

@@ -193,6 +193,7 @@ void Enemy1::moving()
 	}
 }
 
+//gets the forth square next to the player
 Location Enemy1::getGoalSquare()
 {
 	if (target_ != NULL)
@@ -203,10 +204,12 @@ Location Enemy1::getGoalSquare()
 			int playerRow = getLocationRow(playerLocation);
 			int playerCol = getLocationCol(playerLocation);
 			
+			//if player is in right
 			if (target_->getX() > posX_)
 			{
 				playerCol -=4;
 			}
+			//if player is in left
 			else
 			{
 				playerCol += 4;

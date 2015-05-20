@@ -413,7 +413,7 @@ void Player::doActions(std::list<GameCharacter*> characters)
 			frame = 0;
 		}
 	}
-	moving();
+	if (!playerEvent.grab)moving();
 
 	//Cycle animation
 	if (frame / FRAMES_DELIMITOR >= Clips.size()) frame = firstclip;
