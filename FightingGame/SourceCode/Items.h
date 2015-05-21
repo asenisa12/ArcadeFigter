@@ -36,6 +36,8 @@ public:
 
 class Items
 {
+	static const int X_LIMIT = 10;
+	static const int Y_LIMIT = 1;
 	SquareGrid *grid_;
 	enum{Data = 0, Health = 1};
 	std::vector<Item*> items;

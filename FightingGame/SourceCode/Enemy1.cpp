@@ -50,6 +50,7 @@ void Enemy1::loadData(std::string path)
 		punchSound = loadWAV(allData["punchSound"].GetString());
 
 		health = MAX_HEALTH;
+		DEATH_FRAME = 4 * FRAMES_DELIMITOR;
 	}
 	else
 	{
@@ -207,12 +208,12 @@ Location Enemy1::getGoalSquare()
 			//if player is in right
 			if (target_->getX() > posX_)
 			{
-				playerCol -=4;
+				playerCol -= SQUARE_DIFF;
 			}
 			//if player is in left
 			else
 			{
-				playerCol += 4;
+				playerCol += SQUARE_DIFF;
 			}
 			return levelGrid->getLocation(playerRow-1, playerCol);
 		}
@@ -342,7 +343,7 @@ void Enemy1::update(std::list<GameCharacter*> characters)
 		}
 		framesToEnd--;
 		animation("FALLING");
-		frame = 4 * FRAMES_DELIMITOR;
+		frame = DEATH_FRAME;
 	}
 	resizeClips(&Clips[frame / FRAMES_DELIMITOR]);
 }

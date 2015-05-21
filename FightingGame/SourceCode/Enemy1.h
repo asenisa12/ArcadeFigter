@@ -28,6 +28,8 @@ typedef std::list<std::tuple<GameCharacter*, bool>>::iterator playerIter;
 
 class Enemy1 : public GameCharacter
 {
+	static const int SQUARE_DIFF = 4;
+
 	int playersCOUNT;
 	int enemyID;
 	int WALKING_ANIMATION_END;
@@ -41,6 +43,7 @@ class Enemy1 : public GameCharacter
 	int MAX_HEALTH;
 	int DAMAGE;
 	int FALLING_CLIP_W;
+	int DEATH_FRAME;
 
 	Location prevTargetLocation;
 	int destX;
