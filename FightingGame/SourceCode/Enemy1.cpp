@@ -278,7 +278,7 @@ void Enemy1::punch_players()
 		GameCharacter *player_ = std::get<TARGET>(player);
 		if ((characterInLeft(player_) || characterInRigh(player_)) && !player_punching()
 			&& (player_->getCondition() != MOVING && player_->getCondition() != JUMPING) &&
-			abs(player_->getRow() - Row_) <= 1 && abs(player_->getCol() - Col_)>3)
+			abs(player_->getRow() - Row_) <= 2 && abs(player_->getCol() - Col_)>3)
 		{
 			synchroniseFlip(player_);
 			if (frame / FRAMES_DELIMITOR == 3)

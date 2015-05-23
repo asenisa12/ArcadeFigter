@@ -221,7 +221,7 @@ bool Player::punched(std::list<GameCharacter*> characters)
 		if (enemy->punching())
 		{
 			if ((characterInLeft(enemy) || characterInRigh(enemy)) &&
-				abs(enemy->getRow() - Row_)<=1)
+				abs(enemy->getRow() - Row_)<=2)
 			{
 				if (otherLeft > myLeft) flipType = SDL_FLIP_NONE;
 				if (otherLeft < myLeft)  flipType = SDL_FLIP_HORIZONTAL;

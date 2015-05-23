@@ -276,7 +276,7 @@ void GameCharacter::collision(std::list<GameCharacter*> characters)
 		myLeft = posX_ + mWidth / 5;
 		myRight = posX_ + mWidth / 2;
 
-		if (abs(otherBottom - myBottom) < screenW_*0.04)
+		if (abs(otherBottom - myBottom) < screenW_*0.03)
 		{
 			if (characterInLeft(otherCharacter))
 			{
