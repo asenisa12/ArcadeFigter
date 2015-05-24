@@ -127,6 +127,9 @@ bool MainMenu::onEnter(GameBase *mainGame_)
 	Value& buttons = data["buttons"];
 	
 	settingsMenu = new SettingsMenu(data["settingsPath"].GetString(),mainGame_);
+	int volume = parse_jsonFile(data["settingsPath"].GetString())["volume"].GetInt();
+	Mix_VolumeMusic(volume);
+	Mix_Volume(-1, volume);
 
 	assert(buttons.IsArray());
 	for (SizeType i = 0; i < buttons.Size(); i++)

@@ -40,7 +40,7 @@ void Player::loadData(std::string path)
 
 		Value& end_frames  = consts["animations_size"];
 
-		for (int i = 0; i < end_frames.Size(); i++)
+		for (unsigned int i = 0; i < end_frames.Size(); i++)
 			animFrameSize.push_back(end_frames[i].GetInt());
 
 		MAX_HEALTH = consts["MAX_HEALTH"].GetInt();
@@ -99,7 +99,7 @@ void Player::continuingAnim(bool &var, std::string name)
 		animationName = name;
 	}
 	frame++;
-	if (frame / FRAMES_DELIMITOR >= Clips.size()) var = false;
+	if ((unsigned int)(frame / FRAMES_DELIMITOR) >= Clips.size()) var = false;
 }
 
 void Player::grab()
@@ -416,7 +416,7 @@ void Player::doActions(std::list<GameCharacter*> characters)
 	if (!playerEvent.grab)moving();
 
 	//Cycle animation
-	if (frame / FRAMES_DELIMITOR >= Clips.size()) frame = firstclip;
+	if ((unsigned int)(frame / FRAMES_DELIMITOR) >= Clips.size()) frame = firstclip;
 
 	//calculating the movement speed by geting 0,7% from the screen W
 	movSpeed = screenW_*0.007;

@@ -22,7 +22,7 @@ Items::Items(Value& data, SquareGrid *grid, int itemsCount)
 }
 Item* Items::operator[](int i)
 {
-	if (i<items.size() && i>-1)
+	if ((unsigned int)i<items.size() && i>-1)
 	{
 		return items[i];
 	}

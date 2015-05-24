@@ -140,6 +140,7 @@ bool  GameLevel::LoadObjects(){
 	{
 		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
 	}
+
 	Mix_PlayMusic(gMusic, -1);
 	for (auto hBar : healthBars)
 	{
@@ -147,6 +148,7 @@ bool  GameLevel::LoadObjects(){
 		hBar->setMaxHealth(players_.back()->getHealth());
 	}
 	items->loadMedia(mainGame->getRenderer());
+	return true;
 }
 
 void GameLevel::manage_camera()
@@ -192,7 +194,7 @@ GameCharacter* GameLevel::get_enemy(Value& data)
 
 void GameLevel::enemy_add_target()
 {
-	for(int i = 0; i<players.size(); i++)
+	for (unsigned int i = 0; i<players.size(); i++)
 	{
 		if (std::get<AVAILABLE>(players[i]))
 		{
@@ -246,11 +248,11 @@ bool GameLevel::createLevel()
 			healthBars.push_back(new HealthBar(hBars[i], w, h));
 
 		Value& cameraPos = levelData["camera"];
-		for (int i = 0;i<cameraPos.Size();i++)
+		for (unsigned int i = 0; i<cameraPos.Size(); i++)
 		{
 			Value& enemyArr = ((cameraPos[i])["enemies"]);
 			std::list<GameCharacter*> enemiesAtPos;
-			for (int j = 0; j < enemyArr.Size(); j++)
+			for (unsigned int j = 0; j < enemyArr.Size(); j++)
 			{
 				Value& enemyData = enemyArr[j]["enemy"];
 				enemiesAtPos.push_back(get_enemy(enemyData));
